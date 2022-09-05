@@ -17,9 +17,7 @@ const fs = require('fs');
 // RECUPERE TOUS LES POSTS
 
 exports.getAllPosts = (req, res, next) => {
-  Post.find().then( // cherche dans la BDD tous les posts
-    //  const sort = { _id: -1}
-    // Post.find().sort(sort).then(
+  Post.find().sort({ _id: -1}).then( // cherche dans la BDD tous les posts
     (posts) => {
       res.status(200).json(posts); // renvoie la liste des posts au format JSON
     }

@@ -3,7 +3,7 @@
 
 A partir du dossier "backend" :
 
-* Créez variables d'environnement .env :
+* Créez les variables d'environnement .env :
 PORT = 3000
 MONGODB_ACCESS = vos identifiants MongoDB
 RANDOM_SECRET_TOKEN = votre clef de hashage
