@@ -2,7 +2,6 @@
   * IMPORTS
   ***************************************************************************/
  const bcrypt = require('bcrypt');
- const cryptojs = require('crypto-js');
  const jwt = require('jsonwebtoken');
  const User = require('../models/user.model');
  

@@ -2,9 +2,6 @@
   * IMPORTS
   ***************************************************************************/
 const jwt = require('jsonwebtoken');
-// const dotenv = require("dotenv");
-// dotenv.config();
-
 const User = require('../models/user.model');
 const Post = require('../models/post.model');
 const fs = require('fs');
@@ -17,9 +14,9 @@ const fs = require('fs');
 // RECUPERE TOUS LES POSTS
 
 exports.getAllPosts = (req, res, next) => {
-  Post.find().sort({ _id: -1}).then( // cherche dans la BDD tous les posts
+  Post.find().sort({ _id: -1}).then( // cherche tous les posts dans la BDD et les trie du plus récent au plus ancien
     (posts) => {
-      res.status(200).json(posts); // renvoie la liste des posts au format JSON
+      res.status(200).json(posts); // renvoie tous les posts au format JSON
     }
   ).catch(
     (error) => {
@@ -33,7 +30,7 @@ exports.getAllPosts = (req, res, next) => {
 // RECUPERE UN POST SPECIFIQUE
 
 exports.getOnePost = (req, res, next) => {
-  Post.findOne({ // cherche dans la BDD le Post ayant le même id que le paramètre de la requête
+  Post.findOne({ // cherche dans la BDD le post ayant le même id que le paramètre de la requête
     _id: req.params.id
   }).then(
     (post) => {
@@ -52,11 +49,11 @@ exports.getOnePost = (req, res, next) => {
 
 exports.createPost = (req, res, next) => {
   const postObject = { ...req.body }; // récupère toutes les infos du body
-  const post = new Post({ // créé le nouveau post
+  const post = new Post({ // créé un nouveau post
     ...postObject, // opérateur spread pour faire une copie rapide de tous les éléments de postObject
     imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` // construit l'URL de l'image envoyée
   });
-  post.save() // enregistre le post dans la BDD
+  post.save() // enregistre le nouveau post dans la BDD
     .then(() => res.status(201).json({ message: 'Nouveau post publié !' }))
     .catch(error => res.status(400).json({ error }));
 };
@@ -66,12 +63,12 @@ exports.createPost = (req, res, next) => {
 exports.editPost = (req, res, next) => {
   const token = req.headers.authorization.split(' ')[1]; // récupère le token
   const decodedToken = jwt.verify(token, process.env.RANDOM_SECRET_TOKEN); // vérifie le token
-  Post.findOne({ _id: req.params.id }).then((data) => {
+  Post.findOne({ _id: req.params.id }).then((postData) => {
     User.findOne({
       _id: decodedToken.userId
-    }).then((dataUser) => {
-      if (data.userId == decodedToken.userId || dataUser.isAdmin == true) { //compare l'userId du post avec l'userId du token
-        const postObject = req.file ?
+    }).then((userData) => {
+      if (postData.userId == decodedToken.userId || userData.isAdmin == true) { // si l'utilisateur est authentifié ou s'il est admin
+        const postObject = req.file ? // vérifie si req.file existe ou non
           {
             imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
           } : { ...req.body };
@@ -93,11 +90,11 @@ exports.deletePost = (req, res, next) => {
   // recuperer le token dans la chaine de string (enlever le mot bearer et l'espace)
   const token = req.headers.authorization.split(' ')[1];
   const decodedToken = jwt.verify(token, process.env.RANDOM_SECRET_TOKEN);
-  Post.findOne({ _id: req.params.id }).then((data) => { // cherche dans la BDD le post ayant le même id que le paramètre de la requête
+  Post.findOne({ _id: req.params.id }).then((postData) => { // cherche dans la BDD le post ayant le même id que le paramètre de la requête
     User.findOne({
       _id: decodedToken.userId
-    }).then((dataUser) => {
-      if (data.userId == decodedToken.userId || dataUser.isAdmin == true) { // si l'utilisateur est autorisé
+    }).then((userData) => {
+      if (postData.userId == decodedToken.userId || userData.isAdmin == true) { // si l'utilisateur est authentifié ou s'il est admin
         Post.findOne({ _id: req.params.id })
           .then(post => {
             const filename = post.imageUrl.split('/images/')[1];
