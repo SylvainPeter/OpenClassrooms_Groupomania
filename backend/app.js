@@ -8,7 +8,7 @@
   const app = express();
   
   const userRoutes = require('./routes/user.routes');
-  const postRoutes = require('./routes/post.routes')
+  const postRoutes = require('./routes/post.routes');
 
   
   require('dotenv').config(); // Variables d'environnement
@@ -57,7 +57,8 @@
   
   // Routers
   app.use('/api/auth', userRoutes); // Routes pour l'authentification
-  app.use('/api/post', postRoutes); // Routes pour les posts
+  app.use('/api/posts', postRoutes); // Routes pour les posts
+
   
   app.use('/images', express.static(path.join(__dirname, 'images'))); // Routes pour les images statiques
   
