@@ -3,7 +3,7 @@
   ***************************************************************************/
  const bcrypt = require('bcrypt');
  const jwt = require('jsonwebtoken');
- const User = require('../models/user.model');
+ const User = require('../models/userModel');
  
 
  /**************************************************************************
@@ -13,7 +13,6 @@
 // Signup
  
 exports.signup = (req, res, next) => {
- //  const emailCryptoJs = cryptojs.HmacSHA256(req.body.email, process.env.CRYPTOJS_EMAIL_KEY).toString();   // On chiffre l'email avant de l'envoyer dans la base de données
   bcrypt.hash(req.body.password, 10) // hashe le mot de passe récupéré dans le body (avec 10 cycles de salage)
     .then(hash => { // on récupère le hash
       const user = new User({ // on créé un nouvel User

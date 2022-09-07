@@ -2,8 +2,8 @@
   * IMPORTS
   ***************************************************************************/
  const jwt = require('jsonwebtoken');
- const User = require('../models/user.model');
- const Post = require('../models/post.model');
+ const User = require('../models/userModel');
+ const Post = require('../models/postModel');
  const fs = require('fs');
  
  

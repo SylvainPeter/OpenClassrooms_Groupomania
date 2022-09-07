@@ -5,7 +5,7 @@
     const router = express.Router();
     const rateLimit = require('../middlewares/rate-limit');
     const password = require('../middlewares/password-validator');
-    const userCtrl = require('../controllers/user.controller');
+    const userCtrl = require('../controllers/userController');
     
 /**************************************************************************
     * ROUTES
