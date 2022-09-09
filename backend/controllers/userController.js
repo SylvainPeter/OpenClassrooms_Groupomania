@@ -10,7 +10,7 @@
     * FUNCTIONS
     ***************************************************************************/
  
-// Signup
+// SIGNUP (OK)
  
 exports.signup = (req, res, next) => {
   bcrypt.hash(req.body.password, 10) // hashe le mot de passe récupéré dans le body (avec 10 cycles de salage)
@@ -28,7 +28,7 @@ exports.signup = (req, res, next) => {
     .catch(error => res.status(500).json({ error }));
 };
 
-// Login
+// LOGIN (OK)
 
 exports.login = (req, res, next) => {
   User.findOne({ email: req.body.email })
