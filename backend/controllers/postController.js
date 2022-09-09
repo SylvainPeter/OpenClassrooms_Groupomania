@@ -2,12 +2,11 @@
   * IMPORTS
   ***************************************************************************/
 const jwt = require('jsonwebtoken');
-const dotenv = require("dotenv");
-dotenv.config();
 const User = require('../models/userModel');
 const Post = require('../models/postModel');
 const fs = require('fs');
-
+const dotenv = require("dotenv");
+dotenv.config();
 
 /**************************************************************************
   * FUNCTIONS
@@ -146,37 +145,26 @@ exports.likePost = (req, res, next) => {
 
 
 
+// SUPPRIME UNE SAUCE (MANQUE LE UNLINK)
 
-
-
-
-
-
-// SUPPRIME UNE SAUCE (ERREUR!!!!)
-exports.deletePost = (req, res, next) => {
-  const token = req.headers.authorization.split(' ')[1];  // récupère le token
-  const verifiedToken = jwt.verify(token, process.env.SECRET_TOKEN); // vérifie le token
-  Post.findOne({ _id: req.params.id })
-  .then((data) => {
-    User.findOne({
-      _id: verifiedToken.userId
-    })
-    .then((userData) => {
-      if (data.userId == verifiedToken.userId || userData.isAdmin == true) { // si l'utilisateur est authentifié ou s'il est admin
-        Post.findOne({ _id: req.params.id })
-          .then(post => {
-            const filename = post.imageUrl.split('/images/')[1];
-            fs.unlink(`images/${filename}`, () => {
-              Post.deleteOne({ _id: req.params.id })
-                .then(() => res.status(200).json({ message: 'Post supprimée !' }))
-                .catch(error => res.status(400).json({ error }));
-            });
-          })
-          .catch(error => res.status(500).json({ error }));
+exports.deletePost = (req, res) => {
+  const id = req.params.id;
+  Post.findByIdAndRemove(id)
+    .then(data => {
+      if (!data) {
+        res.status(404).send({
+          message: `Impossible de trouver le Post id=${id}`
+        });
       } else {
-        res.status(401).json({ message: "Vous n'avez pas la permission !" })
+        res.send({
+          message: "Post supprimé !"
+        });
       }
-    }).catch(error => res.status(400).json({ error }));
-  })
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Impossible de supprimer le Post id=" + id
+      });
+    });
 };
 
