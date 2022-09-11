@@ -15,9 +15,8 @@ module.exports = (req, res, next) => {
         User.findOne({
             _id: verifiedToken.userId
         }).then((userData) => {
-            req.isAdmin = {
-                isAdmin: userData.isAdmin
-            };
+            req.isAdmin = userData.isAdmin;
+       
         }).catch(error => res.status(400).json({ error }));
         next();
     } catch (error) {

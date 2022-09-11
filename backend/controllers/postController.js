@@ -70,7 +70,7 @@ exports.editPost = (req, res, next) => {
   } : { ...req.body };
   Post.findOne({ _id: req.params.id })
     .then((post) => {
-      if (post.userId == req.auth.userId || req.isAdmin) { // si l'utilisateur est autorisé
+      if (post.userId == req.auth.userId || req.isAdmin == true) { // si l'utilisateur est authentifié ou s'il est admin
         Post.updateOne({ _id: req.params.id }, { ...postObject, _id: req.params.id }) // met à jour le Post ayant le même _id que le paramètre de la requête
           .then(() => res.status(200).json({ message: 'Post modifié !' }))
           .catch(error => res.status(401).json({ error }));
@@ -88,7 +88,7 @@ exports.editPost = (req, res, next) => {
 exports.deletePost = (req, res, next) => {
   Post.findOne({ _id: req.params.id }) // cherche dans la BDD le post ayant le même id que le paramètre de la requête
     .then(post => {
-      if (post.userId == req.auth.userId || req.isAdmin) { // si l'utilisateur est autorisé
+      if (post.userId == req.auth.userId || req.isAdmin == true) { // si l'utilisateur est authentifié ou s'il est admin
         const filename = post.imageUrl.split('/images/')[1];
         fs.unlink(`images/${filename}`, () => { // supprime l'image du dossier image
           Post.deleteOne({ _id: req.params.id }) // supprime le post de la BDD
