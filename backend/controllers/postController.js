@@ -49,13 +49,13 @@ exports.getOnePost = (req, res, next) => {
 // CREE UN NOUVEAU POST (ERREUR SI FILE!!!!)
 
 exports.createPost = (req, res, next) => {
-  const post = new Post({ // créé la nouvelle sauce
+  const post = new Post({ // créé le nouveau post
     ...req.body, // récupère toutes les infos du body
     userId: req.auth.userId,
     imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` // construit l'URL de l'image envoyée
   });
 
-  post.save() // enregistre la sauce dans la BDD
+  post.save() // enregistre le post dans la BDD
     .then(() => { res.status(201).json({ message: 'Nouveau post publié !' }) })
     .catch(error => { res.status(400).json({ error }) })
 };
@@ -86,14 +86,14 @@ exports.editPost = (req, res, next) => {
 
 // SUPPRIME UN POST (OK MAIS NE GERE PAS ENCORE ISADMIN)
 exports.deletePost = (req, res, next) => {
-  Post.findOne({ _id: req.params.id }) // cherche dans la BDD la sauce ayant le même id que le paramètre de la requête
+  Post.findOne({ _id: req.params.id }) // cherche dans la BDD le post ayant le même id que le paramètre de la requête
       .then(post => {
           if (post.userId != req.auth.userId) { // si l'utilisateur n'est pas autorisé
               res.status(401).json({ message: 'Pas autorisé à supprimer !' });
           } else { // si l'utilisateur est autorisé
               const filename = post.imageUrl.split('/images/')[1];
               fs.unlink(`images/${filename}`, () => { // supprime l'image du dossier image
-                Post.deleteOne({ _id: req.params.id }) // supprime la sauce de la BDD
+                Post.deleteOne({ _id: req.params.id }) // supprime le post de la BDD
                       .then(() => { res.status(200).json({ message: 'Post supprimé !' }) })
                       .catch(error => res.status(401).json({ error }));
               });
@@ -107,8 +107,8 @@ exports.deletePost = (req, res, next) => {
 
 // LIKE OU DISLIKE UN POST (OK)
 exports.likePost = (req, res, next) => {
-  if (req.body.like === 1) { // si l'utilisateur like la sauce (1)
-    Post.updateOne( // mise à jour de la sauce
+  if (req.body.like === 1) { // si l'utilisateur like le post (1)
+    Post.updateOne( // mise à jour du post
       { _id: req.params.id },
       {
         $inc: { likes: 1 }, // incrémente le champ likes
@@ -119,8 +119,8 @@ exports.likePost = (req, res, next) => {
       .catch((error) => res.status(400).json({ error }));
   }
 
-  else if (req.body.like === -1) { // si l'utilisateur dislike la sauce (-1)
-    Post.updateOne( // mise à jour de la sauce
+  else if (req.body.like === -1) { // si l'utilisateur dislike le post (-1)
+    Post.updateOne( // mise à jour du post
       { _id: req.params.id },
       {
         $inc: { dislikes: 1 }, // incrémente le champ dislikes
@@ -135,7 +135,7 @@ exports.likePost = (req, res, next) => {
     Post.findOne({ _id: req.params.id })
       .then((post) => {
         if (post.usersLiked.includes(req.body.userId)) { // si l'id de l'utilisateur est déjà présent dans usersLiked
-          Post.updateOne( // mise à jour de la sauce
+          Post.updateOne( // mise à jour du post
             { _id: req.params.id },
             {
               $pull: { usersLiked: req.body.userId }, // retire l'id de cet utilisateur du tableau usersLiked
@@ -148,7 +148,7 @@ exports.likePost = (req, res, next) => {
             .catch((error) => res.status(400).json({ error }));
         }
         else if (post.usersDisliked.includes(req.body.userId)) { // si l'id de l'utilisateur est déjà présent dans usersDisliked
-          Post.updateOne( // mise à jour de la sauce
+          Post.updateOne( // mise à jour du post
             { _id: req.params.id },
             {
               $pull: { usersDisliked: req.body.userId }, // retire l'id de cet utilisateur du tableau usersDisliked
