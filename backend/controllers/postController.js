@@ -1,8 +1,6 @@
 /**************************************************************************
   * IMPORTS
   ***************************************************************************/
-const jwt = require('jsonwebtoken');
-const User = require('../models/userModel');
 const Post = require('../models/postModel');
 const fs = require('fs');
 const dotenv = require("dotenv");
@@ -28,6 +26,7 @@ exports.getAllPosts = (req, res, next) => {
   );
 };
 
+
 // RECUPERE UN POST SPECIFIQUE (OK)
 
 exports.getOnePost = (req, res, next) => {
@@ -46,44 +45,67 @@ exports.getOnePost = (req, res, next) => {
   );
 };
 
-// ENVOIE UN NOUVEAU POST (ERREUR SI FILE!!!!)
+
+// CREE UN NOUVEAU POST (ERREUR SI FILE!!!!)
 
 exports.createPost = (req, res, next) => {
-  const postObject = { ...req.body }; // récupère toutes les infos du body
-  const post = new Post({ // créé un nouveau post
-    ...postObject, // opérateur spread pour faire une copie rapide de tous les éléments de postObject
+  const post = new Post({ // créé la nouvelle sauce
+    ...req.body, // récupère toutes les infos du body
+    userId: req.auth.userId,
     imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` // construit l'URL de l'image envoyée
   });
-  post.save() // enregistre le nouveau post dans la BDD
-    .then(() => res.status(201).json({ message: 'Nouveau post publié !' }))
-    .catch(error => res.status(400).json({ error }));
+
+  post.save() // enregistre la sauce dans la BDD
+    .then(() => { res.status(201).json({ message: 'Nouveau post publié !' }) })
+    .catch(error => { res.status(400).json({ error }) })
 };
 
-// MOFIDIE UN POST (OK)
+
+// MOFIDIE UN POST (OK MAIS NE GERE PAS ENCORE ISADMIN)
+
 exports.editPost = (req, res, next) => {
-  const token = req.headers.authorization.split(' ')[1]; // récupère le token
-  const verifiedToken = jwt.verify(token, process.env.RANDOM_SECRET_TOKEN); // vérifie le token
-  Post.findOne({ _id: req.params.id }).then((postData) => {
-    User.findOne({
-      _id: verifiedToken.userId
-    }).then((userData) => {
-      if (postData.userId == verifiedToken.userId || userData.isAdmin == true) { // si l'utilisateur est authentifié ou s'il est admin
-        const postObject = req.file ? // vérifie si req.file existe ou non
-          {
-            imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-          } : { ...req.body };
-        Post.updateOne({ _id: req.params.id }, { ...postObject, _id: req.params.id }) // met à jour le post ayant le même _id que le paramètre de la requête
-          .then(() => res.status(200).json({ message: 'Post mis à jour !' }))
-          .catch(error => res.status(400).json({ error }));
-      }
-      else { // si l'utilisateur n'est pas autorisé à modifier
-        res.status(401).json({ message: "Pas autorisé à modifier !" })
-      }
-    }).catch(error => res.status(400).json({ error }));
-  })
+  const postObject = req.file ? { // vérifie si req.file existe ou non
+      ...req.body, // récupère les nouvelles infos du body
+      imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` // construit l'URL de l'image envoyée
+  } : { ...req.body };
+  Post.findOne({ _id: req.params.id })
+      .then((post) => { 
+          if (post.userId != req.auth.userId) { // si l'utilisateur n'est pas autorisé
+              res.status(401).json({ message: 'Pas autorisé à modifier !' });
+          } else { // si l'utilisateur est autorisé
+              Post.updateOne({ _id: req.params.id }, { ...postObject, _id: req.params.id }) // met à jour le Post ayant le même _id que le paramètre de la requête
+                  .then(() => res.status(200).json({ message: 'Post modifié !' }))
+                  .catch(error => res.status(401).json({ error }));
+          }
+      })
+      .catch((error) => {
+          res.status(400).json({ error });
+      });
 };
 
-// LIKE OU DISLIKE UNE SAUCE (OK)
+
+// SUPPRIME UN POST (OK MAIS NE GERE PAS ENCORE ISADMIN)
+exports.deletePost = (req, res, next) => {
+  Post.findOne({ _id: req.params.id }) // cherche dans la BDD la sauce ayant le même id que le paramètre de la requête
+      .then(post => {
+          if (post.userId != req.auth.userId) { // si l'utilisateur n'est pas autorisé
+              res.status(401).json({ message: 'Pas autorisé à supprimer !' });
+          } else { // si l'utilisateur est autorisé
+              const filename = post.imageUrl.split('/images/')[1];
+              fs.unlink(`images/${filename}`, () => { // supprime l'image du dossier image
+                Post.deleteOne({ _id: req.params.id }) // supprime la sauce de la BDD
+                      .then(() => { res.status(200).json({ message: 'Post supprimé !' }) })
+                      .catch(error => res.status(401).json({ error }));
+              });
+          }
+      })
+      .catch(error => {
+          res.status(500).json({ error });
+      });
+};
+
+
+// LIKE OU DISLIKE UN POST (OK)
 exports.likePost = (req, res, next) => {
   if (req.body.like === 1) { // si l'utilisateur like la sauce (1)
     Post.updateOne( // mise à jour de la sauce
@@ -142,29 +164,3 @@ exports.likePost = (req, res, next) => {
       .catch((error) => res.status(400).json({ error }));
   }
 };
-
-
-
-// SUPPRIME UNE SAUCE (MANQUE LE UNLINK)
-
-exports.deletePost = (req, res) => {
-  const id = req.params.id;
-  Post.findByIdAndRemove(id)
-    .then(data => {
-      if (!data) {
-        res.status(404).send({
-          message: `Impossible de trouver le Post id=${id}`
-        });
-      } else {
-        res.send({
-          message: "Post supprimé !"
-        });
-      }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: "Impossible de supprimer le Post id=" + id
-      });
-    });
-};
-
