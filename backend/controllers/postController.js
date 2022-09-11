@@ -70,12 +70,12 @@ exports.editPost = (req, res, next) => {
   } : { ...req.body };
   Post.findOne({ _id: req.params.id })
     .then((post) => {
-      if (post.userId != req.auth.userId) { // si l'utilisateur n'est pas autorisé
-        res.status(401).json({ message: 'Pas autorisé à modifier !' });
-      } else { // si l'utilisateur est autorisé
+      if (post.userId == req.auth.userId || req.isAdmin) { // si l'utilisateur est autorisé
         Post.updateOne({ _id: req.params.id }, { ...postObject, _id: req.params.id }) // met à jour le Post ayant le même _id que le paramètre de la requête
           .then(() => res.status(200).json({ message: 'Post modifié !' }))
           .catch(error => res.status(401).json({ error }));
+      } else { // si l'utilisateur n'est pas autorisé
+        res.status(401).json({ message: 'Pas autorisé à modifier !' });
       }
     })
     .catch((error) => {
@@ -88,15 +88,15 @@ exports.editPost = (req, res, next) => {
 exports.deletePost = (req, res, next) => {
   Post.findOne({ _id: req.params.id }) // cherche dans la BDD le post ayant le même id que le paramètre de la requête
     .then(post => {
-      if (post.userId != req.auth.userId) { // si l'utilisateur n'est pas autorisé
-        res.status(401).json({ message: 'Pas autorisé à supprimer !' });
-      } else { // si l'utilisateur est autorisé
+      if (post.userId == req.auth.userId || req.isAdmin) { // si l'utilisateur est autorisé
         const filename = post.imageUrl.split('/images/')[1];
         fs.unlink(`images/${filename}`, () => { // supprime l'image du dossier image
           Post.deleteOne({ _id: req.params.id }) // supprime le post de la BDD
             .then(() => { res.status(200).json({ message: 'Post supprimé !' }) })
             .catch(error => res.status(401).json({ error }));
         });
+      } else { // si l'utilisateur n'est pas autorisé
+        res.status(401).json({ message: 'Pas autorisé à supprimer !' });
       }
     })
     .catch(error => {
