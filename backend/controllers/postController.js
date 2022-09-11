@@ -65,43 +65,43 @@ exports.createPost = (req, res, next) => {
 
 exports.editPost = (req, res, next) => {
   const postObject = req.file ? { // vérifie si req.file existe ou non
-      ...req.body, // récupère les nouvelles infos du body
-      imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` // construit l'URL de l'image envoyée
+    ...req.body, // récupère les nouvelles infos du body
+    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` // construit l'URL de l'image envoyée
   } : { ...req.body };
   Post.findOne({ _id: req.params.id })
-      .then((post) => { 
-          if (post.userId != req.auth.userId) { // si l'utilisateur n'est pas autorisé
-              res.status(401).json({ message: 'Pas autorisé à modifier !' });
-          } else { // si l'utilisateur est autorisé
-              Post.updateOne({ _id: req.params.id }, { ...postObject, _id: req.params.id }) // met à jour le Post ayant le même _id que le paramètre de la requête
-                  .then(() => res.status(200).json({ message: 'Post modifié !' }))
-                  .catch(error => res.status(401).json({ error }));
-          }
-      })
-      .catch((error) => {
-          res.status(400).json({ error });
-      });
+    .then((post) => {
+      if (post.userId != req.auth.userId) { // si l'utilisateur n'est pas autorisé
+        res.status(401).json({ message: 'Pas autorisé à modifier !' });
+      } else { // si l'utilisateur est autorisé
+        Post.updateOne({ _id: req.params.id }, { ...postObject, _id: req.params.id }) // met à jour le Post ayant le même _id que le paramètre de la requête
+          .then(() => res.status(200).json({ message: 'Post modifié !' }))
+          .catch(error => res.status(401).json({ error }));
+      }
+    })
+    .catch((error) => {
+      res.status(400).json({ error });
+    });
 };
 
 
 // SUPPRIME UN POST (OK MAIS NE GERE PAS ENCORE ISADMIN)
 exports.deletePost = (req, res, next) => {
   Post.findOne({ _id: req.params.id }) // cherche dans la BDD le post ayant le même id que le paramètre de la requête
-      .then(post => {
-          if (post.userId != req.auth.userId) { // si l'utilisateur n'est pas autorisé
-              res.status(401).json({ message: 'Pas autorisé à supprimer !' });
-          } else { // si l'utilisateur est autorisé
-              const filename = post.imageUrl.split('/images/')[1];
-              fs.unlink(`images/${filename}`, () => { // supprime l'image du dossier image
-                Post.deleteOne({ _id: req.params.id }) // supprime le post de la BDD
-                      .then(() => { res.status(200).json({ message: 'Post supprimé !' }) })
-                      .catch(error => res.status(401).json({ error }));
-              });
-          }
-      })
-      .catch(error => {
-          res.status(500).json({ error });
-      });
+    .then(post => {
+      if (post.userId != req.auth.userId) { // si l'utilisateur n'est pas autorisé
+        res.status(401).json({ message: 'Pas autorisé à supprimer !' });
+      } else { // si l'utilisateur est autorisé
+        const filename = post.imageUrl.split('/images/')[1];
+        fs.unlink(`images/${filename}`, () => { // supprime l'image du dossier image
+          Post.deleteOne({ _id: req.params.id }) // supprime le post de la BDD
+            .then(() => { res.status(200).json({ message: 'Post supprimé !' }) })
+            .catch(error => res.status(401).json({ error }));
+        });
+      }
+    })
+    .catch(error => {
+      res.status(500).json({ error });
+    });
 };
 
 
@@ -112,7 +112,7 @@ exports.likePost = (req, res, next) => {
       { _id: req.params.id },
       {
         $inc: { likes: 1 }, // incrémente le champ likes
-        $push: { usersLiked: req.body.userId }, // ajoute l'id de cet utilisateur au tableau usersLiked
+        $push: { usersLiked: req.auth.userId }, // ajoute l'id de cet utilisateur au tableau usersLiked
       }
     )
       .then(() => res.status(200).json({ message: "Like ajouté !" }))
@@ -124,7 +124,7 @@ exports.likePost = (req, res, next) => {
       { _id: req.params.id },
       {
         $inc: { dislikes: 1 }, // incrémente le champ dislikes
-        $push: { usersDisliked: req.body.userId }, // ajoute l'id de cet utilisateur au tableau usersDisliked
+        $push: { usersDisliked: req.auth.userId }, // ajoute l'id de cet utilisateur au tableau usersDisliked
       }
     )
       .then(() => res.status(200).json({ message: "Dislike ajouté !" }))
@@ -134,11 +134,11 @@ exports.likePost = (req, res, next) => {
   else if (req.body.like === 0) { // si l'utilisateur annule son like ou son dislike (0)
     Post.findOne({ _id: req.params.id })
       .then((post) => {
-        if (post.usersLiked.includes(req.body.userId)) { // si l'id de l'utilisateur est déjà présent dans usersLiked
+        if (post.usersLiked.includes(req.auth.userId)) { // si l'id de l'utilisateur est déjà présent dans usersLiked
           Post.updateOne( // mise à jour du post
             { _id: req.params.id },
             {
-              $pull: { usersLiked: req.body.userId }, // retire l'id de cet utilisateur du tableau usersLiked
+              $pull: { usersLiked: req.auth.userId }, // retire l'id de cet utilisateur du tableau usersLiked
               $inc: { likes: -1 } // décrémente le champ likes
             }
           )
@@ -147,11 +147,11 @@ exports.likePost = (req, res, next) => {
             })
             .catch((error) => res.status(400).json({ error }));
         }
-        else if (post.usersDisliked.includes(req.body.userId)) { // si l'id de l'utilisateur est déjà présent dans usersDisliked
+        else if (post.usersDisliked.includes(req.auth.userId)) { // si l'id de l'utilisateur est déjà présent dans usersDisliked
           Post.updateOne( // mise à jour du post
             { _id: req.params.id },
             {
-              $pull: { usersDisliked: req.body.userId }, // retire l'id de cet utilisateur du tableau usersDisliked
+              $pull: { usersDisliked: req.auth.userId }, // retire l'id de cet utilisateur du tableau usersDisliked
               $inc: { dislikes: -1 }, // décrémente le champ dislikes
             }
           )

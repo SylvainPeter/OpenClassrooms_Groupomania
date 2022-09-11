@@ -5,10 +5,9 @@ dotenv.config();
 module.exports = (req, res, next) => {
    try {
        const token = req.headers.authorization.split(' ')[1]; // Récupère le token du header Authorization (en enlevant le mot "Bearer")
-       const decodedToken = jwt.verify(token, process.env.RANDOM_SECRET_TOKEN); // Vérifie le token
-       const userId = decodedToken.userId; // extrait l'ID utilisateur du token et le rajoute à l’objet Request
+       const verifiedToken = jwt.verify(token, process.env.RANDOM_SECRET_TOKEN); // Vérifie le token
        req.auth = {
-           userId: userId
+           userId: verifiedToken.userId // verifiedToken.userId = l'userId récupéré dans le token
        };
 	next();
    } catch(error) {
