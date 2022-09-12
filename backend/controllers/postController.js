@@ -10,7 +10,7 @@ dotenv.config();
   * FUNCTIONS
   ***************************************************************************/
 
-// RECUPERE TOUS LES POSTS (OK)
+// RECUPERE TOUS LES POSTS
 
 exports.getAllPosts = (req, res, next) => {
   Post.find().sort({ _id: -1 }).then( // cherche tous les posts dans la BDD et les trie du plus récent au plus ancien
@@ -27,7 +27,7 @@ exports.getAllPosts = (req, res, next) => {
 };
 
 
-// RECUPERE UN POST SPECIFIQUE (OK)
+// RECUPERE UN POST SPECIFIQUE
 
 exports.getOnePost = (req, res, next) => {
   Post.findOne({ // cherche dans la BDD le post ayant le même id que le paramètre de la requête
@@ -46,7 +46,7 @@ exports.getOnePost = (req, res, next) => {
 };
 
 
-// CREE UN NOUVEAU POST (ERREUR SI FILE!!!!)
+// CREE UN NOUVEAU POST
 
 exports.createPost = (req, res, next) => {
   const post = new Post({ // créé le nouveau post
@@ -61,7 +61,7 @@ exports.createPost = (req, res, next) => {
 };
 
 
-// MOFIDIE UN POST (OK MAIS NE GERE PAS ENCORE ISADMIN)
+// MOFIDIE UN POST
 
 exports.editPost = (req, res, next) => {
   const postObject = req.file ? { // vérifie si req.file existe ou non
@@ -84,7 +84,7 @@ exports.editPost = (req, res, next) => {
 };
 
 
-// SUPPRIME UN POST (OK MAIS NE GERE PAS ENCORE ISADMIN)
+// SUPPRIME UN POST
 exports.deletePost = (req, res, next) => {
   Post.findOne({ _id: req.params.id }) // cherche dans la BDD le post ayant le même id que le paramètre de la requête
     .then(post => {
@@ -105,7 +105,7 @@ exports.deletePost = (req, res, next) => {
 };
 
 
-// LIKE OU DISLIKE UN POST (OK)
+// LIKE OU DISLIKE UN POST
 exports.likePost = (req, res, next) => {
   if (req.body.like === 1) { // si l'utilisateur like le post (1)
     Post.updateOne( // mise à jour du post
