@@ -2,14 +2,14 @@
   <div class="form-content">
     <form class="form" action="/ma-page-de-traitement" method="post">
       <div>
-        <label htmlFor="mail">Adresse email
-          <input type="email" id="email" name="user_mail" placeholder="Entrez votre adresse email">
-        </label>
+        <!-- ? -->
+        <label htmlFor="mail">Adresse email</label>
+        <input type="email" id="email" name="user_mail" placeholder="Entrez votre adresse email">
       </div>
       <div>
-        <label htmlFor="password">Mot de passe
-          <input type="password" id="password" name="user_password" placeholder="Entrez votre mot de passe">
-        </label>
+        <!-- ? -->
+        <label htmlFor="password">Mot de passe</label>
+        <input type="password" id="password" name="user_password" placeholder="Entrez votre mot de passe">
       </div>
       <div class="error"></div> <!-- Message d'erreur -->
       <button type="submit" class="form__button">Se connecter</button>
@@ -24,14 +24,6 @@
 
 
 <style lang='scss' scoped>
-$color-primary : #FD2D01;
-$color-secondary : #FFD7D7;
-$color-tertiary : #4E5166;
-$color-primary--darken : darken(#FD2D01, 4%);
-$color-tertiary--darken : darken(#4E5166, 4%);
-
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Roboto:wght@400;500&family=Shrikhand&display=swap');
-
 .form-content {
   background-color: white;
   border-radius: 5px;

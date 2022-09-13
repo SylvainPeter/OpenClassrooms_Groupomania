@@ -2,22 +2,25 @@
   <div class="form-content">
     <form class="form" action="/ma-page-de-traitement" method="post">
       <div>
+        <!-- ? -->
         <label htmlFor="pseudo">Pseudo
           <input type="text" id="pseudo" name="user_pseudo" placeholder="Entrez votre pseudo">
         </label>
       </div>
       <div>
-        <label htmlFor="mail">Adresse email
-          <input type="email" id="email" name="user_mail" placeholder="Exemple : jean.dupont@gmail.com">
-        </label>
+        <!-- ? -->
+        <label htmlFor="mail">Adresse email</label>
+        <input type="email" id="email" name="user_mail" placeholder="Entrez votre adresse email">
       </div>
       <div>
-        <label htmlFor="password">Mot de passe
-          <input type="password" id="password" name="user_password" placeholder="Entrez votre mot de passe">
-        </label>
+        <!-- ? -->
+        <label htmlFor="password">Mot de passe</label>
+        <input type="password" id="password" name="user_password" placeholder="Entrez votre mot de passe">
       </div>
       <div class="error"></div> <!-- Message d'erreur -->
       <button type="submit" class="form__button">Créer un compte</button>
+      <br>
+      <p>Déjà inscrit ?</p>
       <button class="form__button--login">
         <router-link id="login-link" to="/">Se connecter</router-link>
       </button>
@@ -27,12 +30,6 @@
   
   
 <style lang='scss' scoped>
-$color-primary : #FD2D01;
-$color-secondary : #FFD7D7;
-$color-tertiary : #4E5166;
-$color-primary--darken : darken(#FD2D01, 4%);
-$color-tertiary--darken : darken(#4E5166, 4%);
-
 .form-content {
   background-color: white;
   border-radius: 5px;
@@ -97,7 +94,7 @@ $color-tertiary--darken : darken(#4E5166, 4%);
     border: $color-primary;
     border-radius: 5px;
     padding: 10px;
-    margin: 50px 50px 0 50px;
+    margin: 0 50px 0 50px;
     text-decoration: none;
     font-size: 1em;
     font-weight: 700;

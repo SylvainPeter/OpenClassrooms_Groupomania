@@ -4,6 +4,7 @@
       <img class="logo" src="../assets/icon-left-font-monochrome-white.png" alt="logo" />
     </div>
     <div class="signup">
+      <img id="alt-logo" src="../assets/icon-left-font-monochrome-black.png" alt="logo" />
       <h1>INSCRIPTION</h1>
       <form-sign-up></form-sign-up>
     </div>
@@ -22,8 +23,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$color-primary : #FD2D01;
-
 .container {
   @media screen and (min-width: 768px) {
     display: flex;
@@ -70,5 +69,16 @@ $color-primary : #FD2D01;
 
 h1 {
   color: $color-primary;
+}
+
+#alt-logo {
+  @media screen and (min-width: 769px) {
+    display: none;
+  }
+
+  @media screen and (max-width: 768px) {
+    width: 12em;
+    opacity: 0.8;
+  }
 }
 </style>
