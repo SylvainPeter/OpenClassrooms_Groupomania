@@ -1,9 +1,9 @@
 <template>
-  <div class="content">
-    <div class="jumbotron">
+  <div class="container">
+    <div class="groupomania-image">
       <img class="logo" src="../assets/icon-left-font-monochrome-white.png" alt="logo" />
     </div>
-    <div class="connexion">
+    <div class="login">
       <h1>CONNEXION</h1>
       <form-log-in></form-log-in>
     </div>
@@ -23,12 +23,13 @@ export default {
 <style lang="scss" scoped>
 $color-primary : #FD2D01;
 
-.content {
+.container {
   @media screen and (min-width: 768px) {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
   }
+
   @media screen and (max-width: 768px) {
     display: flex;
     justify-content: center;
@@ -37,7 +38,7 @@ $color-primary : #FD2D01;
   }
 }
 
-.jumbotron {
+.groupomania-image {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -53,7 +54,7 @@ $color-primary : #FD2D01;
   }
 }
 
-.connexion {
+.login {
   display: flex;
   flex-direction: column;
   align-items: center;
