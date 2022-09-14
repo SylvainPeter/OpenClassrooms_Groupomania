@@ -5,6 +5,7 @@
                 <router-link to="/home">
                     <img src="../assets/icon-left-font.png" id="logo" alt="Logo Groupomania">
                 </router-link>
+                <p>Bonjour, {{ pseudo }} !</p>
                 <div id="logout" @click="Logout()">Déconnexion</div>
             </div>
         </header>
@@ -14,12 +15,25 @@
 <script>
 
 export default {
+
+    data() {
+        return {
+            pseudo: '',
+        }
+    },
     methods: {
         Logout() {
-            // localStorage.clear();
+            localStorage.clear();
             this.$router.push('/');
         },
+        getPseudo() { // On récupère le pseudo depuis le localStorage
+            const user = JSON.parse(localStorage.getItem('userData'));
+            this.pseudo = user.pseudo;
+        }
     },
+    mounted() {
+        this.getPseudo();
+    }
 };
 </script>
     
