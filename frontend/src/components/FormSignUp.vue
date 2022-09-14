@@ -2,19 +2,15 @@
   <div class="form-content">
     <form class="form" action="/ma-page-de-traitement" method="post">
       <div>
-        <!-- ? -->
-        <label htmlFor="pseudo">Pseudo
-          <input type="text" id="pseudo" name="user_pseudo" placeholder="Entrez votre pseudo">
-        </label>
+        <label for="pseudo">Pseudo </label>
+        <input type="text" id="pseudo" name="user_pseudo" placeholder="Entrez votre pseudo">
       </div>
       <div>
-        <!-- ? -->
-        <label htmlFor="mail">Adresse email</label>
+        <label for="mail">Adresse email</label>
         <input type="email" id="email" name="user_mail" placeholder="Entrez votre adresse email">
       </div>
       <div>
-        <!-- ? -->
-        <label htmlFor="password">Mot de passe</label>
+        <label for="password">Mot de passe</label>
         <input type="password" id="password" name="user_password" placeholder="Entrez votre mot de passe">
       </div>
       <div class="error"></div> <!-- Message d'erreur -->
@@ -60,7 +56,7 @@
     label {
       color: $color-primary;
       font-weight: 700;
-      margin-bottom: 8px;
+      margin: 15px 0 5px 0;
       display: flex;
       flex-direction: column;
     }

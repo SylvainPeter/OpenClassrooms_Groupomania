@@ -1,14 +1,12 @@
 <template>
-  <div class="form-content">
+  <div class="form-container">
     <form class="form" action="/ma-page-de-traitement" method="post">
       <div>
-        <!-- ? -->
-        <label htmlFor="mail">Adresse email</label>
+        <label for="mail">Adresse email</label>
         <input type="email" id="email" name="user_mail" placeholder="Entrez votre adresse email">
       </div>
       <div>
-        <!-- ? -->
-        <label htmlFor="password">Mot de passe</label>
+        <label for="password">Mot de passe</label>
         <input type="password" id="password" name="user_password" placeholder="Entrez votre mot de passe">
       </div>
       <div class="error"></div> <!-- Message d'erreur -->
@@ -24,7 +22,7 @@
 
 
 <style lang='scss' scoped>
-.form-content {
+.form-container {
   background-color: white;
   border-radius: 5px;
   padding: 20px;
@@ -54,7 +52,7 @@
     label {
       display: flex;
       flex-direction: column;
-      margin-bottom: 8px;
+      margin: 15px 0 5px 0;
       font-weight: 700;
       color: $color-primary;
     }
