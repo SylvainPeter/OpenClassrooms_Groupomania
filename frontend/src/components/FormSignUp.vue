@@ -3,18 +3,18 @@
     <form class="form" action="/ma-page-de-traitement" method="post">
       <div>
         <label for="pseudo">Pseudo </label>
-        <input type="text" id="pseudo" name="user_pseudo" placeholder="Entrez votre pseudo">
+        <input type="text" id="pseudo" name="user_pseudo" placeholder="Entrez votre pseudo" v-model="pseudo">
       </div>
       <div>
         <label for="mail">Adresse email</label>
-        <input type="email" id="email" name="user_mail" placeholder="Entrez votre adresse email">
+        <input type="email" id="email" name="user_mail" placeholder="Entrez votre adresse email" v-model="email">
       </div>
       <div>
         <label for="password">Mot de passe</label>
-        <input type="password" id="password" name="user_password" placeholder="Entrez votre mot de passe">
+        <input type="password" id="password" name="user_password" placeholder="Entrez votre mot de passe" v-model="password">
       </div>
-      <div class="error"></div> <!-- Message d'erreur -->
-      <button type="submit" class="form__button">Créer un compte</button>
+      <div v-show="error" class="error">{{ errorMsg }}</div>
+      <button type="submit" class="form__button" @click.prevent="userSignUp()">Créer un compte</button>
       <br>
       <p>Déjà inscrit ?</p>
       <button class="form__button--login">
@@ -24,7 +24,49 @@
   </div>
 </template>
   
+<script>
+  // Axios pour l'API
+  import Axios from 'axios';
   
+  export default {
+    data() {
+      return {
+        // Pour récupérer la valeur des inputs
+        pseudo: '',
+        email: '',
+        password: '',
+        error: false,
+        errorMsg: '',
+      };
+    },
+    methods: {
+      userSignUp() {
+        if (this.pseudo === '' || this.email === '' || this.password === '') {
+          this.error = true; // Si l'un des champs est vide : erreur
+          this.errorMsg = 'Merci de renseigner tous les champs.';
+        } else {
+          this.error = false;
+          this.errorMsg = '';
+          
+          Axios
+            .post('http://localhost:3000/api/auth/signup', {
+              pseudo: this.pseudo,
+              email: this.email,
+              password: this.password,
+            }) // header entre l'accolade et la parenthèse
+            .then((response) => {
+              console.log(response.data.message);
+              this.$router.push('/');
+            }).catch((err) => {
+              // eslint-disable-next-line no-console
+              console.log(err.response.data.message);
+            });
+        }
+      },
+    },
+  };
+  </script>
+
 <style lang='scss' scoped>
 .form-content {
   background-color: white;
