@@ -9,8 +9,7 @@ passwordSchema
 .is().max(25)                                   // 25 caractères maximum
 .has().uppercase(1)                             // minimum 1 majuscule
 .has().lowercase(1)                             // minimum 1 minuscule
-.has().digits(2)                                // minimum 2 chiffres
-.has().not().spaces()                           // espaces interdits
+.has().digits(1)                                // minimum 1 chiffre
 .is().not().oneOf(['Passw0rd', 'Password123']); // Blacklist de mot de passe
 
 module.exports = (req, res, next) => {

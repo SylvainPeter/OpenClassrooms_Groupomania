@@ -3,20 +3,21 @@
     <form class="form" method="post">
       <div>
         <label for="pseudo">Pseudo </label>
-        <input type="text" id="pseudo" name="user_pseudo" placeholder="Entrez votre pseudo" v-model="pseudo"
-          @input="checkPseudoField()" required>
+        <input type="text" id="pseudo" name="user_pseudo" placeholder="Ex: jeandupont (caractères spéciaux interdits)"
+          v-model="pseudo" @input="checkPseudoField()" required>
       </div>
       <div v-show="checkPseudo" class="alert">{{ checkPseudoMsg }}</div>
       <div>
         <label for="mail">Adresse email</label>
-        <input type="email" id="email" name="user_mail" placeholder="Entrez votre adresse email" v-model="email"
+        <input type="email" id="email" name="user_mail" placeholder="Ex: jean.dupont@gmail.com" v-model="email"
           @input="checkEmailField()" required>
       </div>
       <div v-show="checkEmail" class="alert">{{ checkEmailMsg }}</div>
       <div>
         <label for="password">Mot de passe</label>
-        <input type="password" id="password" name="user_password" placeholder="Entrez votre mot de passe"
-          v-model="password" @input="checkPasswordField()" required>
+        <input type="password" id="password" name="user_password"
+          placeholder="Contient au moins 1 Maj, 1 minuscule et 1 chiffre" v-model="password"
+          @input="checkPasswordField()" required>
       </div>
       <div v-show="checkPassword" class="alert">{{ checkPasswordMsg }}</div>
       <button type="submit" class="form__button" @click.prevent="userSignUp()">Créer un compte</button>
@@ -49,14 +50,14 @@ export default {
     // TESTE LE CHAMP PSEUDO
     checkPseudoField() {
       const pseudoField = document.querySelector("#pseudo");
-      const pseudoRegex = new RegExp("^[0-9a-zA-ZÀ-ÿ-09]*$");
+      const pseudoRegex = new RegExp("^[0-9a-zA-ZÀ-ÿ]*$");
 
       if (pseudoRegex.test(pseudoField.value)) { // si le champ est bien rempli, on n'affiche rien
         this.checkPseudo = false;
       }
       else { // si le champ n'est pas bien rempli, on affiche un message d'erreur
         this.checkPseudo = true;
-        this.checkPseudoMsg = "Veuillez entrer le pseudo au format correct !";
+        this.checkPseudoMsg = "Format incorrect !";
       }
     },
     // TESTE LE CHAMP EMAIL
@@ -72,13 +73,13 @@ export default {
       }
       else { // si le champ n'est pas bien rempli, on affiche un message d'erreur
         this.checkEmail = true;
-        this.checkEmailMsg = "Veuillez entrer l'email au format correct !";
+        this.checkEmailMsg = "Format incorrect !";
       }
     },
     // TESTE LE CHAMP PASSWORD
     checkPasswordField() {
       const passwordField = document.querySelector("#password");
-      const passwordRegex = new RegExp("^[0-9a-zA-ZÀ-ÿ-09]*$"); // REGEX A MODIFIER
+      const passwordRegex = new RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{4,25}$");
 
       if (passwordField.value == '') { // si le champ est vide ou bien rempli, on n'affiche rien
         this.checkPassword = false;
@@ -88,16 +89,16 @@ export default {
       }
       else { // si le champ n'est pas bien rempli, on affiche un message d'erreur
         this.checkPassword = true;
-        this.checkPasswordMsg = "Veuillez entrer le mot de passe au format correct !";
+        this.checkPasswordMsg = "Format incorrect !";
       }
     },
-    // ENVOI DU FORMULAIRE
+    // ENVOI DU FORMULAIRE POUR CREE UN NOUVEL UTILISATEUR
     userSignUp() {
       // si l'un des champs est vide, on affiche le message d'erreur
       if (this.pseudo === '' || this.email === '' || this.password === '') {
         alert("Merci de compléter tous les champs !");
         // sinon, on n'affiche rien
-      } else if(this.checkPseudo === true || this.checkEmail === true || this.checkPassword === true) {
+      } else if (this.checkPseudo === true || this.checkEmail === true || this.checkPassword === true) {
         alert("Merci d'entrer les données au format correct !");
       }
       else {
@@ -108,10 +109,12 @@ export default {
           email: this.email,
           password: this.password,
         })
+          // en cas de succès
           .then((res) => {
             console.log(res.data.message);
             alert("Nouvel utilisateur créé avec succès !")
             this.$router.push('/'); // on redirige vers la page de Login
+            // en cas d'erreur
           }).catch((err) => {
             // eslint-disable-next-line no-console
             console.log(err.response.data.message);

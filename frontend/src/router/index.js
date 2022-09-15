@@ -11,7 +11,7 @@ import HomePage from '../views/HomePage.vue'
   ***************************************************************************/
 
 // PROTEGE LES ROUTES
-function guardMyroute(to, from, next) {
+function tokenAccess(to, from, next) {
   const user = JSON.parse(localStorage.getItem('userData'));
   if (user.token) // si l'utilisateur dispose d'un token
   {
@@ -22,6 +22,13 @@ function guardMyroute(to, from, next) {
   }
 }
 
+// PROTEGE LES ROUTES
+function clearLocalStorage(to, from, next) {
+  localStorage.clear();
+  next();
+}
+
+
 /**************************************************************************
   * ROUTES
   ***************************************************************************/
@@ -30,17 +37,19 @@ const routes = [
   {
     path: '/',
     name: 'LogIn',
+    beforeEnter: clearLocalStorage,
     component: LogIn
   },
   {
     path: '/signup',
     name: 'SignUp',
+    beforeEnter: clearLocalStorage,
     component: SignUp,
   },
   {
     path: '/home',
     name: 'Accueil',
-    beforeEnter: guardMyroute,
+    beforeEnter: tokenAccess,
     component: HomePage,
   }
 ]
