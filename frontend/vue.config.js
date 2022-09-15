@@ -8,12 +8,12 @@ const { defineConfig } = require('@vue/cli-service')
   * EXPORTS
   ***************************************************************************/
 
-// Configuration
+// CONFIGURATION
 module.exports = defineConfig({
   transpileDependencies: true
 })
 
-// Variables globales
+// GLOBAL VARIABLES
 module.exports = {
   css: {
     loaderOptions: {

@@ -6,25 +6,23 @@
         <input type="text" id="pseudo" name="user_pseudo" placeholder="Entrez votre pseudo" v-model="pseudo"
           @input="checkPseudoField()" required>
       </div>
-      <div v-show="checkPseudo">{{ checkPseudoMsg }}</div>
+      <div v-show="checkPseudo" class="alert">{{ checkPseudoMsg }}</div>
       <div>
         <label for="mail">Adresse email</label>
         <input type="email" id="email" name="user_mail" placeholder="Entrez votre adresse email" v-model="email"
           @input="checkEmailField()" required>
       </div>
-      <div v-show="checkEmail">{{ checkEmailMsg }}</div>
+      <div v-show="checkEmail" class="alert">{{ checkEmailMsg }}</div>
       <div>
         <label for="password">Mot de passe</label>
         <input type="password" id="password" name="user_password" placeholder="Entrez votre mot de passe"
           v-model="password" @input="checkPasswordField()" required>
       </div>
-      <div v-show="checkPassword">{{ checkPasswordMsg }}</div>
+      <div v-show="checkPassword" class="alert">{{ checkPasswordMsg }}</div>
       <button type="submit" class="form__button" @click.prevent="userSignUp()">Créer un compte</button>
       <br>
       <p>Déjà inscrit ?</p>
-      <button class="form__button--login">
-        <router-link id="login-link" to="/">Se connecter</router-link>
-      </button>
+      <button class="form__button--login" @click="$router.push('/')">Se connecter</button>
     </form>
   </div>
 </template>
@@ -58,7 +56,7 @@ export default {
       }
       else { // si le champ n'est pas bien rempli, on affiche un message d'erreur
         this.checkPseudo = true;
-        this.checkPseudoMsg = "Veuillez entrer le pseudo au format correct";
+        this.checkPseudoMsg = "Veuillez entrer le pseudo au format correct !";
       }
     },
     // TESTE LE CHAMP EMAIL
@@ -74,7 +72,7 @@ export default {
       }
       else { // si le champ n'est pas bien rempli, on affiche un message d'erreur
         this.checkEmail = true;
-        this.checkEmailMsg = "Veuillez entrer l'email au format correct";
+        this.checkEmailMsg = "Veuillez entrer l'email au format correct !";
       }
     },
     // TESTE LE CHAMP PASSWORD
@@ -90,19 +88,22 @@ export default {
       }
       else { // si le champ n'est pas bien rempli, on affiche un message d'erreur
         this.checkPassword = true;
-        this.checkPasswordMsg = "Veuillez entrer le mot de passe au format correct";
+        this.checkPasswordMsg = "Veuillez entrer le mot de passe au format correct !";
       }
     },
     // ENVOI DU FORMULAIRE
     userSignUp() {
       // si l'un des champs est vide, on affiche le message d'erreur
       if (this.pseudo === '' || this.email === '' || this.password === '') {
-        alert('Merci de compléter tous les champs !');
+        alert("Merci de compléter tous les champs !");
         // sinon, on n'affiche rien
-      } else {
+      } else if(this.checkPseudo === true || this.checkEmail === true || this.checkPassword === true) {
+        alert("Merci d'entrer les données au format correct !");
+      }
+      else {
         // si tous les champs sont bien complétés, on envoie une requête Axios
         Axios.post('http://localhost:3000/api/auth/signup', {
-          // on récupère et poste les entrées du formulaire
+          // on récupère et on envoie les données du formulaire
           pseudo: this.pseudo,
           email: this.email,
           password: this.password,
@@ -120,40 +121,6 @@ export default {
   },
 };
 
-/*
-import { ref } from 'vue';
-import Axios from 'axios';
-
-const pseudo = ref('');
-const email = ref('');
-const password = ref('');
-const error = ref(false);
-const errorMsg = ref('');
-
-function userSignUp() {
-if (this.pseudo === '' || this.email === '' || this.password === '') {
-  this.error = true; // Si l'un des champs est vide : erreur
-  this.errorMsg = 'Merci de renseigner tous les champs.';
-} else {
-  this.error = false;
-  this.errorMsg = '';
-
-  Axios
-    .post('http://localhost:3000/api/auth/signup', {
-      pseudo: this.pseudo,
-      email: this.email,
-      password: this.password,
-    }) // header entre l'accolade et la parenthèse
-    .then((response) => {
-      console.log(response.data.message);
-      this.$router.push('/');
-    }).catch((err) => {
-      // eslint-disable-next-line no-console
-      console.log(err.response.data.message);
-    });
-}
-}
-*/
 </script>
 
 <style lang='scss' scoped>
@@ -217,14 +184,15 @@ if (this.pseudo === '' || this.email === '' || this.password === '') {
   }
 
   &__button--login {
-    background: $color-tertiary;
-    border: $color-primary;
-    border-radius: 5px;
-    padding: 10px;
     margin: 0 50px 0 50px;
-    text-decoration: none;
+    padding: 10px;
     font-size: 1em;
     font-weight: 700;
+    text-decoration: none;
+    border-radius: 5px;
+    border: $color-primary;
+    background: $color-tertiary;
+    color: $background-color;
 
     &:hover {
       cursor: pointer;
@@ -236,6 +204,10 @@ if (this.pseudo === '' || this.email === '' || this.password === '') {
 #login-link {
   text-decoration: none;
   color: $background-color;
+}
+
+.alert {
+  color: $alert-color;
 }
 </style>
   

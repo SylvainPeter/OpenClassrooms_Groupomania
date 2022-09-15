@@ -14,9 +14,7 @@
       <div v-show="error" class="error">{{ errorMsg }}</div>
       <br>
       <p>Pas encore inscrit ?</p>
-      <button class="form__button--signup">
-        <router-link id="signup-link" to="/signup">Créer un compte</router-link>
-      </button>
+      <button class="form__button--signup" @click="$router.push('/signup')">Créer un compte</button>
     </form>
   </div>
 </template>
@@ -137,14 +135,15 @@
   }
 
   &__button--signup {
-    background: $color-tertiary;
-    border: $color-primary;
-    border-radius: 5px;
-    padding: 10px;
     margin: 0 50px 0 50px;
-    text-decoration: none;
+    padding: 10px;
     font-size: 1em;
     font-weight: 700;
+    text-decoration: none;
+    border-radius: 5px;
+    border: $color-primary;
+    background: $color-tertiary;
+    color: $background-color;
 
     &:hover {
       cursor: pointer;
@@ -153,8 +152,4 @@
   }
 }
 
-#signup-link {
-  text-decoration: none;
-  color: $background-color;
-}
 </style>

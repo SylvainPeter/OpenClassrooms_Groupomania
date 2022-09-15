@@ -14,3 +14,8 @@ RANDOM_SECRET_TOKEN = votre clef de hashage
 -> node server  
 
 
+A partir du dossier "frontend" :  
+
+* Exécutez sur le terminal :  
+-> npm install  
+-> npm run serve  
