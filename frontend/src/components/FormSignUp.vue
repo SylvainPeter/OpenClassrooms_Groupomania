@@ -3,18 +3,22 @@
     <form class="form" method="post">
       <div>
         <label for="pseudo">Pseudo </label>
-        <input type="text" id="pseudo" name="user_pseudo" placeholder="Entrez votre pseudo" v-model="pseudo">
+        <input type="text" id="pseudo" name="user_pseudo" placeholder="Entrez votre pseudo" v-model="pseudo"
+          @input="checkPseudoField()" required>
       </div>
+      <div v-show="checkPseudo">{{ checkPseudoMsg }}</div>
       <div>
         <label for="mail">Adresse email</label>
-        <input type="email" id="email" name="user_mail" placeholder="Entrez votre adresse email" v-model="email">
+        <input type="email" id="email" name="user_mail" placeholder="Entrez votre adresse email" v-model="email"
+          @input="checkEmailField()" required>
       </div>
+      <div v-show="checkEmail">{{ checkEmailMsg }}</div>
       <div>
         <label for="password">Mot de passe</label>
         <input type="password" id="password" name="user_password" placeholder="Entrez votre mot de passe"
-          v-model="password">
+          v-model="password" @input="checkPasswordField()" required>
       </div>
-      <div v-show="error" class="error">{{ errorMsg }}</div>
+      <div v-show="checkPassword">{{ checkPasswordMsg }}</div>
       <button type="submit" class="form__button" @click.prevent="userSignUp()">Créer un compte</button>
       <br>
       <p>Déjà inscrit ?</p>
@@ -35,31 +39,78 @@ export default {
       pseudo: '',
       email: '',
       password: '',
-      error: false,
-      errorMsg: '',
+      checkPseudo: false,
+      checkPseudoMsg: '',
+      checkEmail: false,
+      checkEmailMsg: '',
+      checkPassword: false,
+      checkPasswordMsg: '',
     };
   },
   methods: {
+    // TESTE LE CHAMP PSEUDO
+    checkPseudoField() {
+      const pseudoField = document.querySelector("#pseudo");
+      const pseudoRegex = new RegExp("^[0-9a-zA-ZÀ-ÿ-09]*$");
+
+      if (pseudoRegex.test(pseudoField.value)) { // si le champ est bien rempli, on n'affiche rien
+        this.checkPseudo = false;
+      }
+      else { // si le champ n'est pas bien rempli, on affiche un message d'erreur
+        this.checkPseudo = true;
+        this.checkPseudoMsg = "Veuillez entrer le pseudo au format correct";
+      }
+    },
+    // TESTE LE CHAMP EMAIL
+    checkEmailField() {
+      const emailField = document.querySelector("#email");
+      const emailRegex = new RegExp("^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z]{2,4})+$");
+
+      if (emailField.value == '') { // si le champ est vide ou bien rempli, on n'affiche rien
+        this.checkEmail = false;
+      }
+      else if (emailRegex.test(emailField.value)) {
+        this.checkEmail = false;
+      }
+      else { // si le champ n'est pas bien rempli, on affiche un message d'erreur
+        this.checkEmail = true;
+        this.checkEmailMsg = "Veuillez entrer l'email au format correct";
+      }
+    },
+    // TESTE LE CHAMP PASSWORD
+    checkPasswordField() {
+      const passwordField = document.querySelector("#password");
+      const passwordRegex = new RegExp("^[0-9a-zA-ZÀ-ÿ-09]*$"); // REGEX A MODIFIER
+
+      if (passwordField.value == '') { // si le champ est vide ou bien rempli, on n'affiche rien
+        this.checkPassword = false;
+      }
+      else if (passwordRegex.test(passwordField.value)) {
+        this.checkPassword = false;
+      }
+      else { // si le champ n'est pas bien rempli, on affiche un message d'erreur
+        this.checkPassword = true;
+        this.checkPasswordMsg = "Veuillez entrer le mot de passe au format correct";
+      }
+    },
+    // ENVOI DU FORMULAIRE
     userSignUp() {
       // si l'un des champs est vide, on affiche le message d'erreur
       if (this.pseudo === '' || this.email === '' || this.password === '') {
-        this.error = true;
-        this.errorMsg = 'Merci de compléter tous les champs !';
+        alert('Merci de compléter tous les champs !');
         // sinon, on n'affiche rien
       } else {
-        this.error = false;
-        this.errorMsg = '';
-
-        Axios
-          .post('http://localhost:3000/api/auth/signup', {
-            // récupère et poste les entrées du formulaire
-            pseudo: this.pseudo,
-            email: this.email,
-            password: this.password,
-          })
+        // si tous les champs sont bien complétés, on envoie une requête Axios
+        Axios.post('http://localhost:3000/api/auth/signup', {
+          // on récupère et poste les entrées du formulaire
+          pseudo: this.pseudo,
+          email: this.email,
+          password: this.password,
+        })
           .then((res) => {
             console.log(res.data.message);
-            this.$router.push('/'); // redirige vers la page de Login
+            alert("Nouvel utilisateur créé avec succès !")
+            this.$router.push('/'); // on redirige vers la page de Login
           }).catch((err) => {
             // eslint-disable-next-line no-console
             console.log(err.response.data.message);
@@ -107,7 +158,7 @@ if (this.pseudo === '' || this.email === '' || this.password === '') {
 
 <style lang='scss' scoped>
 .form-content {
-  background-color: white;
+  background-color: $background-color;
   border-radius: 5px;
   padding: 20px;
   margin: 0 30px;
@@ -125,8 +176,8 @@ if (this.pseudo === '' || this.email === '' || this.password === '') {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: #FFFFFF;
-  border: 1px solid #FFFFFF;
+  background: $background-color;
+  border: 1px solid $background-color;
   border-radius: 10px;
 
   div {
@@ -157,7 +208,7 @@ if (this.pseudo === '' || this.email === '' || this.password === '') {
     text-decoration: none;
     font-size: 1.4em;
     font-weight: 700;
-    color: #FFFFFF;
+    color: $background-color;
   }
 
   &__button:hover {
@@ -184,7 +235,7 @@ if (this.pseudo === '' || this.email === '' || this.password === '') {
 
 #login-link {
   text-decoration: none;
-  color: #FFFFFF;
+  color: $background-color;
 }
 </style>
   

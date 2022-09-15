@@ -78,7 +78,7 @@
 
 <style lang='scss' scoped>
 .form-container {
-  background-color: white;
+  background-color: $background-color;
   border-radius: 5px;
   padding: 20px;
   margin: 0 30px;
@@ -96,8 +96,8 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: #FFFFFF;
-  border: 1px solid #FFFFFF;
+  background: $background-color;
+  border: 1px solid $background-color;
   border-radius: 10px;
 
   div {
@@ -128,7 +128,7 @@
     text-decoration: none;
     font-size: 1.4em;
     font-weight: 700;
-    color: #FFFFFF;
+    color: $background-color;
   }
 
   &__button:hover {
@@ -155,6 +155,6 @@
 
 #signup-link {
   text-decoration: none;
-  color: #FFFFFF;
+  color: $background-color;
 }
 </style>

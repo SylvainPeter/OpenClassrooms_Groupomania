@@ -48,13 +48,13 @@
       width: 50%;
     }
     h3{
-      color: white;
+      color: $background-color;
     }
     button{
-      background-color: white;
+      background-color: $background-color;
       font-weight: 800;
       border: white;
-      color: #FD2D01;
+      color: $color-primary;
       border-radius: 5px;
       height: 30px;
       width: 100px;
