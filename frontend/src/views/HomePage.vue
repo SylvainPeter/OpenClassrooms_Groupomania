@@ -1,65 +1,43 @@
 <template>
-    <div>
-      <home-header></home-header>
-      <div class="header">
-        <div class="headerbis">
-        <h3>Dernières publications</h3>
-          <router-link to="/publish">
-            <button>+ Publier</button>
-          </router-link>
-        </div>
-      </div>
-    <!-- Posts -->
+  <div>
+    <home-header></home-header>
+    <div class="header">
+      <input type="text" placeholder="Que voulez-vous dire ?" @click="$router.push('/publish')">
     </div>
-  </template>
+    <!-- Posts -->
+  </div>
+</template>
   
-  <script>
-  import HomeHeader from '../components/HomeHeader.vue';
-  
-  export default {
-    components: {
-      'home-header': HomeHeader,
-    }
-  };
-  </script>
-  
-  <style lang="scss" scoped>
- 
-  .header{
-    @media screen and (min-width: 1025px) {
-      justify-content: center;
-      display: flex;
-    }
-    @media screen and (min-width: 768px) and (max-width: 1024px){
-      justify-content: center;
-      display: flex;
-    }
+<script>
+import HomeHeader from '../components/HomeHeader.vue';
+
+export default {
+  components: {
+    'home-header': HomeHeader,
   }
+};
+</script>
   
-  .headerbis{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 20px 10px;
-    @media screen and (min-width: 1025px) {
-      width: 50%;
-    }
-    @media screen and (min-width: 768px) and (max-width: 1024px){
-      width: 50%;
-    }
-    h3{
-      color: $background-color;
-    }
-    button{
-      background-color: $background-color;
-      font-weight: 800;
-      border: white;
-      color: $color-primary;
-      border-radius: 5px;
-      height: 30px;
-      width: 100px;
-      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    }
+<style lang="scss" scoped>
+.header {
+  display: flex;
+  justify-content: center;
+  margin: 20px 10px;
+}
+
+input {
+  width: 300px;
+  padding: 15px;
+  font-size: 1em;
+  border-radius: 50px;
+  border: white;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  background-color: $home-background-color;
+  color: $color-primary;
+
+  &:hover {
+    background-color: $home-background-color--darken;
   }
-  </style>
+}
+</style>
   

@@ -13,9 +13,11 @@ $base-font-weight: 400;
   ***************************************************************************/
 
 $color-primary : #FD2D01;
-$color-primary--darken : darken(#FD2D01, 4%);
+$color-primary--darken : darken($color-primary, 4%);
 $color-secondary : #FFD7D7;
 $color-tertiary : #4E5166;
-$color-tertiary--darken : darken(#4E5166, 4%);
+$color-tertiary--darken : darken($color-tertiary, 4%);
 $alert-color: red;
 $background-color: #FFFFFF;
+$home-background-color: #F5F5F5;
+$home-background-color--darken: darken($home-background-color, 4%);

@@ -54,7 +54,7 @@ header {
 
     /* Largeur de la zone header */
     @media screen and (min-width: 1025px) {
-        width: 50%;
+        width: 90%;
     }
 
     @media screen and (min-width: 768px) and (max-width: 1024px) {

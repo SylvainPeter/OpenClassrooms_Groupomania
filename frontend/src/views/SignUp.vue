@@ -24,13 +24,13 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-  @media screen and (min-width: 768px) {
+  @media screen and (min-width: 768px) { // Laptop
     display: flex;
     flex-direction: row;
     justify-content: space-around;
   }
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 768px) { // Mobile et tablette
     display: flex;
     justify-content: center;
     align-items: center;
@@ -72,11 +72,11 @@ h1 {
 }
 
 #alt-logo {
-  @media screen and (min-width: 769px) {
+  @media screen and (min-width: 769px) { // Laptop
     display: none;
   }
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 768px) { // Mobile et tablette
     width: 12em;
     opacity: 0.8;
   }
