@@ -10,7 +10,7 @@ import HomePage from '../views/HomePage.vue'
   * FUNCTION
   ***************************************************************************/
 
-// PROTEGE LES ROUTES
+// AUTHENTIFICATION
 function tokenAccess(to, from, next) {
   const user = JSON.parse(localStorage.getItem('userData'));
   if (user.token) // si l'utilisateur dispose d'un token
@@ -22,7 +22,7 @@ function tokenAccess(to, from, next) {
   }
 }
 
-// PROTEGE LES ROUTES
+// VIDE LE LOCAL STORAGE
 function clearLocalStorage(to, from, next) {
   localStorage.clear();
   next();
@@ -49,7 +49,7 @@ const routes = [
   {
     path: '/home',
     name: 'Accueil',
-    beforeEnter: tokenAccess,
+    beforeEnter: tokenAccess, // route interdite si pas de token
     component: HomePage,
   }
 ]

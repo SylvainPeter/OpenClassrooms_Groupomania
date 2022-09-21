@@ -5,14 +5,14 @@
         <label for="mail">Adresse email</label>
         <input type="email" id="email" name="user_mail" placeholder="Entrez votre adresse email" v-model="email"
           @input="checkEmailField()" required>
+        <div v-show="checkEmail" class="alert">{{ checkEmailMsg }}</div>
       </div>
-      <div v-show="checkEmail" class="alert">{{ checkEmailMsg }}</div>
       <div>
         <label for="password">Mot de passe</label>
         <input type="password" id="password" name="user_password" placeholder="Entrez votre mot de passe"
           v-model="password" @input="checkPasswordField()" required>
+        <div v-show="checkPassword" class="alert">{{ checkPasswordMsg }}</div>
       </div>
-      <div v-show="checkPassword" class="alert">{{ checkPasswordMsg }}</div>
       <button type="submit" class="form__button" @click.prevent="userLogIn()">Se connecter</button>
       <br>
       <p>Pas encore inscrit ?</p>

@@ -5,21 +5,22 @@
         <label for="pseudo">Pseudo </label>
         <input type="text" id="pseudo" name="user_pseudo" placeholder="Ex: jeandupont (caractères spéciaux interdits)"
           v-model="pseudo" @input="checkPseudoField()" required>
+        <div v-show="checkPseudo" class="alert">{{ checkPseudoMsg }}</div>
       </div>
-      <div v-show="checkPseudo" class="alert">{{ checkPseudoMsg }}</div>
+
       <div>
         <label for="mail">Adresse email</label>
         <input type="email" id="email" name="user_mail" placeholder="Ex: jean.dupont@gmail.com" v-model="email"
           @input="checkEmailField()" required>
+        <div v-show="checkEmail" class="alert">{{ checkEmailMsg }}</div>
       </div>
-      <div v-show="checkEmail" class="alert">{{ checkEmailMsg }}</div>
       <div>
         <label for="password">Mot de passe</label>
         <input type="password" id="password" name="user_password"
           placeholder="Contient au moins 1 Maj, 1 minuscule et 1 chiffre" v-model="password"
           @input="checkPasswordField()" required>
+        <div v-show="checkPassword" class="alert">{{ checkPasswordMsg }}</div>
       </div>
-      <div v-show="checkPassword" class="alert">{{ checkPasswordMsg }}</div>
       <button type="submit" class="form__button" @click.prevent="userSignUp()">Créer un compte</button>
       <br>
       <p>Déjà inscrit ?</p>
@@ -149,6 +150,7 @@ export default {
   background: $background-color;
   border: 1px solid $background-color;
   border-radius: 10px;
+
 
   div {
     display: flex;
