@@ -17,9 +17,6 @@ function tokenAccess(to, from, next) {
   {
     next(); // alors seulement on autorise la route
   }
-  else {
-    next('/');
-  }
 }
 
 // VIDE LE LOCAL STORAGE

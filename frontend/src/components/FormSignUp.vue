@@ -212,7 +212,8 @@ export default {
 }
 
 .alert {
-  color: $alert-color;
+  color: $background-color;
+  background-color: $alert-color;
 }
 </style>
   

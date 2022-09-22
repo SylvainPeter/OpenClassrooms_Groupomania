@@ -12,37 +12,34 @@
     </div>
 </template>
     
-<script>
+<script setup>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
-export default {
+let pseudo = ref('');
+const router = useRouter();
 
-    data() {
-        return {
-            pseudo: '',
-        }
-    },
-    methods: {
-        Logout() {
-            localStorage.clear();
-            this.$router.push('/');
-        },
-        getPseudo() { // On récupère le pseudo depuis le localStorage
-            const user = JSON.parse(localStorage.getItem('userData'));
-            this.pseudo = user.pseudo;
-        }
-    },
-    mounted() {
-        this.getPseudo();
-    }
-};
+
+function Logout() {
+    localStorage.clear();
+    router.push('/');
+}
+
+function getPseudo() { // On récupère le pseudo depuis le localStorage
+    const user = JSON.parse(localStorage.getItem('userData'));
+    pseudo = user.pseudo;
+}
+
+getPseudo();
+
 </script>
     
 <style lang="scss" scoped>
 header {
     display: flex;
     justify-content: center;
-    border-radius: 0px 0px 10px 10px;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    //    border-radius: 0px 0px 10px 10px;
+    //    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     /* Ajouter media queries */
 }
 

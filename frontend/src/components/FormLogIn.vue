@@ -92,7 +92,6 @@ export default {
                 pseudo: res.data.pseudo,
                 token: res.data.token,
                 userId: res.data.userId,
-                isAdmin: res.data.isAdmin
               };
               // on stocke les infos de l'utilisateur dans le localStorage
               localStorage.setItem('userData', JSON.stringify(userInfos));
@@ -102,6 +101,7 @@ export default {
           // si la connexion est refusée
           .catch((err) => {
             console.log(err);
+            alert("Mauvais identifiants!");
           });
       }
     },
@@ -188,6 +188,7 @@ export default {
 }
 
 .alert {
-  color: $alert-color;
+  color: $background-color;
+  background-color: $alert-color;
 }
 </style>
