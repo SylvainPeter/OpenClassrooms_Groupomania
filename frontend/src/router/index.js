@@ -5,6 +5,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import LogIn from '../views/LogIn.vue'
 import SignUp from '../views/SignUp.vue'
 import HomePage from '../views/HomePage.vue'
+import PublishPost from '../views/PublishPost.vue'
 
 /**************************************************************************
   * FUNCTION
@@ -35,7 +36,7 @@ const routes = [
     path: '/',
     name: 'LogIn',
     beforeEnter: clearLocalStorage,
-    component: LogIn
+    component: LogIn,
   },
   {
     path: '/signup',
@@ -45,9 +46,14 @@ const routes = [
   },
   {
     path: '/home',
-    name: 'Accueil',
+    name: 'Home',
     beforeEnter: tokenAccess, // route interdite si pas de token
     component: HomePage,
+  },
+  {
+    path: '/publish',
+    name: 'Publish',
+    component: PublishPost,
   }
 ]
 

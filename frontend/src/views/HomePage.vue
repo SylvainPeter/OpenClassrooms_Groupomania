@@ -5,15 +5,18 @@
       <input type="text" placeholder="Que voulez-vous dire ?" @click="$router.push('/publish')">
     </div>
     <!-- Posts -->
+    <posts-list></posts-list>
   </div>
 </template>
   
 <script>
 import HomeHeader from '../components/HomeHeader.vue';
+import PostsList from '../components/PostsList.vue';
 
 export default {
   components: {
     'home-header': HomeHeader,
+    'posts-list': PostsList,
   }
 };
 </script>
