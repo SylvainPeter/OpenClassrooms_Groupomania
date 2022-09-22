@@ -43,7 +43,7 @@ export default {
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 96vh;
+  height: 100vh;
   background-image: url("../assets/startup.jpg");
   background-repeat: no-repeat;
   background-size: cover;

@@ -5,6 +5,10 @@
 </template>
 
 <style lang="scss">
+body {
+  margin: 0;
+}
+
 #app {
   font-family: $base-font-family;
   text-align: center;

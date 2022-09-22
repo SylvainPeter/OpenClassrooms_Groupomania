@@ -1,10 +1,9 @@
 <template>
-  <div>
+  <div class="container">
     <home-header></home-header>
     <div class="header">
       <input type="text" placeholder="Que voulez-vous dire ?" @click="$router.push('/publish')">
     </div>
-    <!-- Posts -->
     <posts-list></posts-list>
   </div>
 </template>
@@ -22,6 +21,10 @@ export default {
 </script>
   
 <style lang="scss" scoped>
+.container {
+  margin: 10px;
+}
+
 .header {
   display: flex;
   justify-content: center;
