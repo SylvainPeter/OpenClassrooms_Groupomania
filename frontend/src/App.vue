@@ -5,6 +5,9 @@
 </template>
 
 <style lang="scss">
+  // Icônes
+  @import "https://cdn.lineicons.com/3.0/lineicons.css";
+
 body {
   margin: 0;
 }

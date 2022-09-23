@@ -4,7 +4,7 @@
     <article class="post" v-for="post in posts" :key="post._id">
       <!-- Identité du user -->
       <div class="post__header">
-        <img src="../assets/user.png" class="icon">
+        <i class="lni lni-user icon"></i>
         <span class="post__pseudo">{{ post.userId }}</span>
       </div>
       <!-- Texte du post -->
@@ -13,20 +13,20 @@
       <img :src="post.imageUrl" alt='image du post' class="post__image" />
       <!-- Icones en bas du post -->
       <div class="post__footer">
-        <div class="post__footer--right-icons">
+        <div class="post__footer--right-block">
           <!-- Likes -->
-          <img src="../assets/thumb-up.png" class="icon">
+          <i class="lni lni-thumbs-up icon" title="Liker"></i>
           <span>{{post.likes}}</span>
           <!-- Dislikes -->
-          <img src="../assets/thumb-down.png" class="icon">
+          <i class="lni lni-thumbs-down icon" title="Disliker"></i>
           <span>{{post.dislikes}}</span>
         </div>
         <!-- S'affiche seulement si le user est authentifié ou s'il est admin -->
-        <div class="post__footer--left-icons" v-if="userId == post.userId || isAdmin">
+        <div class="post__footer--left-block" v-if="userId == post.userId || isAdmin">
           <!-- Editer le post -->
-          <img src="../assets/pen.png" class="icon">
+          <i class="lni lni-pencil-alt icon" title="Editer"></i>
           <!-- Supprimer le post -->
-          <img src="../assets/trash.png" class="icon">
+          <i class="lni lni-trash-can icon" title="Supprimer"></i>
         </div>
       </div>
     </article>
@@ -47,7 +47,6 @@ import Axios from 'axios';
 
 export default {
   name: 'PostsList',
-  // eslint-disable-next-line object-shorthand
   data: function () {
     return {
       userId: '',
@@ -88,9 +87,7 @@ export default {
     getAllPosts() {
       const user = JSON.parse(localStorage.getItem('userData'));
       const AccessToken = user.token;
-      // eslint-disable-next-line prefer-template
       const header = { headers: { Authorization: 'Bearer ' + AccessToken } };
-      // eslint-disable-next-line  prefer-template
       Axios
         .get('http://localhost:3000/api/posts/', header)
         .then((res) => {
@@ -194,6 +191,7 @@ export default {
   }
 
   @media screen and (max-width: 768px) {
+    // A MODIFIER !
     // Mobile et tablette
     display: flex;
     justify-content: center;
@@ -207,13 +205,13 @@ export default {
   border-radius: 10px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
+  // Laptop
   @media screen and (min-width: 768px) {
-    // Laptop
     width: 50%;
   }
 
+  // Mobile et tablette A MODIFIER !
   @media screen and (max-width: 768px) {
-    // Mobile et tablette
     width: 70%;
   }
 
@@ -240,13 +238,13 @@ export default {
     border-radius: 23px;
     object-fit: cover;
 
+    // Laptop
     @media screen and (min-width: 768px) {
-      // Laptop
       height: 350px;
     }
 
+    // Mobile et tablette A MODIFIER !
     @media screen and (max-width: 768px) {
-      // Mobile et tablette
       height: 250px;
     }
   }
@@ -257,12 +255,12 @@ export default {
     padding-bottom: 5px;
   }
 
-  &__footer--right-icons {
+  &__footer--right-block {
     display: flex;
     align-items: center;
   }
 
-  &__footer--left-icons {
+  &__footer--left-block {
     display: flex;
     align-items: baseline;
   }
@@ -270,7 +268,12 @@ export default {
 
 .icon {
   padding: 10px;
-  width: 25px;
+  width: 26px;
+  font-weight: 1000;
+
+  &:hover {
+    color: red;
+  }
 }
 </style>
   

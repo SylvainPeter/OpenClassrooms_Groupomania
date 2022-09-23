@@ -3,7 +3,7 @@
         <header>
             <div id="header-content">
                 <router-link to="/home">
-                    <img src="../assets/icon-left-font.png" id="logo" alt="Logo Groupomania">
+                    <img src="../assets/icon-left-font.png" id="logo" alt="Logo Groupomania" title="Accueil">
                 </router-link>
                 <p>Bonjour, {{ pseudo }} !</p>
                 <div id="logout" @click="Logout()">Déconnexion</div>
@@ -38,9 +38,6 @@ getPseudo();
 header {
     display: flex;
     justify-content: center;
-    //    border-radius: 0px 0px 10px 10px;
-    //    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    /* Ajouter media queries */
 }
 
 #header-content {
@@ -49,13 +46,14 @@ header {
     align-items: center;
     justify-content: space-between;
 
-    /* Largeur de la zone header */
-    @media screen and (min-width: 1025px) {
+    // Laptop
+    @media screen and (min-width: 768px) {
         width: 90%;
     }
 
-    @media screen and (min-width: 768px) and (max-width: 1024px) {
-        width: 50%;
+    // Mobile et tablette A MODIFIER
+    @media screen and (max-width: 768px) {
+        flex-direction: column;
     }
 }
 
