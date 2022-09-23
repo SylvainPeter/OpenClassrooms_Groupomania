@@ -1,26 +1,34 @@
 <template>
   <div class="container">
-    <article class="card" v-for="post in posts" :key="post._id">
-      <header class="card__header">
-        <p class="card__pseudo">{{ post.userId }}</p>
-      </header>
-      <p class="card__content" v-show="post.text">{{ post.text }}</p>
-      <img :src="post.imageUrl" alt='image publiée' class="card__image" />
-      <footer class="card__footer">
-        <div class="card__footer--right">
-          <button class="heart-button">
-            <span v-if="checkIfUsersLiked(post)" @click="likePost(post)" class="card__icon3">COEUR</span>
-          </button>
-          <span>{{post.likes}} likes</span>
+    <!-- Post -->
+    <article class="post" v-for="post in posts" :key="post._id">
+      <!-- Identité du user -->
+      <div class="post__header">
+        <img src="../assets/user.png" class="icon">
+        <span class="post__pseudo">{{ post.userId }}</span>
+      </div>
+      <!-- Texte du post -->
+      <p class="post__content" v-show="post.text">{{ post.text }}</p>
+      <!-- Image du post -->
+      <img :src="post.imageUrl" alt='image du post' class="post__image" />
+      <!-- Icones en bas du post -->
+      <div class="post__footer">
+        <div class="post__footer--right-icons">
+          <!-- Likes -->
+          <img src="../assets/thumb-up.png" class="icon">
+          <span>{{post.likes}}</span>
+          <!-- Dislikes -->
+          <img src="../assets/thumb-down.png" class="icon">
+          <span>{{post.dislikes}}</span>
         </div>
-        <!-- Si l'utilisateur est admin ou si le userId correspond à l'UserId
-          de la publication alors on affiche l'icone modifier -->
-        <div class="icons" v-if="userId == post.userId || isAdmin">
-          <span>PEN</span>
-          <!--     <router-link :to="{name:'EditPost', params: {id:post._id} }">PEN </router-link>-->
-          <span @click="deletePost(post)">POUBELLE</span>
+        <!-- S'affiche seulement si le user est authentifié ou s'il est admin -->
+        <div class="post__footer--left-icons" v-if="userId == post.userId || isAdmin">
+          <!-- Editer le post -->
+          <img src="../assets/pen.png" class="icon">
+          <!-- Supprimer le post -->
+          <img src="../assets/trash.png" class="icon">
         </div>
-      </footer>
+      </div>
     </article>
   </div>
 </template>
@@ -177,14 +185,16 @@ export default {
   
 <style lang="scss" scoped>
 .container {
-  @media screen and (min-width: 1025px) {
+  @media screen and (min-width: 768px) {
+    // Laptop
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
   }
 
-  @media screen and (min-width: 768px) and (max-width: 1024px) {
+  @media screen and (max-width: 768px) {
+    // Mobile et tablette
     display: flex;
     justify-content: center;
     align-items: center;
@@ -192,59 +202,52 @@ export default {
   }
 }
 
-.card {
-  background-color: white;
-  color: black;
-  border-radius: 10px;
-  font-family: Lato, sans-serif;
+.post {
   margin: 20px 10px;
+  border-radius: 10px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
-  @media screen and (min-width: 1025px) {
+  @media screen and (min-width: 768px) {
+    // Laptop
     width: 50%;
   }
 
-  @media screen and (min-width: 768px) and (max-width: 1024px) {
-    width: 50%;
+  @media screen and (max-width: 768px) {
+    // Mobile et tablette
+    width: 70%;
   }
 
   &__header {
     display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
+    justify-content: flex-start;
+    align-items: center;
   }
 
   &__pseudo {
-    display: flex;
-    align-items: center;
-    padding: 10px 10px 0 10px;
     font-weight: 600;
-    margin: 0;
   }
 
   &__content {
-    font-weight: 400;
-    color: black;
+    text-align: left;
     margin: 0;
     padding: 8px 10px;
-    display: flex;
-    text-align: left;
   }
 
   &__image {
-    padding: 10px;
-    object-fit: cover;
-    object-position: center;
-    width: 95%;
+    width: 90%;
     height: 200px;
-    border-radius: 30px;
+    padding: 10px;
+    border-radius: 23px;
+    object-fit: cover;
 
-    @media screen and (min-width: 1025px) {
+    @media screen and (min-width: 768px) {
+      // Laptop
       height: 350px;
     }
 
-    @media screen and (min-width: 768px) and (max-width: 1024px) {
-      height: 350px;
+    @media screen and (max-width: 768px) {
+      // Mobile et tablette
+      height: 250px;
     }
   }
 
@@ -254,63 +257,20 @@ export default {
     padding-bottom: 5px;
   }
 
-  &__footer--right {
+  &__footer--right-icons {
     display: flex;
     align-items: center;
   }
 
-  .icons {
+  &__footer--left-icons {
     display: flex;
-  }
-
-  .heart {
-    margin-bottom: 10px;
+    align-items: baseline;
   }
 }
 
-.link {
-  span {
-    display: none;
-  }
-}
-
-.card__icon0 {
-  margin-right: 5px;
-}
-
-.card__icon1 {
-  height: 20px;
-  padding: 10px 5px 0 10px;
-  color: black;
-}
-
-.card__icon2 {
-  height: 20px;
-  padding: 10px 10px 0 5px;
-  color: black;
-}
-
-.card__icon3 {
-  height: 20px;
+.icon {
   padding: 10px;
-  color: black;
-}
-
-.heart-button {
-  background-color: white;
-  border: white;
-  border-radius: 10px;
-}
-
-.heart-button:focus {
-  .card__icon3 {
-    color: #FD2D01;
-  }
-}
-
-.like__button {
-  display: flex;
-  align-items: center;
+  width: 25px;
 }
 </style>
   
