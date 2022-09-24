@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <!-- Post -->
+    <!-- Posts -->
     <article class="post" v-for="post in posts" :key="post._id">
       <!-- Identité du user -->
       <div class="post__header">
@@ -77,27 +77,6 @@ export default {
           this.user = JSON.stringify(res.data.userId);
         })
         .catch((err) => console.log(err));
-    },
-
-    // MODIFIER UN POST
-    editPublication(post) {
-      const user = JSON.parse(localStorage.getItem('userData'));
-      const token = user.token;
-      // eslint-disable-next-line prefer-template
-      const header = { headers: { Authorization: 'Bearer ' + token } };
-      Axios
-        // eslint-disable-next-line prefer-template
-        .get('http://localhost:3000/api/posts/' + post._id, header)
-        .then((res) => {
-          console.log('This is the res from get message/id');
-          console.log(res);
-          // eslint-disable-next-line  prefer-arrow-callback
-          this.$router.push({ name: 'EditPage' }); // Redirection vers la page d'Accueil
-        })
-        // eslint-disable-next-line  prefer-arrow-callback
-        .catch(function (err) {
-          console.log(err);
-        });
     },
 
     // SUPPRIMER UN POST

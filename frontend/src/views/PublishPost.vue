@@ -2,13 +2,13 @@
   <div class="content">
     <home-header></home-header>
     <div class="container">
-      <div class="edit__post">
-        <h1> Créer une publication</h1>
+      <div class="publish__post">
+        <h1>Créer une publication</h1>
         <!-- Zone texte -->
         <textarea type="title" id="title" name="title" placeholder="Quoi de neuf ?" v-model="text" rows="10"
           maxlength="1000" @input="check" />
         <!-- Bouton pour ajouter une image -->
-        <input type="file" id="file" name="image" @change="onFileSelected" />
+        <input type="file" id="add-file" name="image" @change="onFileSelected" />
       </div>
       <button id="form-validate-button" @click="createPost" type="submit" :disabled="isDisabled">Publier</button>
       <img class="image__preview" v-if="url" :src="url" />
@@ -107,7 +107,7 @@ h1 {
   font-size: large;
 }
 
-.edit__post {
+.publish__post {
   display: flex;
   flex-direction: column;
   margin: 20px 10px;
@@ -142,7 +142,7 @@ h1 {
   }
 }
 
-#file {
+#add-file {
   padding: 12px 0 12px 21px;
 }
 
