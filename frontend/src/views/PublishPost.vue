@@ -2,16 +2,16 @@
   <div class="content">
     <home-header></home-header>
     <div class="container">
-      <div class="edit-post">
+      <div class="edit__post">
         <h1> Créer une publication</h1>
         <!-- Zone texte -->
         <textarea type="title" id="title" name="title" placeholder="Quoi de neuf ?" v-model="text" rows="10"
           maxlength="1000" @input="check" />
         <!-- Bouton pour ajouter une image -->
-        <input type="file" id="file" name="image" @change="onFileSelected" accept="image/*" />
+        <input type="file" id="file" name="image" @change="onFileSelected" />
       </div>
       <button id="form-validate-button" @click="createPost" type="submit" :disabled="isDisabled">Publier</button>
-      <img class="image_preview" v-if="url" :src="url" />
+      <img class="image__preview" v-if="url" :src="url" />
     </div>
   </div>
 </template>
@@ -48,28 +48,25 @@ export default {
     // ENVOIE UN NOUVEAU POST
     createPost() {
       const user = JSON.parse(localStorage.getItem('userData'));
-      const myForm = new FormData();
-      const AccessToken = user.token;
-      // eslint-disable-next-line prefer-template
-      const header = { headers: { Authorization: 'Bearer ' + AccessToken } };
-      myForm.append('pseudo', user.pseudo);
-      myForm.append('userId', user.userId);
-      myForm.append('text', this.text);
-      myForm.append('image', this.selectedFile);
+      const token = user.token;
+      const header = { headers: { Authorization: 'Bearer ' + token } };
+      const newPostData = new FormData();
+      newPostData.append('pseudo', user.pseudo);
+      newPostData.append('userId', user.userId);
+      newPostData.append('text', this.text);
+      newPostData.append('image', this.selectedFile);
       // Envoie les données à l'API
       Axios
-        .post('http://localhost:3000/api/posts/', myForm, header)
+        .post('http://localhost:3000/api/posts/', newPostData, header)
         .then(() => {
-          // eslint-disable-next-line no-restricted-globals
+          console.log("Nouveau post créé !");
           this.$router.push('/home');
         })
-        // eslint-disable-next-line no-console
         .catch((error) => console.log(error));
     },
 
     // FICHIER SELECTIONNE
     onFileSelected(event) {
-      // eslint-disable-next-line prefer-destructuring
       this.selectedFile = event.target.files[0];
       this.url = URL.createObjectURL(this.selectedFile);
     },
@@ -110,7 +107,7 @@ h1 {
   font-size: large;
 }
 
-.edit-post {
+.edit__post {
   display: flex;
   flex-direction: column;
   margin: 20px 10px;
@@ -156,7 +153,7 @@ h1 {
   font-weight: 700;
   text-decoration: none;
   border-radius: 5px;
-  border: $color-primary;
+  border: 0;
   background: $color-tertiary;
   color: $background-color;
 
@@ -164,13 +161,16 @@ h1 {
     cursor: pointer;
     background: $color-tertiary--darken;
   }
+  &:disabled {
+    background: $color-tertiary--lighten;
+  }
 }
 
 .selected-file-name {
   margin-bottom: 10px;
 }
 
-.image_preview {
+.image__preview {
   max-width: 300px;
 }
 </style>

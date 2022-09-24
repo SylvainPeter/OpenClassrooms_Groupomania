@@ -26,7 +26,7 @@
           <!-- Editer le post -->
           <i class="lni lni-pencil-alt icon" title="Editer"></i>
           <!-- Supprimer le post -->
-          <i class="lni lni-trash-can icon" title="Supprimer"></i>
+          <i class="lni lni-trash-can icon" title="Supprimer" @click="deletePost(post)"></i>
         </div>
       </div>
     </article>
@@ -86,8 +86,8 @@ export default {
     // AFFICHER TOUS LES POSTS
     getAllPosts() {
       const user = JSON.parse(localStorage.getItem('userData'));
-      const AccessToken = user.token;
-      const header = { headers: { Authorization: 'Bearer ' + AccessToken } };
+      const token = user.token;
+      const header = { headers: { Authorization: 'Bearer ' + token } };
       Axios
         .get('http://localhost:3000/api/posts/', header)
         .then((res) => {
@@ -101,9 +101,9 @@ export default {
     // MODIFIER UN POST
     editPublication(post) {
       const user = JSON.parse(localStorage.getItem('userData'));
-      const AccessToken = user.token;
+      const token = user.token;
       // eslint-disable-next-line prefer-template
-      const header = { headers: { Authorization: 'Bearer ' + AccessToken } };
+      const header = { headers: { Authorization: 'Bearer ' + token } };
       Axios
         // eslint-disable-next-line prefer-template
         .get('http://localhost:3000/api/posts/' + post._id, header)
@@ -122,21 +122,18 @@ export default {
     // SUPPRIMER UN POST
     deletePost(post) {
       const user = JSON.parse(localStorage.getItem('userData'));
-      const AccessToken = user.token;
-      // eslint-disable-next-line prefer-template
-      const header = { headers: { Authorization: 'Bearer ' + AccessToken } };
+      const token = user.token;
+      const header = { headers: { Authorization: 'Bearer ' + token } };
       Axios
-        // eslint-disable-next-line prefer-template
         .delete('http://localhost:3000/api/posts/' + post._id, header)
-        .then((response) => {
-          console.log('this is response from deletePost');
-          console.log(response.data.post);
+        .then(() => {
+          console.log("Post effacé !");
         })
         .then(() => {
           this.getAllPosts();
         })
         .catch((err) => {
-          console.log('this is error from deletePost');
+          console.log("Erreur ! Impossible d'effacer ce post...");
           console.log(err);
         });
     },
