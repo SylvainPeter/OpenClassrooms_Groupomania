@@ -6,6 +6,7 @@ import LogIn from '../views/LogIn.vue'
 import SignUp from '../views/SignUp.vue'
 import HomePage from '../views/HomePage.vue'
 import PublishPost from '../views/PublishPost.vue'
+import EditPost from '../views/EditPost.vue'
 
 /**************************************************************************
   * FUNCTION
@@ -54,6 +55,11 @@ const routes = [
     path: '/publish',
     name: 'Publish',
     component: PublishPost,
+  },
+  {
+    path: '/edit/:id',
+    name: 'EditPost',
+    component: EditPost,
   }
 ]
 

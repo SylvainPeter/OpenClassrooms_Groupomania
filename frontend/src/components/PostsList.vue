@@ -24,7 +24,9 @@
         <!-- S'affiche seulement si le user est authentifié ou s'il est admin -->
         <div class="post__footer--left-block" v-if="userId == post.userId || isAdmin">
           <!-- Editer le post -->
-          <i class="lni lni-pencil-alt icon" title="Editer"></i>
+          <router-link :to="{name:'EditPost', params: {id:post._id} }">
+            <i class="lni lni-pencil-alt icon link-style" title="Editer"></i>
+          </router-link>
           <!-- Supprimer le post -->
           <i class="lni lni-trash-can icon" title="Supprimer" @click="deletePost(post)"></i>
         </div>
@@ -35,23 +37,14 @@
   
 <script>
 import Axios from 'axios';
-// import Vue from 'vue';
-// import { library } from '@fortawesome/fontawesome-svg-core';
-// import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-// eslint-disable-next-line object-curly-newline
-// import { faPenToSquare, faTrash, faHeart, faCircleUser } from '@fortawesome/free-solid-svg-icons';
-
-// library.add(faPenToSquare, faTrash);
-// library.add(faHeart, faCircleUser);
-// Vue.config.productionTip = false;
 
 export default {
   name: 'PostsList',
   data: function () {
     return {
+      pseudo: '',
       userId: '',
       isAdmin: '',
-      pseudo: '',
       posts: '',
       post: '',
       likes: [],
@@ -59,29 +52,18 @@ export default {
     };
   },
   mounted() {
-    this.getPseudo();
-    this.getAllPosts();
-    this.getUserId();
+    this.getStoreData();
     //   this.getIsAdmin();
+    this.getAllPosts();
   },
   methods: {
 
-    // RECUPERER LE PSEUDO
-    getPseudo() {
+    // RECUPERER LES DONNES STOCKEES DANS LE LOCALSTORAGE
+    getStoreData() {
       const user = JSON.parse(localStorage.getItem('userData'));
       this.pseudo = user.pseudo;
-    },
-
-    // RECUPERER L'USERID
-    getUserId() {
-      const user = JSON.parse(localStorage.getItem('userData'));
       this.userId = user.userId;
     },
-
-    // RECUPERE LE ROLE ADMIN
-    //   getIsAdmin() {
-    //    this.isAdmin = this.$store.getters.isAdmin;
-    //  },
 
     // AFFICHER TOUS LES POSTS
     getAllPosts() {
@@ -91,11 +73,10 @@ export default {
       Axios
         .get('http://localhost:3000/api/posts/', header)
         .then((res) => {
-          console.log('response', res);
           this.posts = res.data;
           this.user = JSON.stringify(res.data.userId);
         })
-        .catch((error) => console.log(error));
+        .catch((err) => console.log(err));
     },
 
     // MODIFIER UN POST
@@ -114,8 +95,8 @@ export default {
           this.$router.push({ name: 'EditPage' }); // Redirection vers la page d'Accueil
         })
         // eslint-disable-next-line  prefer-arrow-callback
-        .catch(function (error) {
-          console.log(error);
+        .catch(function (err) {
+          console.log(err);
         });
     },
 
@@ -271,6 +252,13 @@ export default {
   &:hover {
     color: red;
   }
+}
+
+.link-style {
+  position: relative;
+  top: -2px;
+  left: 9px;
+  color: $color-tertiary;
 }
 </style>
   
