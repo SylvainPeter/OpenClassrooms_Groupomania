@@ -48,8 +48,8 @@ exports.login = (req, res, next) => {
               process.env.RANDOM_SECRET_TOKEN, // chaîne secrète
               { expiresIn: '24h' } // définit la durée de validité du token à 24 heures
             ),
-            isAdmin: user.isAdmin,
-            pseudo: user.pseudo,
+            isAdmin: user.isAdmin, // ?
+            pseudo: user.pseudo, // ?
           });
         })
         .catch(error => res.status(500).json({ error }));

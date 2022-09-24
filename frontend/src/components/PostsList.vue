@@ -5,7 +5,7 @@
       <!-- Identité du user -->
       <div class="post__header">
         <i class="lni lni-user icon"></i>
-        <span class="post__pseudo">{{ post.userId }}</span>
+        <span class="post__pseudo">{{ post.pseudo }}</span>
       </div>
       <!-- Texte du post -->
       <p class="post__content" v-show="post.text">{{ post.text }}</p>
