@@ -24,9 +24,8 @@
         <!-- S'affiche seulement si le user est authentifié ou s'il est admin -->
         <div class="post__footer--left-block" v-if="userId == post.userId || isAdmin">
           <!-- Editer le post -->
-          <router-link :to="{name:'EditPost', params: {id:post._id} }">
-            <i class="lni lni-pencil-alt icon link-style" title="Editer"></i>
-          </router-link>
+            <i class="lni lni-pencil-alt icon link-style" title="Editer" 
+            @click="$router.push({ name: 'EditPost', params: {id:post._id} })"></i>
           <!-- Supprimer le post -->
           <i class="lni lni-trash-can icon" title="Supprimer" @click="deletePost(post)"></i>
         </div>

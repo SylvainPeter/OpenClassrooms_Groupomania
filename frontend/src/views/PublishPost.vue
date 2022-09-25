@@ -1,12 +1,12 @@
 <template>
-  <div class="content">
+  <div>
     <home-header></home-header>
     <div class="container">
       <div class="publish__post">
         <h1>Créer une publication</h1>
         <!-- Zone texte -->
-        <textarea type="title" id="title" name="title" placeholder="Quoi de neuf ?" v-model="text" rows="10"
-          maxlength="1000" @input="check" />
+        <textarea type="title" name="title" placeholder="Quoi de neuf ?" v-model="text" rows="10" maxlength="1000"
+          @input="check" />
         <!-- Bouton pour ajouter une image -->
         <input type="file" id="add-file" name="image" @change="onFileSelected" />
       </div>
@@ -50,6 +50,7 @@ export default {
       const user = JSON.parse(localStorage.getItem('userData'));
       const token = user.token;
       const header = { headers: { Authorization: 'Bearer ' + token } };
+      // Récupère les données
       const newPostData = new FormData();
       newPostData.append('pseudo', user.pseudo);
       newPostData.append('userId', user.userId);
@@ -103,10 +104,6 @@ export default {
 
 }
 
-h1 {
-  font-size: large;
-}
-
 .publish__post {
   display: flex;
   flex-direction: column;
@@ -121,25 +118,16 @@ h1 {
   @media screen and (max-width: 768px) {
     width: 50%;
   }
+}
 
+h1 {
+  font-size: large;
+}
 
-
-  textarea {
-    margin: 20px 20px 10px 20px;
-    border-radius: 10px;
-    font-weight: 400;
-    padding: 10px;
-    text-align: left;
-  }
-
-  #add-file-button {
-    width: 159px;
-    height: 23px;
-    margin: 10px 20px 20px 20px;
-    background-color: $color-primary;
-    border: $color-primary;
-    color: $background-color;
-  }
+textarea {
+  margin: 20px 20px 10px 20px;
+  padding: 10px;
+  border-radius: 10px;
 }
 
 #add-file {
@@ -161,13 +149,10 @@ h1 {
     cursor: pointer;
     background: $color-tertiary--darken;
   }
+
   &:disabled {
     background: $color-tertiary--lighten;
   }
-}
-
-.selected-file-name {
-  margin-bottom: 10px;
 }
 
 .image__preview {

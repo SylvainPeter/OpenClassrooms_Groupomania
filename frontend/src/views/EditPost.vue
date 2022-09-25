@@ -2,14 +2,13 @@
     <div>
         <home-header></home-header>
         <div class="container">
-            <h1>Modifier la publication</h1>
-            <div class="edit">
-                <section class="edit__main">
-                    <!-- Zone texte -->
-                    <textarea v-model="editedText" type="text" placeholder="Entrez le nouveau texte" rows="10" />
-                    <!-- Bouton pour ajouter une image -->
-                    <input type="file" id="add-file" name="image" @change="selectFile" ref="file" />
-                </section>
+            <div class="edit__post">
+                <h1>Modifier la publication</h1>
+                <!-- Zone texte -->
+                <textarea type="text" placeholder="Entrez le nouveau texte" rows="10" v-model="editedText"
+                    maxlength="1000" />
+                <!-- Bouton pour ajouter une image -->
+                <input type="file" id="add-file" name="image" @change="selectFile" ref="file" />
             </div>
             <button id="form-validate-button" @click="updatePost">Modifier</button>
             <img v-show="imageUrl" class="image__preview" :src="imageUrl" />
@@ -55,7 +54,6 @@ export default {
 
         // RECUPERE IMAGE
         selectFile() {
-            // eslint-disable-next-line prefer-destructuring
             this.file = this.$refs.file.files[0];
             this.imageUrl = URL.createObjectURL(this.file);
             console.log(this.imageUrl);
@@ -65,20 +63,17 @@ export default {
         updatePost() {
             const user = JSON.parse(localStorage.getItem('userData'));
             const token = user.token;
-            // eslint-disable-next-line prefer-template
             const header = { headers: { Authorization: 'Bearer ' + token } };
+            // Récupère les données
             const myForm = new FormData();
             myForm.append('text', this.editedText);
             myForm.append('image', this.file);
-
-            console.log('what is this.file', this.file);
-
+            // Envoie les données à l'API
             Axios
-                // eslint-disable-next-line prefer-template
                 .put('http://localhost:3000/api/posts/' + this.$route.params.id, myForm, header)
-                .then((response) => {
+                .then((res) => {
                     console.log('response to updatePost');
-                    console.log(response.data.message);
+                    console.log(res.data.message);
                     // eslint-disable-next-line no-restricted-globals
                     this.$router.push('/home');
                 })
@@ -110,8 +105,30 @@ export default {
     }
 }
 
+.edit__post {
+    display: flex;
+    flex-direction: column;
+    margin: 20px 10px;
+
+    // Laptop
+    @media screen and (min-width: 768px) {
+        width: 50%;
+    }
+
+    // Mobile et tablette
+    @media screen and (max-width: 768px) {
+        width: 50%;
+    }
+}
+
 h1 {
     font-size: large;
+}
+
+textarea {
+    margin: 20px 20px 10px 20px;
+    padding: 10px;
+    border-radius: 10px;
 }
 
 #add-file {
@@ -136,44 +153,6 @@ h1 {
 
     &:disabled {
         background: $color-tertiary--lighten;
-    }
-}
-
-.edit {
-
-    // Laptop
-    @media screen and (min-width: 768px) {
-        width: 50%;
-    }
-
-    // Mobile et tablette
-    @media screen and (max-width: 768px) {
-        width: 50%;
-    }
-
-    &__main {
-        padding: 15px 15px 0 15px;
-
-        textarea {
-            width: 90%;
-            margin: 20px 20px 10px 20px;
-            padding: 10px;
-            border-radius: 10px;
-            font-weight: 400;
-            text-align: left;
-        }
-    }
-
-    &__file {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 0 20px;
-
-        p {
-            text-align: left;
-            font-size: 15px;
-        }
     }
 }
 
