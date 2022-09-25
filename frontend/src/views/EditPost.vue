@@ -21,7 +21,7 @@ import Axios from 'axios';
 import HomeHeader from '../components/HomeHeader.vue';
 
 export default {
-    name: 'updatePost',
+    name: 'EditPost',
     components: {
         'home-header': HomeHeader,
     },
@@ -36,19 +36,12 @@ export default {
     },
     mounted() {
         this.getUserId();
-        this.getIsAdmin(); // ???????
     },
     methods: {
         // RECUPERE L'USERID
         getUserId() {
             const user = JSON.parse(localStorage.getItem('userData'));
             this.userId = user.userId;
-        },
-
-        // RECUPERE ADMIN ????????
-        getIsAdmin() {
-            console.log('checkisAdmin in edit posts');
-            return this.$store.getters.isAdmin;
         },
 
         // RECUPERE IMAGE
@@ -73,7 +66,6 @@ export default {
             Axios
                 .put('http://localhost:3000/api/posts/' + this.$route.params.id, myForm, header)
                 .then((res) => {
-                    console.log('response to updatePost');
                     console.log(res.data.message);
                     // eslint-disable-next-line no-restricted-globals
                     this.$router.push('/home');
@@ -87,8 +79,6 @@ export default {
 </script>
   
 <style lang="scss" scoped>
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Roboto:wght@400;500&family=Shrikhand&display=swap');
-
 .container {
 
     // Laptop

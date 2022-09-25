@@ -21,7 +21,7 @@ import Axios from 'axios';
 import HomeHeader from '../components/HomeHeader.vue';
 
 export default {
-  name: 'createPost',
+  name: 'PublishPost',
   components: {
     'home-header': HomeHeader,
   },
@@ -62,7 +62,7 @@ export default {
       Axios
         .post('http://localhost:3000/api/posts/', newPostData, header)
         .then(() => {
-          console.log("Nouveau post créé !");
+          console.log("Post créé !");
           this.$router.push('/home');
         })
         .catch((error) => console.log(error));

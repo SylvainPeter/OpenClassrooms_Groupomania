@@ -90,7 +90,7 @@ export default {
       Axios
         .delete('http://localhost:3000/api/posts/' + post._id, header)
         .then(() => {
-          console.log("Post effacé !");
+          console.log("Post supprimé !");
         })
         .then(() => {
           this.getAllPosts();
