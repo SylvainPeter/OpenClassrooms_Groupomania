@@ -23,7 +23,7 @@
         </div>
         <!-- S'affiche seulement si le user est authentifié ou s'il est admin -->
         <div class="post__footer--left-block" v-if="userId == post.userId || isAdmin">
-          <!-- Editer le post -->
+          <!-- Editer le post (en envoie en paramètre l'Id du post)-->
             <i class="lni lni-pencil-alt icon link-style" title="Editer" 
             @click="$router.push({ name: 'EditPost', params: {id:post._id} })"></i>
           <!-- Supprimer le post -->
@@ -52,7 +52,6 @@ export default {
   },
   mounted() {
     this.getStoreData();
-    //   this.getIsAdmin();
     this.getAllPosts();
   },
   methods: {
@@ -67,8 +66,10 @@ export default {
 
     // AFFICHER TOUS LES POSTS
     getAllPosts() {
+      // Récupère le token de l'utilisateur
       const user = JSON.parse(localStorage.getItem('userData'));
       const token = user.token;
+      // Créé le header de la requête avec le token
       const header = { headers: { Authorization: 'Bearer ' + token } };
       Axios
         .get('http://localhost:3000/api/posts/', header)
@@ -81,8 +82,10 @@ export default {
 
     // SUPPRIMER UN POST
     deletePost(post) {
+      // Récupère le token de l'utilisateur
       const user = JSON.parse(localStorage.getItem('userData'));
       const token = user.token;
+      // Créé le header de la requête avec le token
       const header = { headers: { Authorization: 'Bearer ' + token } };
       Axios
         .delete('http://localhost:3000/api/posts/' + post._id, header)
@@ -111,17 +114,17 @@ export default {
 
     // LIKER UN POST
     likePost(post) {
+      // Récupère le token de l'utilisateur
       const user = JSON.parse(localStorage.getItem('userData'));
-      const AccessToken = user.token;
-      // eslint-disable-next-line prefer-template
-      const header = { headers: { Authorization: 'Bearer ' + AccessToken } };
+      const token = user.token;
+      // Créé le header de la requête avec le token
+      const header = { headers: { Authorization: 'Bearer ' + token } };
       const data = {
         likes: true,
         userId: this.userId,
         post: post._id,
       };
       Axios
-        // eslint-disable-next-line prefer-template
         .post('http://localhost:3000/api/posts/' + post._id + '/like', data, header)
         .then(() => {
           // res.json()
@@ -130,7 +133,7 @@ export default {
         // eslint-disable-next-line no-shadow
         // .then((data) => this.likes.push(data))
         .catch((error) => console.log(error));
-      this.liked = true; // <- on indique à notre template que le user à liker ce post
+      this.liked = true; // <- on indique à notre template que le user à liké ce post
     },
   },
 };

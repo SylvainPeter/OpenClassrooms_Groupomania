@@ -25,7 +25,6 @@ export default {
     components: {
         'home-header': HomeHeader,
     },
-    // eslint-disable-next-line object-shorthand
     data() {
         return {
             pseudo: '',
@@ -61,8 +60,10 @@ export default {
 
         // MODIFIER LE POST
         updatePost() {
+            // Récupère le token de l'utilisateur
             const user = JSON.parse(localStorage.getItem('userData'));
             const token = user.token;
+            // Créé le header de la requête avec le token
             const header = { headers: { Authorization: 'Bearer ' + token } };
             // Récupère les données
             const myForm = new FormData();

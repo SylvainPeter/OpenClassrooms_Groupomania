@@ -47,8 +47,10 @@ export default {
 
     // ENVOIE UN NOUVEAU POST
     createPost() {
+      // Récupère le token de l'utilisateur
       const user = JSON.parse(localStorage.getItem('userData'));
       const token = user.token;
+      // Créé le header de la requête avec le token
       const header = { headers: { Authorization: 'Bearer ' + token } };
       // Récupère les données
       const newPostData = new FormData();
