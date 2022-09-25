@@ -92,6 +92,7 @@ export default {
                 pseudo: res.data.pseudo,
                 token: res.data.token,
                 userId: res.data.userId,
+                isAdmin: res.data.isAdmin, // ATTENTION !!!
               };
               // on stocke les infos de l'utilisateur dans le localStorage
               localStorage.setItem('userData', JSON.stringify(userInfos));

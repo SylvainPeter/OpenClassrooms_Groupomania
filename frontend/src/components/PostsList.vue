@@ -62,6 +62,7 @@ export default {
       const user = JSON.parse(localStorage.getItem('userData'));
       this.pseudo = user.pseudo;
       this.userId = user.userId;
+      this.isAdmin = user.isAdmin; // ATTENTION !!!
     },
 
     // AFFICHER TOUS LES POSTS
@@ -144,6 +145,9 @@ export default {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    // background-color: lemonchiffon;
+    // background-image: url("../assets/globe.png");
+    // background-repeat: round;
   }
 
   @media screen and (max-width: 768px) {
@@ -160,6 +164,7 @@ export default {
   margin: 20px 10px;
   border-radius: 10px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  background-color: $background-color;
 
   // Laptop
   @media screen and (min-width: 768px) {
