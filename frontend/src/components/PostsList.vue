@@ -55,13 +55,13 @@ export default {
     };
   },
   mounted() {
-    this.getStoreData();
+    this.getLocalStorageData();
     this.getAllPosts();
   },
   methods: {
 
     // RECUPERER LES DONNES STOCKEES DANS LE LOCALSTORAGE
-    getStoreData() {
+    getLocalStorageData() {
       const user = JSON.parse(ls.get('userData'));
       this.pseudo = user.pseudo;
       this.userId = user.userId;
