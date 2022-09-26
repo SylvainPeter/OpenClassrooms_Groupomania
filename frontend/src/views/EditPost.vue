@@ -30,11 +30,11 @@ export default {
             userId: '',
             editedText: '',
             imageUrl: '',
-            isAdmin: false,
         };
     },
     mounted() {
         this.getUserId();
+        this.getPostData();
     },
     methods: {
         // RECUPERE L'USERID
@@ -43,14 +43,32 @@ export default {
             this.userId = user.userId;
         },
 
-        // RECUPERE IMAGE
         // FICHIER SELECTIONNE
         selectImage(event) {
             this.selectedFile = event.target.files[0];
             this.imageUrl = URL.createObjectURL(this.selectedFile);
         },
 
-        // MODIFIER LE POST
+        // MODIFIE LE POST
+        getPostData() {
+            // Récupère le token de l'utilisateur
+            const user = JSON.parse(localStorage.getItem('userData'));
+            const token = user.token;
+            // Créé le header de la requête avec le token
+            const header = { headers: { Authorization: 'Bearer ' + token } };
+            // Envoie les données à l'API
+            Axios
+                .get('http://localhost:3000/api/posts/' + this.$route.params.id, header)
+                .then((res) => {
+                    this.editedText = res.data.text;
+                    this.imageUrl = res.data.imageUrl;
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        },
+
+        // MODIFIE LE POST
         updatePost() {
             // Récupère le token de l'utilisateur
             const user = JSON.parse(localStorage.getItem('userData'));
