@@ -30,6 +30,7 @@ export default {
             userId: '',
             editedText: '',
             imageUrl: '',
+            isAdmin: false,
         };
     },
     mounted() {

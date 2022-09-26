@@ -43,7 +43,7 @@ export default {
     return {
       pseudo: '',
       userId: '',
-      isAdmin: '',
+      isAdmin: false,
       posts: '',
       post: '',
       likes: [],
