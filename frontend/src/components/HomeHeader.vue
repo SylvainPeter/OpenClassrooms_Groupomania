@@ -15,6 +15,10 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import ls from 'localstorage-slim';
+
+// enable global encryption
+ls.config.encrypt = true;
 
 let pseudo = ref('');
 const router = useRouter();
@@ -25,8 +29,9 @@ function Logout() {
     router.push('/');
 }
 
-function getPseudo() { // On récupère le pseudo depuis le localStorage
-    const user = JSON.parse(localStorage.getItem('userData'));
+function getPseudo() {
+    // On récupère le pseudo depuis le localStorage
+    const user = JSON.parse(ls.get('userData'));
     pseudo = user.pseudo;
 }
 
@@ -62,9 +67,17 @@ header {
     margin: 10px;
 }
 
-#logout:hover {
-    cursor: pointer;
-    text-decoration: underline;
+#logout {
+
+    // Mobile et tablette
+    @media screen and (max-width: 768px) {
+        margin: 33px 0 17px 0;
+    }
+
+    &:hover {
+        cursor: pointer;
+        text-decoration: underline;
+    }
 }
 </style>
     

@@ -36,6 +36,10 @@
   
 <script>
 import Axios from 'axios';
+import ls from 'localstorage-slim';
+ 
+// enable global encryption
+ls.config.encrypt = true;
 
 export default {
   name: 'PostsList',
@@ -58,16 +62,16 @@ export default {
 
     // RECUPERER LES DONNES STOCKEES DANS LE LOCALSTORAGE
     getStoreData() {
-      const user = JSON.parse(localStorage.getItem('userData'));
+      const user = JSON.parse(ls.get('userData'));
       this.pseudo = user.pseudo;
       this.userId = user.userId;
-      this.isAdmin = user.isAdmin; // ATTENTION !!!
+      this.isAdmin = user.isAdmin;
     },
 
     // AFFICHER TOUS LES POSTS
     getAllPosts() {
       // Récupère le token de l'utilisateur
-      const user = JSON.parse(localStorage.getItem('userData'));
+      const user = JSON.parse(ls.get('userData'));
       const token = user.token;
       // Créé le header de la requête avec le token
       const header = { headers: { Authorization: 'Bearer ' + token } };
@@ -83,7 +87,7 @@ export default {
     // SUPPRIMER UN POST
     deletePost(post) {
       // Récupère le token de l'utilisateur
-      const user = JSON.parse(localStorage.getItem('userData'));
+      const user = JSON.parse(ls.get('userData'));
       const token = user.token;
       // Créé le header de la requête avec le token
       const header = { headers: { Authorization: 'Bearer ' + token } };
@@ -103,7 +107,7 @@ export default {
 
     // VERIFIER SI L'USER A DEJA LIKE UN POST
     checkIfUsersLiked(post) {
-      const user = JSON.parse(localStorage.getItem('userData'));
+      const user = JSON.parse(ls.get('userData'));
       console.log('post', post);
       console.log('user', user.userId);
       if (post.usersLiked.includes(user.userId)) {
@@ -115,7 +119,7 @@ export default {
     // LIKER UN POST
     likePost(post) {
       // Récupère le token de l'utilisateur
-      const user = JSON.parse(localStorage.getItem('userData'));
+      const user = JSON.parse(ls.get('userData'));
       const token = user.token;
       // Créé le header de la requête avec le token
       const header = { headers: { Authorization: 'Bearer ' + token } };
@@ -176,7 +180,7 @@ export default {
 
   // Mobile et tablette A MODIFIER !
   @media screen and (max-width: 768px) {
-    width: 70%;
+    width: 93%;
   }
 
   &__header {
@@ -236,7 +240,7 @@ export default {
   font-weight: 1000;
 
   &:hover {
-    color: red;
+    color: $color-primary;
   }
 }
 

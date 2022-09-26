@@ -22,7 +22,11 @@
 </template>
 
 <script>
+import ls from 'localstorage-slim';
 import Axios from 'axios';
+
+// enable global encryption
+ls.config.encrypt = true;
 
 export default {
   data() {
@@ -92,10 +96,10 @@ export default {
                 pseudo: res.data.pseudo,
                 token: res.data.token,
                 userId: res.data.userId,
-                isAdmin: res.data.isAdmin, // ATTENTION !!!
+                isAdmin: res.data.isAdmin,
               };
               // on stocke les infos de l'utilisateur dans le localStorage
-              localStorage.setItem('userData', JSON.stringify(userInfos));
+              ls.set('userData', JSON.stringify(userInfos));
             }
             this.$router.push('/home'); // on redirige vers la page Home
           })
@@ -117,12 +121,14 @@ export default {
   padding: 20px;
   margin: 0 30px;
 
-  @media screen and (min-width: 1025px) {
+   // Laptop
+   @media screen and (min-width: 768px) {
     width: 60%;
   }
 
-  @media screen and (min-width: 768px) and (max-width: 1024px) {
-    width: 60%;
+  // Mobile et tablette
+  @media screen and (max-width: 768px) {
+    width: 100%;
   }
 }
 

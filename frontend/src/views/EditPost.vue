@@ -19,6 +19,10 @@
 <script>
 import Axios from 'axios';
 import HomeHeader from '../components/HomeHeader.vue';
+import ls from 'localstorage-slim';
+ 
+// enable global encryption
+ls.config.encrypt = true;
 
 export default {
     components: {
@@ -40,7 +44,7 @@ export default {
     methods: {
         // RECUPERE L'USERID
         getUserId() {
-            const user = JSON.parse(localStorage.getItem('userData'));
+            const user = JSON.parse(ls.get('userData'));
             this.userId = user.userId;
         },
 
@@ -53,7 +57,7 @@ export default {
         // MODIFIE LE POST
         getPostData() {
             // Récupère le token de l'utilisateur
-            const user = JSON.parse(localStorage.getItem('userData'));
+            const user = JSON.parse(ls.get('userData'));
             const token = user.token;
             // Créé le header de la requête avec le token
             const header = { headers: { Authorization: 'Bearer ' + token } };
@@ -72,7 +76,7 @@ export default {
         // MODIFIE LE POST
         updatePost() {
             // Récupère le token de l'utilisateur
-            const user = JSON.parse(localStorage.getItem('userData'));
+            const user = JSON.parse(ls.get('userData'));
             const token = user.token;
             // Créé le header de la requête avec le token
             const header = { headers: { Authorization: 'Bearer ' + token } };
@@ -126,7 +130,7 @@ export default {
 
     // Mobile et tablette
     @media screen and (max-width: 768px) {
-        width: 50%;
+        width: 90%;
     }
 }
 

@@ -19,6 +19,10 @@
 <script>
 import Axios from 'axios';
 import HomeHeader from '../components/HomeHeader.vue';
+import ls from 'localstorage-slim';
+ 
+// enable global encryption
+ls.config.encrypt = true;
 
 export default {
   components: {
@@ -39,12 +43,13 @@ export default {
   methods: {
 
     // RECUPERE LE PSEUDO
-    getPseudo() { // On récupère le pseudo depuis le localStorage
-      const user = JSON.parse(localStorage.getItem('userData'));
+    getPseudo() { 
+      // On récupère le pseudo depuis le localStorage
+      const user = JSON.parse(ls.get('userData'));
       this.pseudo = user.pseudo;
     },
 
-    // FICHIER SELECTIONNE
+    // FICHIER IMAGE SELECTIONNE
     selectImage(event) {
       this.selectedFile = event.target.files[0];
       this.imageUrl = URL.createObjectURL(this.selectedFile);
@@ -63,7 +68,7 @@ export default {
     // ENVOIE UN NOUVEAU POST
     createPost() {
       // Récupère le token de l'utilisateur
-      const user = JSON.parse(localStorage.getItem('userData'));
+      const user = JSON.parse(ls.get('userData'));
       const token = user.token;
       // Créé le header de la requête avec le token
       const header = { headers: { Authorization: 'Bearer ' + token } };
@@ -117,7 +122,7 @@ export default {
 
   // Mobile et tablette
   @media screen and (max-width: 768px) {
-    width: 50%;
+    width: 90%;
   }
 }
 

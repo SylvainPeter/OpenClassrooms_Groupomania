@@ -7,6 +7,10 @@ import SignUp from '../views/SignUp.vue'
 import HomePage from '../views/HomePage.vue'
 import PublishPost from '../views/PublishPost.vue'
 import EditPost from '../views/EditPost.vue'
+import ls from 'localstorage-slim';
+ 
+// enable global encryption
+ls.config.encrypt = true;
 
 /**************************************************************************
   * FUNCTION
@@ -14,7 +18,7 @@ import EditPost from '../views/EditPost.vue'
 
 // AUTHENTIFICATION
 function tokenAccess(to, from, next) {
-  const user = JSON.parse(localStorage.getItem('userData'));
+  const user = JSON.parse(ls.get('userData'));
   if (user.token) // si l'utilisateur dispose d'un token
   {
     next(); // alors seulement on autorise la route

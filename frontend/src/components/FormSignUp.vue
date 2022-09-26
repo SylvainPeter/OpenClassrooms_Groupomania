@@ -134,12 +134,14 @@ export default {
   padding: 20px;
   margin: 0 30px;
 
-  @media screen and (min-width: 1025px) {
+  // Laptop
+  @media screen and (min-width: 768px) {
     width: 60%;
   }
 
-  @media screen and (min-width: 768px) and (max-width: 1024px) {
-    width: 60%;
+  // Mobile et tablette
+  @media screen and (max-width: 768px) {
+    width: 100%;
   }
 }
 
