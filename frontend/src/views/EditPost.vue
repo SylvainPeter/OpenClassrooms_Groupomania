@@ -5,13 +5,13 @@
             <div class="edit__post">
                 <h1>Modifier la publication</h1>
                 <!-- Zone texte -->
-                <textarea type="text" placeholder="Entrez le nouveau texte" rows="10" v-model="editedText"
-                    maxlength="1000" />
+                <textarea type="text" placeholder="Entrez le nouveau texte" rows="10" maxlength="1000"
+                    v-model="editedText" />
                 <!-- Bouton pour ajouter une image -->
-                <input type="file" id="add-file" name="image" @change="selectFile" ref="file" />
+                <input type="file" id="add-file" name="image" @change="selectImage" />
             </div>
             <button id="form-validate-button" @click="updatePost">Modifier</button>
-            <img v-show="imageUrl" class="image__preview" :src="imageUrl" />
+            <img class="image__preview" v-if="imageUrl" :src="imageUrl" />
         </div>
     </div>
 </template>
@@ -21,7 +21,6 @@ import Axios from 'axios';
 import HomeHeader from '../components/HomeHeader.vue';
 
 export default {
-    name: 'EditPost',
     components: {
         'home-header': HomeHeader,
     },
@@ -45,10 +44,10 @@ export default {
         },
 
         // RECUPERE IMAGE
-        selectFile() {
-            this.file = this.$refs.file.files[0];
-            this.imageUrl = URL.createObjectURL(this.file);
-            console.log(this.imageUrl);
+        // FICHIER SELECTIONNE
+        selectImage(event) {
+            this.selectedFile = event.target.files[0];
+            this.imageUrl = URL.createObjectURL(this.selectedFile);
         },
 
         // MODIFIER LE POST
@@ -61,7 +60,7 @@ export default {
             // Récupère les données
             const myForm = new FormData();
             myForm.append('text', this.editedText);
-            myForm.append('image', this.file);
+            myForm.append('image', this.selectedFile);
             // Envoie les données à l'API
             Axios
                 .put('http://localhost:3000/api/posts/' + this.$route.params.id, myForm, header)
