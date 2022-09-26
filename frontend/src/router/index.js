@@ -47,13 +47,13 @@ const routes = [
   },
   {
     path: '/home',
-    name: 'Home',
+    name: 'HomePage',
     beforeEnter: tokenAccess, // route interdite si pas de token
     component: HomePage,
   },
   {
     path: '/publish',
-    name: 'Publish',
+    name: 'PublishPage',
     component: PublishPost,
   },
   {
