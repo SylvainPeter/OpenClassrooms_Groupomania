@@ -44,6 +44,22 @@ export default {
       this.pseudo = user.pseudo;
     },
 
+    // FICHIER SELECTIONNE
+    selectImage(event) {
+      this.selectedFile = event.target.files[0];
+      this.imageUrl = URL.createObjectURL(this.selectedFile);
+    },
+
+    // CONTROLE DU TEXTE
+    check() {
+      if (this.text.length >= 1) {
+        this.isDisabled = false;
+      }
+      if (this.text.length < 1) {
+        this.isDisabled = true;
+      }
+    },
+
     // ENVOIE UN NOUVEAU POST
     createPost() {
       // Récupère le token de l'utilisateur
@@ -65,22 +81,6 @@ export default {
           this.$router.push('/home');
         })
         .catch((error) => console.log(error));
-    },
-
-    // FICHIER SELECTIONNE
-    selectImage(event) {
-      this.selectedFile = event.target.files[0];
-      this.imageUrl = URL.createObjectURL(this.selectedFile);
-    },
-
-    // CONTROLE DU TEXTE
-    check() {
-      if (this.text.length >= 1) {
-        this.isDisabled = false;
-      }
-      if (this.text.length < 1) {
-        this.isDisabled = true;
-      }
     },
   },
 };
