@@ -18,8 +18,8 @@
   
 <script>
 import Axios from 'axios';
-import HomeHeader from '../components/HomeHeader.vue';
 import ls from 'localstorage-slim';
+import HomeHeader from '../components/HomeHeader.vue';
  
 // enable global encryption
 ls.config.encrypt = true;

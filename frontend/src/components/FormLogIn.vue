@@ -22,8 +22,8 @@
 </template>
 
 <script>
-import ls from 'localstorage-slim';
 import Axios from 'axios';
+import ls from 'localstorage-slim';
 
 // enable global encryption
 ls.config.encrypt = true;
