@@ -8,16 +8,9 @@
   </div>
 </template>
   
-<script>
+<script setup>
 import HomeHeader from '../components/HomeHeader.vue';
 import PostsList from '../components/PostsList.vue';
-
-export default {
-  components: {
-    'home-header': HomeHeader,
-    'posts-list': PostsList,
-  }
-};
 </script>
   
 <style lang="scss" scoped>

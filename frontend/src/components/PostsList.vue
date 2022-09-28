@@ -24,7 +24,7 @@
         <!-- S'affiche seulement si le user est authentifié ou s'il est admin -->
         <div class="post__footer--left-block" v-if="userId == post.userId || isAdmin">
           <!-- Editer le post (en envoie en paramètre l'Id du post)-->
-            <i class="lni lni-pencil-alt icon link-style" title="Editer" 
+          <i class="lni lni-pencil-alt icon link-style" title="Editer"
             @click="$router.push({ name: 'EditPost', params: {id:post._id} })"></i>
           <!-- Supprimer le post -->
           <i class="lni lni-trash-can icon" title="Supprimer" @click="deletePost(post)"></i>
@@ -35,69 +35,69 @@
 </template>
   
 <script setup>
-  import { ref } from 'vue'
-  import Axios from 'axios';
-  import ls from 'localstorage-slim';
-   
-  // enable global encryption
-  ls.config.encrypt = true;
-  
-  let userId =  ref('');
-  let isAdmin =  ref(false);
-  let posts =  ref('');
- // let likes =  ref([]);
- // let liked = ref(null);
-  
-  
-      // RECUPERER LES DONNES STOCKEES DANS LE LOCALSTORAGE
-      function getLocalStorageData() {
-        const user = JSON.parse(ls.get('userData'));
-       // pseudo = user.pseudo;
-        userId = user.userId;
-        isAdmin = user.isAdmin;
-      }
-  
-      // AFFICHER TOUS LES POSTS
-      function getAllPosts() {
-        // Récupère le token de l'utilisateur
-        let user = JSON.parse(ls.get('userData'));
-        const token = user.token;
-        // Créé le header de la requête avec le token
-        const header = { headers: { Authorization: 'Bearer ' + token } };
-        Axios
-          .get('http://localhost:3000/api/posts/', header)
-          .then((res) => {
-            posts.value = res.data;
-            user = JSON.stringify(res.data.userId);
-          })
-          .catch((err) => console.log(err));
-      }
-  
-      // SUPPRIMER UN POST
-      function deletePost(post) {
-        // Récupère le token de l'utilisateur
-        const user = JSON.parse(ls.get('userData'));
-        const token = user.token;
-        // Créé le header de la requête avec le token
-        const header = { headers: { Authorization: 'Bearer ' + token } };
-        Axios
-          .delete('http://localhost:3000/api/posts/' + post._id, header)
-          .then(() => {
-            console.log("Post supprimé !");
-          })
-          .then(() => {
-            getAllPosts();
-          })
-          .catch((err) => {
-            console.log("Erreur ! Impossible d'effacer ce post...");
-            console.log(err);
-          })
-      }
-  
-  getLocalStorageData();
-  getAllPosts();
-  
-  </script>
+import { ref } from 'vue'
+import Axios from 'axios';
+import ls from 'localstorage-slim';
+
+// enable global encryption
+ls.config.encrypt = true;
+
+let userId = ref('');
+let isAdmin = ref(false);
+let posts = ref('');
+// let likes =  ref([]);
+// let liked = ref(null);
+
+
+// RECUPERER LES DONNES STOCKEES DANS LE LOCALSTORAGE
+function getLocalStorageData() {
+  const user = JSON.parse(ls.get('userData'));
+  // pseudo = user.pseudo;
+  userId = user.userId;
+  isAdmin = user.isAdmin;
+}
+
+// AFFICHER TOUS LES POSTS
+function getAllPosts() {
+  // Récupère le token de l'utilisateur
+  let user = JSON.parse(ls.get('userData'));
+  const token = user.token;
+  // Créé le header de la requête avec le token
+  const header = { headers: { Authorization: 'Bearer ' + token } };
+  Axios
+    .get('http://localhost:3000/api/posts/', header)
+    .then((res) => {
+      posts.value = res.data;
+      user = JSON.stringify(res.data.userId);
+    })
+    .catch((err) => console.log(err));
+}
+
+// SUPPRIMER UN POST
+function deletePost(post) {
+  // Récupère le token de l'utilisateur
+  const user = JSON.parse(ls.get('userData'));
+  const token = user.token;
+  // Créé le header de la requête avec le token
+  const header = { headers: { Authorization: 'Bearer ' + token } };
+  Axios
+    .delete('http://localhost:3000/api/posts/' + post._id, header)
+    .then(() => {
+      console.log("Post supprimé !");
+    })
+    .then(() => {
+      getAllPosts();
+    })
+    .catch((err) => {
+      console.log("Erreur ! Impossible d'effacer ce post...");
+      console.log(err);
+    })
+}
+
+getLocalStorageData();
+getAllPosts();
+
+</script>
 
   
 <style lang="scss" scoped>

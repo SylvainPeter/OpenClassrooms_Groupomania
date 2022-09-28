@@ -16,79 +16,71 @@
   </div>
 </template>
   
-<script>
+<script setup>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import Axios from 'axios';
 import ls from 'localstorage-slim';
 import HomeHeader from '../components/HomeHeader.vue';
- 
+
 // enable global encryption
 ls.config.encrypt = true;
 
-export default {
-  components: {
-    'home-header': HomeHeader,
-  },
-  data() {
-    return {
-      pseudo: '',
-      text: '',
-      selectedFile: '',
-      imageUrl: '',
-      isDisabled: true,
-    };
-  },
-  mounted() {
-    this.getPseudo();
-  },
-  methods: {
+const router = useRouter();
+let pseudo = ref('');
+let text = ref('');
+let imageUrl = ref('');
+let isDisabled = ref(true);
+let selectedFile = '';
 
-    // RECUPERE LE PSEUDO
-    getPseudo() { 
-      // On récupère le pseudo depuis le localStorage
-      const user = JSON.parse(ls.get('userData'));
-      this.pseudo = user.pseudo;
-    },
+// RECUPERE LE PSEUDO
+function getPseudo() {
+  // On récupère le pseudo depuis le localStorage
+  const user = JSON.parse(ls.get('userData'));
+  pseudo.value = user.pseudo;
+}
 
-    // FICHIER IMAGE SELECTIONNE
-    selectImage(event) {
-      this.selectedFile = event.target.files[0];
-      this.imageUrl = URL.createObjectURL(this.selectedFile);
-    },
+// FICHIER IMAGE SELECTIONNE
+function selectImage(event) {
+  selectedFile = event.target.files[0];
+  imageUrl.value = URL.createObjectURL(selectedFile);
+}
 
-    // CONTROLE DU TEXTE
-    check() {
-      if (this.text.length >= 1) {
-        this.isDisabled = false;
-      }
-      if (this.text.length < 1) {
-        this.isDisabled = true;
-      }
-    },
+// CONTROLE DU TEXTE
+function check() {
+  if (text.value.length >= 1) {
+    isDisabled.value = false;
+  }
+  if (text.value.length < 1) {
+    isDisabled.value = true;
+  }
+}
 
-    // ENVOIE UN NOUVEAU POST
-    createPost() {
-      // Récupère le token de l'utilisateur
-      const user = JSON.parse(ls.get('userData'));
-      const token = user.token;
-      // Créé le header de la requête avec le token
-      const header = { headers: { Authorization: 'Bearer ' + token } };
-      // Récupère les données
-      const newPostData = new FormData();
-      newPostData.append('pseudo', user.pseudo);
-      newPostData.append('userId', user.userId);
-      newPostData.append('text', this.text);
-      newPostData.append('image', this.selectedFile);
-      // Envoie les données à l'API
-      Axios
-        .post('http://localhost:3000/api/posts/', newPostData, header)
-        .then(() => {
-          console.log("Post créé !");
-          this.$router.push('/home');
-        })
-        .catch((error) => console.log(error));
-    },
-  },
-};
+// ENVOIE UN NOUVEAU POST
+function createPost() {
+  // Récupère le token de l'utilisateur
+  const user = JSON.parse(ls.get('userData'));
+  const token = user.token;
+  // Créé le header de la requête avec le token
+  const header = { headers: { Authorization: 'Bearer ' + token } };
+  // Récupère les données
+  const newPostData = new FormData();
+  newPostData.append('pseudo', user.pseudo);
+  newPostData.append('userId', user.userId);
+  newPostData.append('text', text.value);
+  newPostData.append('image', selectedFile);
+  // Envoie les données à l'API
+  Axios
+    .post('http://localhost:3000/api/posts/', newPostData, header)
+    .then(() => {
+      console.log("Post créé !");
+      router.push('/home');
+    })
+    .catch((error) => console.log(error));
+}
+
+getPseudo();
+
 </script>
   
 <style lang="scss" scoped>

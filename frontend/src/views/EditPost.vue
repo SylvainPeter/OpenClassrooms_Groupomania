@@ -16,88 +16,82 @@
     </div>
 </template>
   
-<script>
+<script setup>
+import { ref } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import Axios from 'axios';
 import ls from 'localstorage-slim';
 import HomeHeader from '../components/HomeHeader.vue';
- 
+
 // enable global encryption
 ls.config.encrypt = true;
 
-export default {
-    components: {
-        'home-header': HomeHeader,
-    },
-    data() {
-        return {
-            pseudo: '',
-            userId: '',
-            editedText: '',
-            imageUrl: '',
-            isAdmin: false,
-        };
-    },
-    mounted() {
-        this.getUserId();
-        this.getPostData();
-    },
-    methods: {
-        // RECUPERE L'USERID
-        getUserId() {
-            const user = JSON.parse(ls.get('userData'));
-            this.userId = user.userId;
-        },
 
-        // FICHIER SELECTIONNE
-        selectImage(event) {
-            this.selectedFile = event.target.files[0];
-            this.imageUrl = URL.createObjectURL(this.selectedFile);
-        },
+const router = useRouter();
+const route = useRoute();
+let editedText = ref('');
+let imageUrl = ref('');
+let userId = ref('');
+let selectedFile = '';
 
-        // MODIFIE LE POST
-        getPostData() {
-            // Récupère le token de l'utilisateur
-            const user = JSON.parse(ls.get('userData'));
-            const token = user.token;
-            // Créé le header de la requête avec le token
-            const header = { headers: { Authorization: 'Bearer ' + token } };
-            // Envoie les données à l'API
-            Axios
-                .get('http://localhost:3000/api/posts/' + this.$route.params.id, header)
-                .then((res) => {
-                    this.editedText = res.data.text;
-                    this.imageUrl = res.data.imageUrl;
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        },
+// RECUPERE L'USERID
+function getUserId() {
+    const user = JSON.parse(ls.get('userData'));
+    userId.value = user.userId;
+}
 
-        // MODIFIE LE POST
-        updatePost() {
-            // Récupère le token de l'utilisateur
-            const user = JSON.parse(ls.get('userData'));
-            const token = user.token;
-            // Créé le header de la requête avec le token
-            const header = { headers: { Authorization: 'Bearer ' + token } };
-            // Récupère les données
-            const myForm = new FormData();
-            myForm.append('text', this.editedText);
-            myForm.append('image', this.selectedFile);
-            // Envoie les données à l'API
-            Axios
-                .put('http://localhost:3000/api/posts/' + this.$route.params.id, myForm, header)
-                .then((res) => {
-                    console.log(res.data.message);
-                    // eslint-disable-next-line no-restricted-globals
-                    this.$router.push('/home');
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        },
-    },
-};
+// FICHIER SELECTIONNE
+function selectImage(event) {
+    selectedFile = event.target.files[0];
+    imageUrl.value = URL.createObjectURL(selectedFile);
+}
+
+// MODIFIE LE POST
+function getPostData() {
+    // Récupère le token de l'utilisateur
+    const user = JSON.parse(ls.get('userData'));
+    const token = user.token;
+    // Créé le header de la requête avec le token
+    const header = { headers: { Authorization: 'Bearer ' + token } };
+    // Envoie les données à l'API
+    Axios
+        .get('http://localhost:3000/api/posts/' + route.params.id, header)
+        .then((res) => {
+            editedText.value = res.data.text;
+            imageUrl.value = res.data.imageUrl;
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+}
+
+// MODIFIE LE POST
+function updatePost() {
+    // Récupère le token de l'utilisateur
+    const user = JSON.parse(ls.get('userData'));
+    const token = user.token;
+    // Créé le header de la requête avec le token
+    const header = { headers: { Authorization: 'Bearer ' + token } };
+    // Récupère les données
+    const myForm = new FormData();
+    myForm.append('text', editedText.value);
+    myForm.append('image', selectedFile);
+    // Envoie les données à l'API
+    Axios
+        .put('http://localhost:3000/api/posts/' + route.params.id, myForm, header)
+        .then((res) => {
+            console.log(res.data.message);
+            // eslint-disable-next-line no-restricted-globals
+            router.push('/home');
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+}
+
+getUserId();
+getPostData();
+
 </script>
   
 <style lang="scss" scoped>

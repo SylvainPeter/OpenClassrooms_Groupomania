@@ -23,7 +23,6 @@ ls.config.encrypt = true;
 let pseudo = ref('');
 const router = useRouter();
 
-
 function Logout() {
     localStorage.clear();
     router.push('/');

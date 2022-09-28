@@ -16,7 +16,6 @@ function tokenAccess(to, from, next) {
   const user = JSON.parse(ls.get('userData'));
   if (user !== null && user.token) // si l'utilisateur dispose d'un token
   {
-    console.log("Connexion autorisée");
     next(); // alors seulement on autorise la route
   }
   else {
