@@ -2,11 +2,6 @@
   * IMPORTS
   ***************************************************************************/
 import { createRouter, createWebHistory } from 'vue-router'
-import LogIn from '../views/LogIn.vue'
-import SignUp from '../views/SignUp.vue'
-import HomePage from '../views/HomePage.vue'
-import PublishPost from '../views/PublishPost.vue'
-import EditPost from '../views/EditPost.vue'
 import ls from 'localstorage-slim';
  
 // enable global encryption
@@ -19,9 +14,14 @@ ls.config.encrypt = true;
 // AUTHENTIFICATION
 function tokenAccess(to, from, next) {
   const user = JSON.parse(ls.get('userData'));
-  if (user.token) // si l'utilisateur dispose d'un token
+  if (user !== null && user.token) // si l'utilisateur dispose d'un token
   {
+    console.log("Connexion autorisée");
     next(); // alors seulement on autorise la route
+  }
+  else {
+    console.log("Connexion refusée");
+    router.push('/');
   }
 }
 
@@ -41,30 +41,35 @@ const routes = [
     path: '/',
     name: 'LogIn',
     beforeEnter: clearLocalStorage,
-    component: LogIn,
+    component: () => import('../views/LogIn.vue')
   },
   {
     path: '/signup',
     name: 'SignUp',
     beforeEnter: clearLocalStorage,
-    component: SignUp,
+    component: () => import('../views/SignUp.vue')
   },
   {
     path: '/home',
     name: 'HomePage',
     beforeEnter: tokenAccess, // route interdite si pas de token
-    component: HomePage,
+    component: () => import('../views/HomePage.vue')
   },
   {
     path: '/publish',
     name: 'PublishPage',
-    component: PublishPost,
+    component: () => import('../views/PublishPost.vue')
   },
   {
     path: '/edit/:id',
     name: 'EditPost',
-    component: EditPost,
-  }
+    component: () => import('../views/EditPost.vue')
+  },
+  { 
+    path: '/:pathMatch(.*)*', 
+    name: 'NotFound', 
+    component: () => import('../views/ErrorPage.vue')
+  },
 ]
 
 const router = createRouter({

@@ -34,115 +34,71 @@
   </div>
 </template>
   
-<script>
-import Axios from 'axios';
-import ls from 'localstorage-slim';
- 
-// enable global encryption
-ls.config.encrypt = true;
-
-export default {
-  name: 'PostsList',
-  data: function () {
-    return {
-      pseudo: '',
-      userId: '',
-      isAdmin: false,
-      posts: '',
-      post: '',
-      likes: [],
-      liked: null,
-    };
-  },
-  mounted() {
-    this.getLocalStorageData();
-    this.getAllPosts();
-  },
-  methods: {
-
-    // RECUPERER LES DONNES STOCKEES DANS LE LOCALSTORAGE
-    getLocalStorageData() {
-      const user = JSON.parse(ls.get('userData'));
-      this.pseudo = user.pseudo;
-      this.userId = user.userId;
-      this.isAdmin = user.isAdmin;
-    },
-
-    // AFFICHER TOUS LES POSTS
-    getAllPosts() {
-      // Récupère le token de l'utilisateur
-      const user = JSON.parse(ls.get('userData'));
-      const token = user.token;
-      // Créé le header de la requête avec le token
-      const header = { headers: { Authorization: 'Bearer ' + token } };
-      Axios
-        .get('http://localhost:3000/api/posts/', header)
-        .then((res) => {
-          this.posts = res.data;
-          this.user = JSON.stringify(res.data.userId);
-        })
-        .catch((err) => console.log(err));
-    },
-
-    // SUPPRIMER UN POST
-    deletePost(post) {
-      // Récupère le token de l'utilisateur
-      const user = JSON.parse(ls.get('userData'));
-      const token = user.token;
-      // Créé le header de la requête avec le token
-      const header = { headers: { Authorization: 'Bearer ' + token } };
-      Axios
-        .delete('http://localhost:3000/api/posts/' + post._id, header)
-        .then(() => {
-          console.log("Post supprimé !");
-        })
-        .then(() => {
-          this.getAllPosts();
-        })
-        .catch((err) => {
-          console.log("Erreur ! Impossible d'effacer ce post...");
-          console.log(err);
-        });
-    },
-
-    // VERIFIER SI L'USER A DEJA LIKE UN POST
-    checkIfUsersLiked(post) {
-      const user = JSON.parse(ls.get('userData'));
-      console.log('post', post);
-      console.log('user', user.userId);
-      if (post.usersLiked.includes(user.userId)) {
-        return false;
+<script setup>
+  import { ref } from 'vue'
+  import Axios from 'axios';
+  import ls from 'localstorage-slim';
+   
+  // enable global encryption
+  ls.config.encrypt = true;
+  
+  let userId =  ref('');
+  let isAdmin =  ref(false);
+  let posts =  ref('');
+ // let likes =  ref([]);
+ // let liked = ref(null);
+  
+  
+      // RECUPERER LES DONNES STOCKEES DANS LE LOCALSTORAGE
+      function getLocalStorageData() {
+        const user = JSON.parse(ls.get('userData'));
+       // pseudo = user.pseudo;
+        userId = user.userId;
+        isAdmin = user.isAdmin;
       }
-      return true;
-    },
+  
+      // AFFICHER TOUS LES POSTS
+      function getAllPosts() {
+        // Récupère le token de l'utilisateur
+        let user = JSON.parse(ls.get('userData'));
+        const token = user.token;
+        // Créé le header de la requête avec le token
+        const header = { headers: { Authorization: 'Bearer ' + token } };
+        Axios
+          .get('http://localhost:3000/api/posts/', header)
+          .then((res) => {
+            posts.value = res.data;
+            user = JSON.stringify(res.data.userId);
+          })
+          .catch((err) => console.log(err));
+      }
+  
+      // SUPPRIMER UN POST
+      function deletePost(post) {
+        // Récupère le token de l'utilisateur
+        const user = JSON.parse(ls.get('userData'));
+        const token = user.token;
+        // Créé le header de la requête avec le token
+        const header = { headers: { Authorization: 'Bearer ' + token } };
+        Axios
+          .delete('http://localhost:3000/api/posts/' + post._id, header)
+          .then(() => {
+            console.log("Post supprimé !");
+          })
+          .then(() => {
+            getAllPosts();
+          })
+          .catch((err) => {
+            console.log("Erreur ! Impossible d'effacer ce post...");
+            console.log(err);
+          })
+      }
+  
+  getLocalStorageData();
+  getAllPosts();
+  
+  </script>
 
-    // LIKER UN POST
-    likePost(post) {
-      // Récupère le token de l'utilisateur
-      const user = JSON.parse(ls.get('userData'));
-      const token = user.token;
-      // Créé le header de la requête avec le token
-      const header = { headers: { Authorization: 'Bearer ' + token } };
-      const data = {
-        likes: true,
-        userId: this.userId,
-        post: post._id,
-      };
-      Axios
-        .post('http://localhost:3000/api/posts/' + post._id + '/like', data, header)
-        .then(() => {
-          // res.json()
-          this.getAllPosts();
-        })
-        // eslint-disable-next-line no-shadow
-        // .then((data) => this.likes.push(data))
-        .catch((error) => console.log(error));
-      this.liked = true; // <- on indique à notre template que le user à liké ce post
-    },
-  },
-};
-
-</script>
   
 <style lang="scss" scoped>
 .container {
