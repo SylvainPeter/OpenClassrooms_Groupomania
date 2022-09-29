@@ -45,12 +45,14 @@ ls.config.encrypt = true;
 let userId = ref('');
 let isAdmin = ref(false);
 let posts = ref('');
-let liked = ref(false);
-let disliked = ref(false);
-let likevalue = 1;
-let dislikevalue = -1;
+let usersLiked = ref([]);
+let usersDisliked = ref([]);
+let likevalue = null;
+let dislikevalue = null;
+
 
 // RECUPERER LES DONNES STOCKEES DANS LE LOCALSTORAGE
+
 function getLocalStorageData() {
   const user = JSON.parse(ls.get('userData'));
   // pseudo = user.pseudo;
@@ -59,6 +61,7 @@ function getLocalStorageData() {
 }
 
 // AFFICHER TOUS LES POSTS
+
 function getAllPosts() {
   // Récupère le token de l'utilisateur
   let user = JSON.parse(ls.get('userData'));
@@ -75,6 +78,7 @@ function getAllPosts() {
 }
 
 // SUPPRIMER UN POST
+
 function deletePost(post) {
   // Récupère le token de l'utilisateur
   const user = JSON.parse(ls.get('userData'));
@@ -96,69 +100,106 @@ function deletePost(post) {
 }
 
 // LIKER UN POST
+
 function likePost(post) {
   // Récupère le token de l'utilisateur
   const user = JSON.parse(ls.get('userData'));
   const token = user.token;
   // Créé le header de la requête avec le token
   const header = { headers: { Authorization: 'Bearer ' + token } };
-  // Détermine la valeur du like envoyé à l'API
-  if (liked.value === false) {
-    likevalue = 1;
-    console.log(likevalue);
-    console.log("Value is false");
-  }
-  else if (liked.value === true) {
-    likevalue = 0;
-    console.log(likevalue);
-    console.log("Value is true");
-  }
-  const likeData = {
-    like: likevalue,
-    userId: user.userId
-  };
+  // Récupère le array usersLiked de ce post
   Axios
-    .post('http://localhost:3000/api/posts/' + post._id + '/like', likeData, header)
-    .then(() => {
-      console.log("Like ajouté !")
-      liked.value = true;
+    .get('http://localhost:3000/api/posts/' + post._id, header)
+    .then((res) => {
+      usersLiked.value = res.data.usersLiked;
+      console.log('Le array est' + usersLiked.value);
+      // Si le array contient déjà le userId
+      if (usersLiked.value.includes(user.userId)) {
+        likevalue = 0;
+        console.log('la valeur de likevalue est' + likevalue);
+        const data = {
+          like: likevalue,
+          userId: user.userId
+        };
+        Axios
+          .post('http://localhost:3000/api/posts/' + post._id + '/like', data, header)
+          .then(() => {
+            console.log("Like modifié !")
             // Indique au template que le post a été liké
-      console.log(liked.value);
-      getAllPosts();
+            getAllPosts();
+          })
+          .catch((err) => console.log(err));
+      }
+      // Si le array ne contient pas le userId
+      else if (!usersLiked.value.includes(user.userId)) {
+        likevalue = 1;
+        console.log('la valeur de likevalue est' + likevalue);
+        const data = {
+          like: likevalue,
+          userId: user.userId
+        };
+        Axios
+          .post('http://localhost:3000/api/posts/' + post._id + '/like', data, header)
+          .then(() => {
+            console.log("Like modifié !")
+            // Indique au template que le post a été liké
+            getAllPosts();
+          })
+          .catch((err) => console.log(err));
+      }
     })
     .catch((err) => console.log(err));
 }
 
+
 // DISLIKER UN POST
+
 function dislikePost(post) {
   // Récupère le token de l'utilisateur
   const user = JSON.parse(ls.get('userData'));
   const token = user.token;
   // Créé le header de la requête avec le token
   const header = { headers: { Authorization: 'Bearer ' + token } };
-// Détermine la valeur du dislike envoyé à l'API
-  if (disliked.value === false) {
-    dislikevalue = -1;
-    console.log(likevalue);
-    console.log("Value is false");
-  }
-  else if (disliked.value === true) {
-    dislikevalue = 0;
-    console.log(likevalue);
-    console.log("Value is true");
-  }
-  const dislikeData = {
-    like: dislikevalue,
-    userId: user.userId
-  };
+  // Récupère le array usersDisliked de ce post
   Axios
-    .post('http://localhost:3000/api/posts/' + post._id + '/like', dislikeData, header)
-    .then(() => {
-      console.log("Disike ajouté !")
-      // Indique au template que le post a été disliké
-      disliked.value = true;
-      console.log(disliked.value);
-      getAllPosts();
+    .get('http://localhost:3000/api/posts/' + post._id, header)
+    .then((res) => {
+      usersDisliked.value = res.data.usersDisliked;
+      console.log('Le array est' + usersDisliked.value);
+      // Si le array contient déjà le userId
+      if (usersDisliked.value.includes(user.userId)) {
+        dislikevalue = 0;
+        console.log('la valeur de likevalue est' + dislikevalue);
+        const data = {
+          like: dislikevalue,
+          userId: user.userId
+        };
+        Axios
+          .post('http://localhost:3000/api/posts/' + post._id + '/like', data, header)
+          .then(() => {
+            console.log("Dislike modifié !")
+            // Indique au template que le post a été liké
+            getAllPosts();
+          })
+          .catch((err) => console.log(err));
+      }
+      // Si le array ne contient pas le userId
+      else if (!usersDisliked.value.includes(user.userId)) {
+        dislikevalue = -1;
+        console.log('la valeur de likevalue est' + likevalue);
+        const data = {
+          like: dislikevalue,
+          userId: user.userId
+        };
+        Axios
+          .post('http://localhost:3000/api/posts/' + post._id + '/like', data, header)
+          .then(() => {
+            console.log("Dislike modifié !")
+            // Indique au template que le post a été liké
+            getAllPosts();
+          })
+          .catch((err) => console.log(err));
+      }
     })
     .catch((err) => console.log(err));
 }
