@@ -15,10 +15,14 @@
       <div class="post__footer">
         <div class="post__footer--right-block">
           <!-- Likes -->
-          <i class="lni lni-thumbs-up icon" title="Liker" @click="likePost(post)"></i>
+          <button title="Liker" @click="likePost(post)" :disabled="likeDisabled">
+            <i class="lni lni-thumbs-up"></i>
+          </button>
           <span>{{post.likes}}</span>
           <!-- Dislikes -->
-          <i class="lni lni-thumbs-down icon" title="Disliker" @click="dislikePost(post)"></i>
+          <button title="Disliker" @click="dislikePost(post)" :disabled="dislikeDisabled">
+            <i class="lni lni-thumbs-down"></i>
+          </button>
           <span>{{post.dislikes}}</span>
         </div>
         <!-- S'affiche seulement si le user est authentifié ou s'il est admin -->
@@ -44,9 +48,15 @@ ls.config.encrypt = true;
 
 let userId = ref('');
 let isAdmin = ref(false);
+// Data de tous les posts
 let posts = ref('');
+// Tableaux pour vérifier si l'userId est présente
 let usersLiked = ref([]);
 let usersDisliked = ref([]);
+// Disable des buttons
+let likeDisabled = ref(false);
+let dislikeDisabled = ref(false);
+// Les valeurs envoyées à l'API
 let likevalue = null;
 let dislikevalue = null;
 
@@ -112,11 +122,10 @@ function likePost(post) {
     .get('http://localhost:3000/api/posts/' + post._id, header)
     .then((res) => {
       usersLiked.value = res.data.usersLiked;
-      console.log('Le array est' + usersLiked.value);
-      // Si le array contient déjà le userId
+      // Si le array contient le userId de l'utilisateur
       if (usersLiked.value.includes(user.userId)) {
         likevalue = 0;
-        console.log('la valeur de likevalue est' + likevalue);
+        dislikeDisabled.value = false;
         const data = {
           like: likevalue,
           userId: user.userId
@@ -124,16 +133,15 @@ function likePost(post) {
         Axios
           .post('http://localhost:3000/api/posts/' + post._id + '/like', data, header)
           .then(() => {
-            console.log("Like modifié !")
-            // Indique au template que le post a été liké
+            console.log("Like mis à jour !")
             getAllPosts();
           })
           .catch((err) => console.log(err));
       }
-      // Si le array ne contient pas le userId
+      // Si le array ne contient pas le userId de l'utilisateur
       else if (!usersLiked.value.includes(user.userId)) {
         likevalue = 1;
-        console.log('la valeur de likevalue est' + likevalue);
+        dislikeDisabled.value = true;
         const data = {
           like: likevalue,
           userId: user.userId
@@ -141,8 +149,7 @@ function likePost(post) {
         Axios
           .post('http://localhost:3000/api/posts/' + post._id + '/like', data, header)
           .then(() => {
-            console.log("Like modifié !")
-            // Indique au template que le post a été liké
+            console.log("Like mis à jour !")
             getAllPosts();
           })
           .catch((err) => console.log(err));
@@ -165,11 +172,10 @@ function dislikePost(post) {
     .get('http://localhost:3000/api/posts/' + post._id, header)
     .then((res) => {
       usersDisliked.value = res.data.usersDisliked;
-      console.log('Le array est' + usersDisliked.value);
-      // Si le array contient déjà le userId
+      // Si le array contient le userId de l'utilisateur
       if (usersDisliked.value.includes(user.userId)) {
         dislikevalue = 0;
-        console.log('la valeur de likevalue est' + dislikevalue);
+        likeDisabled.value = false;
         const data = {
           like: dislikevalue,
           userId: user.userId
@@ -177,16 +183,15 @@ function dislikePost(post) {
         Axios
           .post('http://localhost:3000/api/posts/' + post._id + '/like', data, header)
           .then(() => {
-            console.log("Dislike modifié !")
-            // Indique au template que le post a été liké
+            console.log("Dislike mis à jour !")
             getAllPosts();
           })
           .catch((err) => console.log(err));
       }
-      // Si le array ne contient pas le userId
+      // Si le array ne contient pas le userId de l'utilisateur
       else if (!usersDisliked.value.includes(user.userId)) {
         dislikevalue = -1;
-        console.log('la valeur de likevalue est' + likevalue);
+        likeDisabled.value = true;
         const data = {
           like: dislikevalue,
           userId: user.userId
@@ -194,8 +199,7 @@ function dislikePost(post) {
         Axios
           .post('http://localhost:3000/api/posts/' + post._id + '/like', data, header)
           .then(() => {
-            console.log("Dislike modifié !")
-            // Indique au template que le post a été liké
+            console.log("Dislike mis à jour !")
             getAllPosts();
           })
           .catch((err) => console.log(err));
@@ -277,7 +281,7 @@ getAllPosts();
       height: 350px;
     }
 
-    // Mobile et tablette A MODIFIER !
+    // Mobile et tablette !
     @media screen and (max-width: 768px) {
       height: 250px;
     }
@@ -310,9 +314,30 @@ getAllPosts();
   }
 }
 
+button {
+  padding: 10px;
+  width: 41px;
+  font-size: 1.1em;
+  font-weight: bold;
+  border: none;
+  background-color: $background-color;
+
+  // Mobile et tablette !
+  @media screen and (max-width: 768px) {
+    font-size: 1em;
+  }
+
+  &:hover {
+    color: $color-primary;
+  }
+
+  &[disabled]:hover {
+    color: $color-tertiary--disabled;
+  }
+}
+
 .link-style {
   position: relative;
-  top: -2px;
   left: 9px;
   color: $color-tertiary;
 }
