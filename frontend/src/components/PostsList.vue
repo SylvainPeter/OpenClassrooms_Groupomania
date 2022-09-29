@@ -15,10 +15,10 @@
       <div class="post__footer">
         <div class="post__footer--right-block">
           <!-- Likes -->
-          <i class="lni lni-thumbs-up icon" title="Liker"></i>
+          <i class="lni lni-thumbs-up icon" title="Liker" @click="likePost(post)"></i>
           <span>{{post.likes}}</span>
           <!-- Dislikes -->
-          <i class="lni lni-thumbs-down icon" title="Disliker"></i>
+          <i class="lni lni-thumbs-down icon" title="Disliker" @click="dislikePost(post)"></i>
           <span>{{post.dislikes}}</span>
         </div>
         <!-- S'affiche seulement si le user est authentifié ou s'il est admin -->
@@ -45,9 +45,10 @@ ls.config.encrypt = true;
 let userId = ref('');
 let isAdmin = ref(false);
 let posts = ref('');
-// let likes =  ref([]);
-// let liked = ref(null);
-
+let liked = ref(false);
+let disliked = ref(false);
+let likevalue = 1;
+let dislikevalue = -1;
 
 // RECUPERER LES DONNES STOCKEES DANS LE LOCALSTORAGE
 function getLocalStorageData() {
@@ -92,6 +93,74 @@ function deletePost(post) {
       console.log("Erreur ! Impossible d'effacer ce post...");
       console.log(err);
     })
+}
+
+// LIKER UN POST
+function likePost(post) {
+  // Récupère le token de l'utilisateur
+  const user = JSON.parse(ls.get('userData'));
+  const token = user.token;
+  // Créé le header de la requête avec le token
+  const header = { headers: { Authorization: 'Bearer ' + token } };
+  // Détermine la valeur du like envoyé à l'API
+  if (liked.value === false) {
+    likevalue = 1;
+    console.log(likevalue);
+    console.log("Value is false");
+  }
+  else if (liked.value === true) {
+    likevalue = 0;
+    console.log(likevalue);
+    console.log("Value is true");
+  }
+  const likeData = {
+    like: likevalue,
+    userId: user.userId
+  };
+  Axios
+    .post('http://localhost:3000/api/posts/' + post._id + '/like', likeData, header)
+    .then(() => {
+      console.log("Like ajouté !")
+      liked.value = true;
+            // Indique au template que le post a été liké
+      console.log(liked.value);
+      getAllPosts();
+    })
+    .catch((err) => console.log(err));
+}
+
+// DISLIKER UN POST
+function dislikePost(post) {
+  // Récupère le token de l'utilisateur
+  const user = JSON.parse(ls.get('userData'));
+  const token = user.token;
+  // Créé le header de la requête avec le token
+  const header = { headers: { Authorization: 'Bearer ' + token } };
+// Détermine la valeur du dislike envoyé à l'API
+  if (disliked.value === false) {
+    dislikevalue = -1;
+    console.log(likevalue);
+    console.log("Value is false");
+  }
+  else if (disliked.value === true) {
+    dislikevalue = 0;
+    console.log(likevalue);
+    console.log("Value is true");
+  }
+  const dislikeData = {
+    like: dislikevalue,
+    userId: user.userId
+  };
+  Axios
+    .post('http://localhost:3000/api/posts/' + post._id + '/like', dislikeData, header)
+    .then(() => {
+      console.log("Disike ajouté !")
+      // Indique au template que le post a été disliké
+      disliked.value = true;
+      console.log(disliked.value);
+      getAllPosts();
+    })
+    .catch((err) => console.log(err));
 }
 
 getLocalStorageData();
