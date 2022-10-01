@@ -55,7 +55,7 @@ header {
         width: 90%;
     }
 
-    // Mobile et tablette A MODIFIER
+    // Mobile et tablette
     @media screen and (max-width: 768px) {
         flex-direction: column;
     }

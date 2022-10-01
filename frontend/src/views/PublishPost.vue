@@ -2,7 +2,7 @@
   <div>
     <home-header></home-header>
     <div class="container">
-      <div class="publish__post">
+      <div id="publish__post">
         <h1>Créer une publication</h1>
         <!-- Zone texte -->
         <textarea type="title" name="title" placeholder="Quoi de neuf ?" rows="10" maxlength="1000" v-model="text"
@@ -11,7 +11,7 @@
         <input type="file" id="add-file" name="image" @change="selectImage" />
       </div>
       <button id="form-validate-button" type="submit" :disabled="isDisabled" @click="createPost">Publier</button>
-      <img class="image__preview" v-if="imageUrl" :src="imageUrl" />
+      <img id="image__preview" v-if="imageUrl" :src="imageUrl" />
     </div>
   </div>
 </template>
@@ -102,7 +102,7 @@ getPseudo();
 
 }
 
-.publish__post {
+#publish__post {
   display: flex;
   flex-direction: column;
   margin: 20px 10px;
@@ -153,7 +153,7 @@ textarea {
   }
 }
 
-.image__preview {
+#image__preview {
   max-width: 300px;
 }
 </style>

@@ -1,9 +1,9 @@
 <template>
   <div class="container">
-    <div class="groupomania-image">
-      <img class="logo" src="../assets/icon-left-font-monochrome-white.png" alt="logo" />
+    <div id="groupomania-image">
+      <img id="logo" src="../assets/icon-left-font-monochrome-white.png" alt="logo" />
     </div>
-    <div class="login">
+    <div id="login">
       <img id="alt-logo" src="../assets/icon-left-font-monochrome-black.png" alt="logo" />
       <h1>CONNEXION</h1>
       <form-log-in></form-log-in>
@@ -33,7 +33,7 @@ import FormLogIn from '../components/FormLogIn.vue';
   }
 }
 
-.groupomania-image {
+#groupomania-image {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -49,21 +49,17 @@ import FormLogIn from '../components/FormLogIn.vue';
   }
 }
 
-.login {
+#logo {
+  width: 54%;
+  opacity: 0.9;
+}
+
+#login {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 65%;
-}
-
-.logo {
-  width: 54%;
-  opacity: 0.9;
-}
-
-h1 {
-  color: $color-primary;
 }
 
 #alt-logo {
@@ -78,4 +74,9 @@ h1 {
     opacity: 0.8;
   }
 }
+
+h1 {
+  color: $color-primary;
+}
+
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <home-header></home-header>
-    <div class="header">
+    <div id="publish">
       <input type="text" placeholder="Que voulez-vous dire ?" @click="$router.push('/publish')">
     </div>
     <posts-list></posts-list>
@@ -18,7 +18,7 @@ import PostsList from '../components/PostsList.vue';
   margin: 10px;
 }
 
-.header {
+#publish {
   display: flex;
   justify-content: center;
   margin: 20px 10px;

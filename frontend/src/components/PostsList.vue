@@ -1,19 +1,21 @@
 <template>
   <div class="container">
     <!-- Posts -->
-    <article class="post" v-for="post in posts" :key="post._id">
+    <article v-for="post in posts" :key="post._id">
       <!-- Identité du user -->
-      <div class="post__header">
+      <header>
         <i class="lni lni-user icon"></i>
-        <span class="post__pseudo">{{ post.pseudo }}</span>
-      </div>
-      <!-- Texte du post -->
-      <p class="post__content" v-show="post.text">{{ post.text }}</p>
-      <!-- Image du post -->
-      <img :src="post.imageUrl" alt='image du post' class="post__image" />
-      <!-- Icones en bas du post -->
-      <div class="post__footer">
-        <div class="post__footer--right-block">
+        <span id="pseudo">{{ post.pseudo }}</span>
+      </header>
+      <main>
+        <!-- Texte du post -->
+        <p id="content" v-show="post.text">{{ post.text }}</p>
+        <!-- Image du post -->
+        <img :src="post.imageUrl" alt='image du post' id="image" />
+        <!-- Icones en bas du post -->
+      </main>
+      <footer>
+        <div id="footer--right-block">
           <!-- Likes -->
           <button title="Liker" @click="likePost(post)" :disabled="likeDisabled">
             <i class="lni lni-thumbs-up"></i>
@@ -26,14 +28,14 @@
           <span>{{post.dislikes}}</span>
         </div>
         <!-- S'affiche seulement si le user est authentifié ou s'il est admin -->
-        <div class="post__footer--left-block" v-if="userId == post.userId || isAdmin">
+        <div id="footer--left-block" v-if="userId == post.userId || isAdmin">
           <!-- Editer le post (en envoie en paramètre l'Id du post)-->
           <i class="lni lni-pencil-alt icon link-style" title="Editer"
             @click="$router.push({ name: 'EditPost', params: {id:post._id} })"></i>
           <!-- Supprimer le post -->
           <i class="lni lni-trash-can icon" title="Supprimer" @click="deletePost(post)"></i>
         </div>
-      </div>
+      </footer>
     </article>
   </div>
 </template>
@@ -216,28 +218,16 @@ getAllPosts();
   
 <style lang="scss" scoped>
 .container {
-  @media screen and (min-width: 768px) {
-    // Laptop
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    // background-color: lemonchiffon;
-    // background-image: url("../assets/globe.png");
-    // background-repeat: round;
-  }
-
-  @media screen and (max-width: 768px) {
-    // A MODIFIER !
-    // Mobile et tablette
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  // background-color: lemonchiffon;
+  // background-image: url("../assets/globe.png");
+  // background-repeat: round;
 }
 
-.post {
+article {
   margin: 20px 10px;
   border-radius: 10px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -248,70 +238,60 @@ getAllPosts();
     width: 50%;
   }
 
-  // Mobile et tablette A MODIFIER !
+  // Mobile et tablette
   @media screen and (max-width: 768px) {
     width: 93%;
   }
+}
 
-  &__header {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
+header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+#pseudo {
+  font-weight: 600;
+}
+
+#content {
+  text-align: left;
+  margin: 0;
+  padding: 8px 10px;
+}
+
+#image {
+  width: 90%;
+  height: 200px;
+  padding: 10px;
+  border-radius: 23px;
+  object-fit: cover;
+
+  // Laptop
+  @media screen and (min-width: 768px) {
+    height: 350px;
   }
 
-  &__pseudo {
-    font-weight: 600;
-  }
-
-  &__content {
-    text-align: left;
-    margin: 0;
-    padding: 8px 10px;
-  }
-
-  &__image {
-    width: 90%;
-    height: 200px;
-    padding: 10px;
-    border-radius: 23px;
-    object-fit: cover;
-
-    // Laptop
-    @media screen and (min-width: 768px) {
-      height: 350px;
-    }
-
-    // Mobile et tablette !
-    @media screen and (max-width: 768px) {
-      height: 250px;
-    }
-  }
-
-  &__footer {
-    display: flex;
-    justify-content: space-between;
-    padding-bottom: 5px;
-  }
-
-  &__footer--right-block {
-    display: flex;
-    align-items: center;
-  }
-
-  &__footer--left-block {
-    display: flex;
-    align-items: baseline;
+  // Mobile et tablette
+  @media screen and (max-width: 768px) {
+    height: 250px;
   }
 }
 
-.icon {
-  padding: 10px;
-  width: 26px;
-  font-weight: 1000;
+footer {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 5px;
+}
 
-  &:hover {
-    color: $color-primary;
-  }
+#footer--right-block {
+  display: flex;
+  align-items: center;
+}
+
+#footer--left-block {
+  display: flex;
+  align-items: baseline;
 }
 
 button {
@@ -322,7 +302,7 @@ button {
   border: none;
   background-color: $background-color;
 
-  // Mobile et tablette !
+  // Mobile et tablette
   @media screen and (max-width: 768px) {
     font-size: 1em;
   }
@@ -333,6 +313,16 @@ button {
 
   &[disabled]:hover {
     color: $color-tertiary--disabled;
+  }
+}
+
+.icon {
+  padding: 10px;
+  width: 26px;
+  font-weight: 1000;
+
+  &:hover {
+    color: $color-primary;
   }
 }
 

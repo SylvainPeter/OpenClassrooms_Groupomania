@@ -1,9 +1,9 @@
 <template>
   <div class="container">
-    <div class="groupomania-image">
-      <img class="logo" src="../assets/icon-left-font-monochrome-white.png" alt="logo" />
+    <div id="groupomania-image">
+      <img id="logo" src="../assets/icon-left-font-monochrome-white.png" alt="logo" />
     </div>
-    <div class="signup">
+    <div id="signup">
       <img id="alt-logo" src="../assets/icon-left-font-monochrome-black.png" alt="logo" />
       <h1>INSCRIPTION</h1>
       <form-sign-up></form-sign-up>
@@ -33,7 +33,7 @@ import FormSignUp from '../components/FormSignUp.vue';
   }
 }
 
-.groupomania-image {
+#groupomania-image {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -49,21 +49,17 @@ import FormSignUp from '../components/FormSignUp.vue';
   }
 }
 
-.signup {
+#logo {
+  width: 54%;
+  opacity: 0.9;
+}
+
+#signup {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 65%;
-}
-
-.logo {
-  width: 54%;
-  opacity: 0.9;
-}
-
-h1 {
-  color: $color-primary;
 }
 
 #alt-logo {
@@ -78,4 +74,9 @@ h1 {
     opacity: 0.8;
   }
 }
+
+h1 {
+  color: $color-primary;
+}
+
 </style>

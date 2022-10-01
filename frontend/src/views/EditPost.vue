@@ -2,7 +2,7 @@
     <div>
         <home-header></home-header>
         <div class="container">
-            <div class="edit__post">
+            <div id="edit__post">
                 <h1>Modifier la publication</h1>
                 <!-- Zone texte -->
                 <textarea type="text" placeholder="Entrez le nouveau texte" rows="10" maxlength="1000"
@@ -11,7 +11,7 @@
                 <input type="file" id="add-file" name="image" @change="selectImage" />
             </div>
             <button id="form-validate-button" @click="updatePost">Modifier</button>
-            <img class="image__preview" v-if="imageUrl" :src="imageUrl" />
+            <img id="image__preview" v-if="imageUrl" :src="imageUrl" />
         </div>
     </div>
 </template>
@@ -112,7 +112,7 @@ getPostData();
     }
 }
 
-.edit__post {
+#edit__post {
     display: flex;
     flex-direction: column;
     margin: 20px 10px;
@@ -163,7 +163,7 @@ textarea {
     }
 }
 
-.image__preview {
+#image__preview {
     max-width: 300px;
 }
 </style>
