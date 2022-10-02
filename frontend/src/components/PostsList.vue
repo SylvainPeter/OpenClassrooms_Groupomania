@@ -52,9 +52,6 @@ let userId = ref('');
 let isAdmin = ref(false);
 // Data de tous les posts
 let posts = ref('');
-// Tableaux pour vérifier si l'userId est présente
-let usersLiked = ref([]);
-let usersDisliked = ref([]);
 // Disable des buttons
 let likeDisabled = ref(false);
 let dislikeDisabled = ref(false);
@@ -71,11 +68,10 @@ function getLocalStorageData() {
 // AFFICHER TOUS LES POSTS
 
 function getAllPosts() {
-  // Récupère le token de l'utilisateur
-  let user = JSON.parse(ls.get('userData'));
-  const token = user.token;
   // Créé le header de la requête avec le token
-  const header = { headers: { Authorization: 'Bearer ' + token } };
+  let user = JSON.parse(ls.get('userData'));
+  const header = { headers: { Authorization: 'Bearer ' + user.token } };
+  // Envoie la requête à l'API
   Axios
     .get('http://localhost:3000/api/posts/', header)
     .then((res) => {
@@ -88,11 +84,10 @@ function getAllPosts() {
 // SUPPRIMER UN POST
 
 function deletePost(post) {
-  // Récupère le token de l'utilisateur
+    // Créé le header de la requête avec le token
   const user = JSON.parse(ls.get('userData'));
-  const token = user.token;
-  // Créé le header de la requête avec le token
-  const header = { headers: { Authorization: 'Bearer ' + token } };
+  const header = { headers: { Authorization: 'Bearer ' + user.token } };
+  // Envoie la requête à l'API
   Axios
     .delete('http://localhost:3000/api/posts/' + post._id, header)
     .then(() => {
@@ -110,18 +105,15 @@ function deletePost(post) {
 // LIKER UN POST
 
 function likePost(post) {
-  // Récupère le token de l'utilisateur
+   // Créé le header de la requête avec le token
   const user = JSON.parse(ls.get('userData'));
-  const token = user.token;
-  // Créé le header de la requête avec le token
-  const header = { headers: { Authorization: 'Bearer ' + token } };
+  const header = { headers: { Authorization: 'Bearer ' + user.token } };
   // Récupère le array usersLiked de ce post
   Axios
     .get('http://localhost:3000/api/posts/' + post._id, header)
     .then((res) => {
-      usersLiked.value = res.data.usersLiked;
       // Si l'API indique que le user a déjà liké ce post
-      if (usersLiked.value.includes(user.userId)) {
+      if (res.data.usersLiked.includes(user.userId)) {
         dislikeDisabled.value = false;
         const data = {
           like: 0, // on annule le like
@@ -136,7 +128,7 @@ function likePost(post) {
           .catch((err) => console.log(err));
       }
       // Si l'API indique que le user n'a pas déjà liké ce post
-      else if (!usersLiked.value.includes(user.userId)) {
+      else if (!res.data.usersLiked.includes(user.userId)) {
         dislikeDisabled.value = true;
         const data = {
           like: 1, // on ajoute le like
@@ -158,18 +150,15 @@ function likePost(post) {
 // DISLIKER UN POST
 
 function dislikePost(post) {
-  // Récupère le token de l'utilisateur
+   // Créé le header de la requête avec le token
   const user = JSON.parse(ls.get('userData'));
-  const token = user.token;
-  // Créé le header de la requête avec le token
-  const header = { headers: { Authorization: 'Bearer ' + token } };
+  const header = { headers: { Authorization: 'Bearer ' + user.token } };
   // Récupère le array usersDisliked de ce post
   Axios
     .get('http://localhost:3000/api/posts/' + post._id, header)
     .then((res) => {
-      usersDisliked.value = res.data.usersDisliked;
       // Si l'API indique que le user a déjà disliké ce post
-      if (usersDisliked.value.includes(user.userId)) {
+      if (res.data.usersDisliked.includes(user.userId)) {
         likeDisabled.value = false;
         const data = {
           like: 0, // on annule le dislike
@@ -184,7 +173,7 @@ function dislikePost(post) {
           .catch((err) => console.log(err));
       }
       // Si l'API indique que le user n'a pas déjà disliké ce post
-      else if (!usersDisliked.value.includes(user.userId)) {
+      else if (!res.data.usersDisliked.includes(user.userId)) {
         likeDisabled.value = true;
         const data = {
           like: -1, // on ajoute le dislike

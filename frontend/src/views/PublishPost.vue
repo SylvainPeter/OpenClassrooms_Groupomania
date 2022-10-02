@@ -58,12 +58,10 @@ function check() {
 
 // ENVOIE UN NOUVEAU POST
 function createPost() {
-  // Récupère le token de l'utilisateur
-  const user = JSON.parse(ls.get('userData'));
-  const token = user.token;
   // Créé le header de la requête avec le token
-  const header = { headers: { Authorization: 'Bearer ' + token } };
-  // Récupère les données
+  const user = JSON.parse(ls.get('userData'));
+  const header = { headers: { Authorization: 'Bearer ' + user.token } };
+  // Récupère les données du post
   const newPostData = new FormData();
   newPostData.append('pseudo', user.pseudo);
   newPostData.append('userId', user.userId);

@@ -48,12 +48,10 @@ function selectImage(event) {
 
 // MODIFIE LE POST
 function getPostData() {
-    // Récupère le token de l'utilisateur
+     // Créé le header de la requête avec le token
     const user = JSON.parse(ls.get('userData'));
-    const token = user.token;
-    // Créé le header de la requête avec le token
-    const header = { headers: { Authorization: 'Bearer ' + token } };
-    // Envoie les données à l'API
+    const header = { headers: { Authorization: 'Bearer ' + user.token } };
+    // Envoie la requête à l'API
     Axios
         .get('http://localhost:3000/api/posts/' + route.params.id, header)
         .then((res) => {
@@ -67,12 +65,10 @@ function getPostData() {
 
 // MODIFIE LE POST
 function updatePost() {
-    // Récupère le token de l'utilisateur
-    const user = JSON.parse(ls.get('userData'));
-    const token = user.token;
     // Créé le header de la requête avec le token
-    const header = { headers: { Authorization: 'Bearer ' + token } };
-    // Récupère les données
+    const user = JSON.parse(ls.get('userData'));
+    const header = { headers: { Authorization: 'Bearer ' + user.token } };
+    // Récupère les données du post
     const myForm = new FormData();
     myForm.append('text', editedText.value);
     myForm.append('image', selectedFile);
