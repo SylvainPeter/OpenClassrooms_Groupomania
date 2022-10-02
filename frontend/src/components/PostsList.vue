@@ -58,10 +58,6 @@ let usersDisliked = ref([]);
 // Disable des buttons
 let likeDisabled = ref(false);
 let dislikeDisabled = ref(false);
-// Les valeurs envoyées à l'API
-let likevalue = null;
-let dislikevalue = null;
-
 
 // RECUPERER LES DONNES STOCKEES DANS LE LOCALSTORAGE
 
@@ -124,12 +120,11 @@ function likePost(post) {
     .get('http://localhost:3000/api/posts/' + post._id, header)
     .then((res) => {
       usersLiked.value = res.data.usersLiked;
-      // Si le array contient le userId de l'utilisateur
+      // Si l'API indique que le user a déjà liké ce post
       if (usersLiked.value.includes(user.userId)) {
-        likevalue = 0;
         dislikeDisabled.value = false;
         const data = {
-          like: likevalue,
+          like: 0, // on annule le like
           userId: user.userId
         };
         Axios
@@ -140,12 +135,11 @@ function likePost(post) {
           })
           .catch((err) => console.log(err));
       }
-      // Si le array ne contient pas le userId de l'utilisateur
+      // Si l'API indique que le user n'a pas déjà liké ce post
       else if (!usersLiked.value.includes(user.userId)) {
-        likevalue = 1;
         dislikeDisabled.value = true;
         const data = {
-          like: likevalue,
+          like: 1, // on ajoute le like
           userId: user.userId
         };
         Axios
@@ -174,12 +168,11 @@ function dislikePost(post) {
     .get('http://localhost:3000/api/posts/' + post._id, header)
     .then((res) => {
       usersDisliked.value = res.data.usersDisliked;
-      // Si le array contient le userId de l'utilisateur
+      // Si l'API indique que le user a déjà disliké ce post
       if (usersDisliked.value.includes(user.userId)) {
-        dislikevalue = 0;
         likeDisabled.value = false;
         const data = {
-          like: dislikevalue,
+          like: 0, // on annule le dislike
           userId: user.userId
         };
         Axios
@@ -190,12 +183,11 @@ function dislikePost(post) {
           })
           .catch((err) => console.log(err));
       }
-      // Si le array ne contient pas le userId de l'utilisateur
+      // Si l'API indique que le user n'a pas déjà disliké ce post
       else if (!usersDisliked.value.includes(user.userId)) {
-        dislikevalue = -1;
         likeDisabled.value = true;
         const data = {
-          like: dislikevalue,
+          like: -1, // on ajoute le dislike
           userId: user.userId
         };
         Axios

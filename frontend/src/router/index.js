@@ -14,13 +14,13 @@ ls.config.encrypt = true;
 // AUTHENTIFICATION
 function tokenAccess(to, from, next) {
   const user = JSON.parse(ls.get('userData'));
-  if (user !== null && user.token) // si l'utilisateur dispose d'un token
+  if (user !== null && user.token) // si l'utilisateur est défini et dispose d'un token
   {
     next(); // alors seulement on autorise la route
   }
   else {
     console.log("Connexion refusée");
-    router.push('/');
+    router.push('/'); // sinon on redirige vers la page login
   }
 }
 
