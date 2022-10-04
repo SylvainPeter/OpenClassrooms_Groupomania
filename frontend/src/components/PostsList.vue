@@ -17,12 +17,12 @@
       <footer>
         <div id="footer--right-block">
           <!-- Likes -->
-          <button title="Liker" @click="likePost(post)" :disabled="likeDisabled">
+          <button title="Liker" @click="likePost(post)" :disabled="post.likeDisabled">
             <i class="lni lni-thumbs-up"></i>
           </button>
           <span>{{post.likes}}</span>
           <!-- Dislikes -->
-          <button title="Disliker" @click="dislikePost(post)" :disabled="dislikeDisabled">
+          <button title="Disliker" @click="dislikePost(post)" :disabled="post.dislikeDisabled">
             <i class="lni lni-thumbs-down"></i>
           </button>
           <span>{{post.dislikes}}</span>
@@ -52,9 +52,7 @@ let userId = ref('');
 let isAdmin = ref(false);
 // Data de tous les posts
 let posts = ref('');
-// Disable des buttons
-let likeDisabled = ref(false);
-let dislikeDisabled = ref(false);
+
 
 // RECUPERER LES DONNES STOCKEES DANS LE LOCALSTORAGE
 
@@ -114,7 +112,8 @@ function likePost(post) {
     .then((res) => {
       // Si l'API indique que le user a déjà liké ce post
       if (res.data.usersLiked.includes(user.userId)) {
-        dislikeDisabled.value = false;
+        post.dislikeDisabled = false;
+        post.likes -= 1;
         const data = {
           like: 0, // on annule le like
           userId: user.userId
@@ -123,13 +122,14 @@ function likePost(post) {
           .post('http://localhost:3000/api/posts/' + post._id + '/like', data, header)
           .then(() => {
             console.log("Like mis à jour !")
-            getAllPosts();
+            // getAllPosts();
           })
           .catch((err) => console.log(err));
       }
       // Si l'API indique que le user n'a pas déjà liké ce post
       else if (!res.data.usersLiked.includes(user.userId)) {
-        dislikeDisabled.value = true;
+        post.dislikeDisabled = true;
+        post.likes += 1;
         const data = {
           like: 1, // on ajoute le like
           userId: user.userId
@@ -138,7 +138,7 @@ function likePost(post) {
           .post('http://localhost:3000/api/posts/' + post._id + '/like', data, header)
           .then(() => {
             console.log("Like mis à jour !")
-            getAllPosts();
+            // getAllPosts();
           })
           .catch((err) => console.log(err));
       }
@@ -159,7 +159,8 @@ function dislikePost(post) {
     .then((res) => {
       // Si l'API indique que le user a déjà disliké ce post
       if (res.data.usersDisliked.includes(user.userId)) {
-        likeDisabled.value = false;
+        post.likeDisabled = false;
+        post.dislikes -= 1;
         const data = {
           like: 0, // on annule le dislike
           userId: user.userId
@@ -168,13 +169,14 @@ function dislikePost(post) {
           .post('http://localhost:3000/api/posts/' + post._id + '/like', data, header)
           .then(() => {
             console.log("Dislike mis à jour !")
-            getAllPosts();
+           //  getAllPosts();
           })
           .catch((err) => console.log(err));
       }
       // Si l'API indique que le user n'a pas déjà disliké ce post
       else if (!res.data.usersDisliked.includes(user.userId)) {
-        likeDisabled.value = true;
+        post.likeDisabled = true;
+        post.dislikes += 1;
         const data = {
           like: -1, // on ajoute le dislike
           userId: user.userId
@@ -183,7 +185,7 @@ function dislikePost(post) {
           .post('http://localhost:3000/api/posts/' + post._id + '/like', data, header)
           .then(() => {
             console.log("Dislike mis à jour !")
-            getAllPosts();
+           //  getAllPosts();
           })
           .catch((err) => console.log(err));
       }
