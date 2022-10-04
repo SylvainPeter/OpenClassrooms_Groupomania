@@ -82,7 +82,7 @@ function getAllPosts() {
 // SUPPRIMER UN POST
 
 function deletePost(post) {
-    // Créé le header de la requête avec le token
+  // Créé le header de la requête avec le token
   const user = JSON.parse(ls.get('userData'));
   const header = { headers: { Authorization: 'Bearer ' + user.token } };
   // Envoie la requête à l'API
@@ -103,42 +103,44 @@ function deletePost(post) {
 // LIKER UN POST
 
 function likePost(post) {
-   // Créé le header de la requête avec le token
+  // Créé le header de la requête avec le token
   const user = JSON.parse(ls.get('userData'));
   const header = { headers: { Authorization: 'Bearer ' + user.token } };
   // Récupère le array usersLiked de ce post
   Axios
     .get('http://localhost:3000/api/posts/' + post._id, header)
     .then((res) => {
-      // Si l'API indique que le user a déjà liké ce post
+      // Si l'API indique que le user a déjà liké ce post, on annule le like
       if (res.data.usersLiked.includes(user.userId)) {
-        post.dislikeDisabled = false;
-        post.likes -= 1;
         const data = {
-          like: 0, // on annule le like
+          like: 0,
           userId: user.userId
         };
         Axios
           .post('http://localhost:3000/api/posts/' + post._id + '/like', data, header)
           .then(() => {
+            // Enable le champ dislike de ce post
+            post.dislikeDisabled = false;
+            // Décrémente l'affichage des likes de ce post
+            post.likes -= 1;
             console.log("Like mis à jour !")
-            // getAllPosts();
           })
           .catch((err) => console.log(err));
       }
-      // Si l'API indique que le user n'a pas déjà liké ce post
+      // Si l'API indique que le user n'a pas déjà liké ce post, on ajoute le like
       else if (!res.data.usersLiked.includes(user.userId)) {
-        post.dislikeDisabled = true;
-        post.likes += 1;
         const data = {
-          like: 1, // on ajoute le like
+          like: 1,
           userId: user.userId
         };
         Axios
           .post('http://localhost:3000/api/posts/' + post._id + '/like', data, header)
           .then(() => {
+            // Disable le champ dislike de ce post
+            post.dislikeDisabled = true;
+            // Incrémente l'affichage des likes de ce post
+            post.likes += 1;
             console.log("Like mis à jour !")
-            // getAllPosts();
           })
           .catch((err) => console.log(err));
       }
@@ -150,33 +152,32 @@ function likePost(post) {
 // DISLIKER UN POST
 
 function dislikePost(post) {
-   // Créé le header de la requête avec le token
+  // Créé le header de la requête avec le token
   const user = JSON.parse(ls.get('userData'));
   const header = { headers: { Authorization: 'Bearer ' + user.token } };
   // Récupère le array usersDisliked de ce post
   Axios
     .get('http://localhost:3000/api/posts/' + post._id, header)
     .then((res) => {
-      // Si l'API indique que le user a déjà disliké ce post
+      // Si l'API indique que le user a déjà disliké ce post, on annule le dislike
       if (res.data.usersDisliked.includes(user.userId)) {
-        post.likeDisabled = false;
-        post.dislikes -= 1;
         const data = {
-          like: 0, // on annule le dislike
+          like: 0,
           userId: user.userId
         };
         Axios
           .post('http://localhost:3000/api/posts/' + post._id + '/like', data, header)
           .then(() => {
+            // Enable le champ like de ce post
+            post.likeDisabled = false;
+            // Décrémente l'affichage des dislikes de ce post
+            post.dislikes -= 1;
             console.log("Dislike mis à jour !")
-           //  getAllPosts();
           })
           .catch((err) => console.log(err));
       }
       // Si l'API indique que le user n'a pas déjà disliké ce post
       else if (!res.data.usersDisliked.includes(user.userId)) {
-        post.likeDisabled = true;
-        post.dislikes += 1;
         const data = {
           like: -1, // on ajoute le dislike
           userId: user.userId
@@ -184,8 +185,11 @@ function dislikePost(post) {
         Axios
           .post('http://localhost:3000/api/posts/' + post._id + '/like', data, header)
           .then(() => {
+            // Disable le champ like de ce post
+            post.likeDisabled = true;
+            // Incrémente l'affichage des dislikes de ce post
+            post.dislikes += 1;
             console.log("Dislike mis à jour !")
-           //  getAllPosts();
           })
           .catch((err) => console.log(err));
       }
