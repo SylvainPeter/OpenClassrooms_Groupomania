@@ -17,12 +17,12 @@
       <footer>
         <div id="footer--right-block">
           <!-- Likes -->
-          <button title="Liker" @click="likePost(post)" :disabled="isDisliked(post)">
+          <button title="Liker" @click="likePost(post)" :disabled="likeDisable(post)">
             <i class="lni lni-thumbs-up"></i>
           </button>
           <span>{{post.likes}}</span>
           <!-- Dislikes -->
-          <button title="Disliker" @click="dislikePost(post)" :disabled="isLiked(post)">
+          <button title="Disliker" @click="dislikePost(post)" :disabled="dislikeDisable(post)">
             <i class="lni lni-thumbs-down"></i>
           </button>
           <span>{{post.dislikes}}</span>
@@ -100,19 +100,22 @@ function deletePost(post) {
     })
 }
 
+// GERE LE DISABLE DU CHAMP LIKE
 
-// VERIFIE SI L'USER A DEJA LIKE
-
-function isLiked(post) {
-  if (post.usersLiked.includes(userId)) { return true; }
-  else if (!post.usersLiked.includes(userId) || post.likes == 0) { return false; }
+function likeDisable(post) {
+  // si le user a déjà disliké ce post, le champ like est disable
+  if (post.usersDisliked.includes(userId)) { return true; }
+  // si le user n'a pas encore disliké ce post ou que le dislike est à 0, le champ like est actif
+  else if (!post.usersDisliked.includes(userId) || post.dislikes == 0) { return false; }
 }
 
-// VERIFIE SI L'USER A DEJA DISLIKE
+// GERE LE DISABLE DU CHAMP DISLIKE
 
-function isDisliked(post) {
-  if (post.usersDisliked.includes(userId)) { return true; }
-  else if (!post.usersDisliked.includes(userId) || post.dislikes == 0) { return false; }
+function dislikeDisable(post) {
+  // si le user a déjà liké ce post, le champ dislike est disable
+  if (post.usersLiked.includes(userId)) { return true; }
+  // si le user n'a pas encore disliké ce post ou que le like est à 0, le champ dislike est actif
+  else if (!post.usersLiked.includes(userId) || post.likes == 0) { return false; }
 }
 
 // LIKER UN POST
