@@ -31,7 +31,7 @@ let pseudo = ref('');
 let text = ref('');
 let imageUrl = ref('');
 let isDisabled = ref(true);
-let selectedFile = '';
+let selectedFile = null;
 
 // RECUPERE LE PSEUDO
 function getPseudo() {
@@ -67,6 +67,7 @@ function createPost() {
   newPostData.append('userId', user.userId);
   newPostData.append('text', text.value);
   newPostData.append('image', selectedFile);
+  console.log(selectedFile);
   // Envoie les données à l'API
   Axios
     .post('http://localhost:3000/api/posts/', newPostData, header)

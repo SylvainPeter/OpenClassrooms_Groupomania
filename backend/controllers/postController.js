@@ -52,9 +52,9 @@ exports.createPost = (req, res, next) => {
   const post = new Post({ // créé le nouveau post
     ...req.body, // récupère toutes les infos du body
     userId: req.auth.userId,
-    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` // construit l'URL de l'image envoyée
+    // construit l'URL de l'image envoyée
+    imageUrl: req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : '' 
   });
-
   post.save() // enregistre le post dans la BDD
     .then(() => { res.status(201).json({ message: 'Nouveau post publié !' }) })
     .catch(error => { res.status(400).json({ error }) })

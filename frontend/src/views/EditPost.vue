@@ -46,7 +46,7 @@ function selectImage(event) {
     imageUrl.value = URL.createObjectURL(selectedFile);
 }
 
-// MODIFIE LE POST
+// RECUPERE LE POST
 function getPostData() {
      // Créé le header de la requête avec le token
     const user = JSON.parse(ls.get('userData'));

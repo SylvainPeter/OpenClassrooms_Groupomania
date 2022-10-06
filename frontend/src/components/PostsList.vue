@@ -11,18 +11,18 @@
         <!-- Texte du post -->
         <p id="content" v-show="post.text">{{ post.text }}</p>
         <!-- Image du post -->
-        <img :src="post.imageUrl" alt='image du post' id="image" />
+        <img v-if="post.imageUrl" :src="post.imageUrl" alt='image du post' id="image" />
         <!-- Icones en bas du post -->
       </main>
       <footer>
         <div id="footer--right-block">
           <!-- Likes -->
-          <button title="Liker" @click="likePost(post)" :disabled="post.likeDisabled">
+          <button title="Liker" @click="likePost(post)" :disabled="isDisliked(post)">
             <i class="lni lni-thumbs-up"></i>
           </button>
           <span>{{post.likes}}</span>
           <!-- Dislikes -->
-          <button title="Disliker" @click="dislikePost(post)" :disabled="post.dislikeDisabled">
+          <button title="Disliker" @click="dislikePost(post)" :disabled="isLiked(post)">
             <i class="lni lni-thumbs-down"></i>
           </button>
           <span>{{post.dislikes}}</span>
@@ -100,54 +100,56 @@ function deletePost(post) {
     })
 }
 
+
+// VERIFIE SI L'USER A DEJA LIKE
+
+function isLiked(post) {
+  if (post.usersLiked.includes(userId)) { return true; }
+  else if (!post.usersLiked.includes(userId) || post.likes == 0) { return false; }
+}
+
+// VERIFIE SI L'USER A DEJA DISLIKE
+
+function isDisliked(post) {
+  if (post.usersDisliked.includes(userId)) { return true; }
+  else if (!post.usersDisliked.includes(userId) || post.dislikes == 0) { return false; }
+}
+
 // LIKER UN POST
 
 function likePost(post) {
   // Créé le header de la requête avec le token
   const user = JSON.parse(ls.get('userData'));
   const header = { headers: { Authorization: 'Bearer ' + user.token } };
-  // Récupère le array usersLiked de ce post
-  Axios
-    .get('http://localhost:3000/api/posts/' + post._id, header)
-    .then((res) => {
-      // Si l'API indique que le user a déjà liké ce post, on annule le like
-      if (res.data.usersLiked.includes(user.userId)) {
-        const data = {
-          like: 0,
-          userId: user.userId
-        };
-        Axios
-          .post('http://localhost:3000/api/posts/' + post._id + '/like', data, header)
-          .then(() => {
-            // Enable le champ dislike de ce post
-            post.dislikeDisabled = false;
-            // Décrémente l'affichage des likes de ce post
-            post.likes -= 1;
-            console.log("Like mis à jour !")
-          })
-          .catch((err) => console.log(err));
-      }
-      // Si l'API indique que le user n'a pas déjà liké ce post, on ajoute le like
-      else if (!res.data.usersLiked.includes(user.userId)) {
-        const data = {
-          like: 1,
-          userId: user.userId
-        };
-        Axios
-          .post('http://localhost:3000/api/posts/' + post._id + '/like', data, header)
-          .then(() => {
-            // Disable le champ dislike de ce post
-            post.dislikeDisabled = true;
-            // Incrémente l'affichage des likes de ce post
-            post.likes += 1;
-            console.log("Like mis à jour !")
-          })
-          .catch((err) => console.log(err));
-      }
-    })
-    .catch((err) => console.log(err));
+  // Si le user a déjà liké ce post, on annule le like
+  if (post.usersLiked.includes(userId)) {
+    const data = {
+      like: 0,
+      userId: user.userId
+    };
+    Axios
+      .post('http://localhost:3000/api/posts/' + post._id + '/like', data, header)
+      .then(() => {
+        console.log("Like mis à jour !")
+        getAllPosts();
+      })
+      .catch((err) => console.log(err));
+  }
+  // Si le user n'a pas déjà liké ce post, on ajoute le like
+  else {
+    const data = {
+      like: 1,
+      userId: user.userId
+    };
+    Axios
+      .post('http://localhost:3000/api/posts/' + post._id + '/like', data, header)
+      .then(() => {
+        console.log("Like mis à jour !")
+        getAllPosts();
+      })
+      .catch((err) => console.log(err));
+  }
 }
-
 
 // DISLIKER UN POST
 
@@ -155,46 +157,34 @@ function dislikePost(post) {
   // Créé le header de la requête avec le token
   const user = JSON.parse(ls.get('userData'));
   const header = { headers: { Authorization: 'Bearer ' + user.token } };
-  // Récupère le array usersDisliked de ce post
-  Axios
-    .get('http://localhost:3000/api/posts/' + post._id, header)
-    .then((res) => {
-      // Si l'API indique que le user a déjà disliké ce post, on annule le dislike
-      if (res.data.usersDisliked.includes(user.userId)) {
-        const data = {
-          like: 0,
-          userId: user.userId
-        };
-        Axios
-          .post('http://localhost:3000/api/posts/' + post._id + '/like', data, header)
-          .then(() => {
-            // Enable le champ like de ce post
-            post.likeDisabled = false;
-            // Décrémente l'affichage des dislikes de ce post
-            post.dislikes -= 1;
-            console.log("Dislike mis à jour !")
-          })
-          .catch((err) => console.log(err));
-      }
-      // Si l'API indique que le user n'a pas déjà disliké ce post
-      else if (!res.data.usersDisliked.includes(user.userId)) {
-        const data = {
-          like: -1, // on ajoute le dislike
-          userId: user.userId
-        };
-        Axios
-          .post('http://localhost:3000/api/posts/' + post._id + '/like', data, header)
-          .then(() => {
-            // Disable le champ like de ce post
-            post.likeDisabled = true;
-            // Incrémente l'affichage des dislikes de ce post
-            post.dislikes += 1;
-            console.log("Dislike mis à jour !")
-          })
-          .catch((err) => console.log(err));
-      }
-    })
-    .catch((err) => console.log(err));
+  // Si le user a déjà disliké ce post, on annule le dislike
+  if (post.usersDisliked.includes(userId)) {
+    const data = {
+      like: 0,
+      userId: user.userId
+    };
+    Axios
+      .post('http://localhost:3000/api/posts/' + post._id + '/like', data, header)
+      .then(() => {
+        console.log("Dislike mis à jour !")
+        getAllPosts();
+      })
+      .catch((err) => console.log(err));
+  }
+  // Si le user n'a pas déjà disliké ce post, on ajoute le dislike
+  else {
+    const data = {
+      like: -1,
+      userId: user.userId
+    };
+    Axios
+      .post('http://localhost:3000/api/posts/' + post._id + '/like', data, header)
+      .then(() => {
+        console.log("Dislike mis à jour !")
+        getAllPosts();
+      })
+      .catch((err) => console.log(err));
+  }
 }
 
 getLocalStorageData();
