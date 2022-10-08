@@ -5,7 +5,7 @@
       <div id="publish__post">
         <h1>Créer une publication</h1>
         <!-- Zone texte -->
-        <textarea type="title" name="title" placeholder="Quoi de neuf ?" rows="10" maxlength="1000" v-model="text"
+        <textarea name="title" placeholder="Quoi de neuf ?" rows="10" maxlength="1000" v-model="text"
           @input="check" />
         <!-- Bouton pour ajouter une image -->
         <input type="file" id="add-file" name="image" @change="selectImage" />

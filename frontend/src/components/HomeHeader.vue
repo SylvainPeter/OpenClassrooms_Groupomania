@@ -6,7 +6,7 @@
                     <img src="../assets/icon-left-font.png" id="logo" alt="Logo Groupomania" title="Accueil">
                 </router-link>
                 <strong>Bonjour, {{ pseudo }} !</strong>
-                <div id="logout" @click="Logout()">Déconnexion</div>
+                <div id="logout" tabindex="0" @click="Logout()">Déconnexion</div>
             </div>
         </header>
     </div>

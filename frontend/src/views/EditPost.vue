@@ -5,7 +5,7 @@
             <div id="edit__post">
                 <h1>Modifier la publication</h1>
                 <!-- Zone texte -->
-                <textarea type="text" placeholder="Entrez le nouveau texte" rows="10" maxlength="1000"
+                <textarea placeholder="Entrez le nouveau texte" rows="10" maxlength="1000"
                     v-model="editedText" />
                 <!-- Bouton pour ajouter une image -->
                 <input type="file" id="add-file" name="image" @change="selectImage" />

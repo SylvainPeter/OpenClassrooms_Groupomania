@@ -8,7 +8,7 @@
         <div v-show="checkPseudo" class="alert">{{ checkPseudoMsg }}</div>
       </div>
       <div>
-        <label for="mail">Adresse email</label>
+        <label for="email">Adresse email</label>
         <input type="email" id="email" name="user_mail" placeholder="Ex: jean.dupont@gmail.com" v-model="email"
           @input="checkEmailField()" required>
         <div v-show="checkEmail" class="alert">{{ checkEmailMsg }}</div>

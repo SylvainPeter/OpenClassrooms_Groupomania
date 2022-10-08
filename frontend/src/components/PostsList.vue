@@ -11,7 +11,7 @@
         <!-- Texte du post -->
         <p id="content" v-show="post.text">{{ post.text }}</p>
         <!-- Image du post -->
-        <img v-if="post.imageUrl" :src="post.imageUrl" alt='image du post' id="image" />
+        <img v-if="post.imageUrl" :src="post.imageUrl" alt='image du post' id="image">
         <!-- Icones en bas du post -->
       </main>
       <footer>
@@ -30,10 +30,10 @@
         <!-- S'affiche seulement si le user est authentifié ou s'il est admin -->
         <div id="footer--left-block" v-if="userId == post.userId || isAdmin">
           <!-- Editer le post (en envoie en paramètre l'Id du post)-->
-          <i class="lni lni-pencil-alt icon link-style" title="Editer"
+          <i class="lni lni-pencil-alt icon link-style" title="Editer" tabindex="0"
             @click="$router.push({ name: 'EditPost', params: {id:post._id} })"></i>
           <!-- Supprimer le post -->
-          <i class="lni lni-trash-can icon" title="Supprimer" @click="deletePost(post)"></i>
+          <i class="lni lni-trash-can icon" title="Supprimer" tabindex="0" @click="deletePost(post)"></i>
         </div>
       </footer>
     </article>
