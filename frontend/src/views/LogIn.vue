@@ -1,10 +1,10 @@
 <template>
   <div class="container">
     <div id="groupomania-image">
-      <img id="logo" src="../assets/icon-left-font-monochrome-white.png" alt="logo">
+      <img id="logo" src="../assets/icon-left-font-monochrome-white.png" alt="logo groupomania">
     </div>
     <div id="login">
-      <img id="alt-logo" src="../assets/icon-left-font-monochrome-black.png" alt="logo">
+      <img id="alt-logo" src="../assets/icon-left-font-monochrome-black.png" alt="logo groupomania">
       <h1>CONNEXION</h1>
       <form-log-in></form-log-in>
     </div>

@@ -11,7 +11,7 @@
         <input type="file" id="add-file" name="image" @change="selectImage" />
       </div>
       <button id="form-validate-button" type="submit" :disabled="isDisabled" @click="createPost">Publier</button>
-      <img id="image__preview" v-if="imageUrl" :src="imageUrl" />
+      <img v-if="imageUrl" id="image__preview" :src="imageUrl" alt="preview de l'image" />
     </div>
   </div>
 </template>

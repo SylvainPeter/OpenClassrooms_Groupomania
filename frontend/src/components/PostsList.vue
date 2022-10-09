@@ -11,7 +11,7 @@
         <!-- Texte du post -->
         <p id="content" v-show="post.text">{{ post.text }}</p>
         <!-- Image du post -->
-        <img v-if="post.imageUrl" :src="post.imageUrl" alt='image du post' id="image">
+        <img v-if="post.imageUrl" id="image" :src="post.imageUrl" alt='image du post'>
         <!-- Icones en bas du post -->
       </main>
       <footer>
@@ -199,18 +199,17 @@ getAllPosts();
 <style lang="scss" scoped>
 .container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  // background-color: lemonchiffon;
-  // background-image: url("../assets/globe.png");
-  // background-repeat: round;
+  // background-image: url("../assets/startup.jpg");
+  // background-size: cover;
 }
 
 article {
   margin: 20px 10px;
   border-radius: 10px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: 5px 7px 9px rgba(0, 0, 0, 0.25);
   background-color: $background-color;
 
   // Laptop
@@ -228,6 +227,9 @@ header {
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  border-radius: 10px 10px 0 0;
+  background-color: $color-primary;
+  color: white;
 }
 
 #pseudo {
@@ -236,8 +238,9 @@ header {
 
 #content {
   text-align: left;
-  margin: 0;
+  margin: 20px 0 15px 0;
   padding: 8px 10px;
+  font-weight: 600;
 }
 
 #image {

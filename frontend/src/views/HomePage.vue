@@ -2,7 +2,7 @@
   <div class="container">
     <home-header></home-header>
     <div id="publish">
-      <input type="text" placeholder="Que voulez-vous dire ?" @click="$router.push('/publish')">
+      <button type="button" @click="$router.push('/publish')">Que voulez-vous dire ?</button>
     </div>
     <posts-list></posts-list>
   </div>
@@ -24,7 +24,7 @@ import PostsList from '../components/PostsList.vue';
   margin: 20px 10px;
 }
 
-input {
+button {
   width: 300px;
   padding: 15px;
   font-size: 1em;
@@ -32,7 +32,8 @@ input {
   border: white;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   background-color: $home-background-color;
-  color: $color-primary;
+  color: $color-tertiary;
+  cursor: text;
 
   &:hover {
     background-color: $home-background-color--darken;

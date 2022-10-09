@@ -3,7 +3,7 @@
         <header>
             <div id="header-content">
                 <router-link to="/home">
-                    <img src="../assets/icon-left-font.png" id="logo" alt="Logo Groupomania" title="Accueil">
+                    <img src="../assets/icon-left-font.png" id="logo" alt="logo groupomania">
                 </router-link>
                 <strong>Bonjour, {{ pseudo }} !</strong>
                 <div id="logout" tabindex="0" @click="Logout()">Déconnexion</div>
