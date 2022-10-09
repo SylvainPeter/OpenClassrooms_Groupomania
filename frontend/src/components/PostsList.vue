@@ -240,7 +240,13 @@ header {
   text-align: left;
   margin: 20px 0 15px 0;
   padding: 8px 10px;
-  font-weight: 600;
+  font-size: 1.06em;
+  font-weight: 400;
+
+  // Mobile et tablette
+  @media screen and (max-width: 768px) {
+    font-size: 0.97em;
+  }
 }
 
 #image {
