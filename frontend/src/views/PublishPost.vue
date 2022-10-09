@@ -84,7 +84,7 @@ getPseudo();
   
 <style lang="scss" scoped>
 .container {
-
+  
   // Laptop
   @media screen and (min-width: 768px) {
     display: flex;
@@ -118,17 +118,21 @@ getPseudo();
 }
 
 h1 {
+  padding: 10px;
+  border-radius: 10px;
   font-size: large;
+  background-color: $color-primary;
+  color: $background-color;
 }
 
 textarea {
-  margin: 20px 20px 10px 20px;
+  margin: 20px 2px 10px 2px;
   padding: 10px;
   border-radius: 10px;
 }
 
 #add-file {
-  padding: 12px 0 12px 21px;
+  padding: 12px 0 12px 8px;
 }
 
 #form-validate-button {

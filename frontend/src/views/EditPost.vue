@@ -5,13 +5,13 @@
             <div id="edit__post">
                 <h1>Modifier la publication</h1>
                 <!-- Zone texte -->
-                <textarea placeholder="Entrez le nouveau texte" rows="10" maxlength="1000"
-                    v-model="editedText" />
+                <textarea placeholder="Entrez le nouveau texte" rows="10" maxlength="1000" v-model="editedText" />
                 <!-- Bouton pour ajouter une image -->
                 <input type="file" id="add-file" name="image" @change="selectImage" />
+
             </div>
             <button id="form-validate-button" @click="updatePost">Modifier</button>
-            <img v-if="imageUrl" id="image__preview" :src="imageUrl" alt="preview de l'image"/>
+            <img v-if="imageUrl" id="image__preview" :src="imageUrl" alt="preview de l'image" />
         </div>
     </div>
 </template>
@@ -48,7 +48,7 @@ function selectImage(event) {
 
 // RECUPERE LE POST
 function getPostData() {
-     // Créé le header de la requête avec le token
+    // Créé le header de la requête avec le token
     const user = JSON.parse(ls.get('userData'));
     const header = { headers: { Authorization: 'Bearer ' + user.token } };
     // Envoie la requête à l'API
@@ -125,17 +125,21 @@ getPostData();
 }
 
 h1 {
+    padding: 10px;
+    border-radius: 10px;
     font-size: large;
+    background-color: $color-primary;
+    color: $background-color;
 }
 
 textarea {
-    margin: 20px 20px 10px 20px;
+    margin: 20px 2px 10px 2px;
     padding: 10px;
     border-radius: 10px;
 }
 
 #add-file {
-    padding: 12px 0 12px 21px;
+    padding: 12px 0 12px 8px;
 }
 
 #form-validate-button {

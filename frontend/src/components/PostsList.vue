@@ -4,7 +4,7 @@
     <article v-for="post in posts" :key="post._id">
       <!-- Identité du user -->
       <header>
-        <i class="lni lni-user icon"></i>
+        <i class="lni lni-user user_icon"></i>
         <span id="pseudo">{{ post.pseudo }}</span>
       </header>
       <main>
@@ -229,7 +229,7 @@ header {
   align-items: center;
   border-radius: 10px 10px 0 0;
   background-color: $color-primary;
-  color: white;
+  color: $background-color;
 }
 
 #pseudo {
@@ -279,15 +279,16 @@ footer {
 
 button {
   padding: 10px;
+  margin-left: 1px;
   width: 41px;
-  font-size: 1.1em;
+  font-size: 1.3em;
   font-weight: bold;
   border: none;
   background-color: $background-color;
 
   // Mobile et tablette
   @media screen and (max-width: 768px) {
-    font-size: 1em;
+    font-size: 1.2em;
   }
 
   &:hover {
@@ -299,10 +300,23 @@ button {
   }
 }
 
+.user_icon {
+  padding: 10px;
+  width: 26px;
+  font-size: 1.2em;
+  font-weight: 1000;
+}
+
 .icon {
   padding: 10px;
   width: 26px;
+  font-size: 1.2em;
   font-weight: 1000;
+
+  // Mobile et tablette
+  @media screen and (max-width: 768px) {
+    font-size: 1.1em;
+  }
 
   &:hover {
     color: $color-primary;
