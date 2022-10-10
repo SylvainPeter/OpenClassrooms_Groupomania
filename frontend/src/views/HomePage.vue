@@ -31,12 +31,12 @@ button {
   border-radius: 50px;
   border: white;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  background-color: $home-background-color;
+  background-color: $background-color--darken;
   color: $color-tertiary;
   cursor: text;
 
   &:hover {
-    background-color: $home-background-color--darken;
+    background-color: $background-color--more-darken;
   }
 }
 </style>

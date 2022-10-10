@@ -25,3 +25,5 @@ $color-tertiary--darken : darken($color-tertiary, 4%);
 $color-tertiary--lighten : lighten($color-tertiary, 30%);
 $color-tertiary--disabled : lighten($color-tertiary, 47%);
 $home-background-color--darken: darken($home-background-color, 4%);
+$background-color--darken: darken($background-color, 10%);
+$background-color--more-darken: darken($background-color--darken, 5%);

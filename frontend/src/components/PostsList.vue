@@ -202,14 +202,14 @@ getAllPosts();
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  // background-image: url("../assets/startup.jpg");
+  background-image: url("../assets/geometric.jpg");
   // background-size: cover;
 }
 
 article {
   margin: 20px 10px;
   border-radius: 10px;
-  box-shadow: 5px 7px 9px rgba(0, 0, 0, 0.25);
+  box-shadow: 11px 12px 8px rgba(0, 0, 0, 0.25);
   background-color: $background-color;
 
   // Laptop
