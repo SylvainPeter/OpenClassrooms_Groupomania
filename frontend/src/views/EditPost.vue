@@ -12,6 +12,7 @@
             </div>
             <button id="form-validate-button" @click="updatePost">Modifier</button>
             <img v-if="imageUrl" id="image__preview" :src="imageUrl" alt="preview de l'image" />
+            <i v-if="imageUrl" class="lni lni-trash-can icon" title="Supprimer" @click="deleteImage"></i>
         </div>
     </div>
 </template>
@@ -40,12 +41,6 @@ function getUserId() {
     userId.value = user.userId;
 }
 
-// FICHIER SELECTIONNE
-function selectImage(event) {
-    selectedFile = event.target.files[0];
-    imageUrl.value = URL.createObjectURL(selectedFile);
-}
-
 // RECUPERE LE POST
 function getPostData() {
     // Créé le header de la requête avec le token
@@ -61,6 +56,18 @@ function getPostData() {
         .catch((err) => {
             console.log(err);
         });
+}
+
+// FICHIER SELECTIONNE
+function selectImage(event) {
+    selectedFile = event.target.files[0];
+    imageUrl.value = URL.createObjectURL(selectedFile);
+}
+
+// SUPPRIME L'IMAGE
+function deleteImage() {
+    imageUrl.value = '';
+    selectedFile = '';
 }
 
 // MODIFIE LE POST
@@ -165,6 +172,22 @@ textarea {
 
 #image__preview {
     max-width: 300px;
+}
+
+.icon {
+    padding: 10px;
+    width: 26px;
+    font-size: 1.2em;
+    font-weight: 1000;
+
+    // Mobile et tablette
+    @media screen and (max-width: 768px) {
+        font-size: 1.1em;
+    }
+
+    &:hover {
+        color: $color-primary;
+    }
 }
 </style>
   

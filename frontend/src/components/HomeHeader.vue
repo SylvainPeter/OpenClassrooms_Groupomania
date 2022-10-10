@@ -3,9 +3,9 @@
         <header>
             <div id="header-content">
                 <router-link to="/home">
-                    <img src="../assets/icon-left-font.png" id="logo" alt="logo groupomania">
+                    <img src="../assets/icon-left-font.png" id="logo" title="Accueil" alt="logo groupomania">
                 </router-link>
-                <strong>Bonjour, {{ pseudo }} !</strong>
+                <strong>Bonjour, <router-link to="/user" id="user">{{ pseudo }}</router-link> !</strong>
                 <div id="logout" tabindex="0" @click="Logout()">Déconnexion</div>
             </div>
         </header>
@@ -64,6 +64,14 @@ header {
 #logo {
     width: 180px;
     margin: 10px;
+}
+
+#user {
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
 }
 
 #logout {

@@ -64,6 +64,11 @@ const routes = [
     name: 'EditPost',
     component: () => import('../views/EditPost.vue')
   },
+  {
+    path: '/user',
+    name: 'UserInfos',
+    component: () => import('../views/UserInfos.vue')
+  },
   { 
     path: '/:pathMatch(.*)*', 
     name: 'NotFound', 

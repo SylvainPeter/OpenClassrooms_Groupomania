@@ -99,6 +99,7 @@ function userLogIn() {
             token: res.data.token,
             userId: res.data.userId,
             isAdmin: res.data.isAdmin,
+            email: email.value,
           };
           // on stocke les infos de l'utilisateur dans le localStorage
           ls.set('userData', JSON.stringify(userInfos));

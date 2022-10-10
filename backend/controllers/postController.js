@@ -52,7 +52,7 @@ exports.createPost = (req, res, next) => {
   const post = new Post({ // créé le nouveau post
     ...req.body, // récupère toutes les infos du body
     userId: req.auth.userId,
-    // construit l'URL de l'image envoyée
+    // construit l'URL de l'image envoyée (accepte les images vides)
     imageUrl: req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : '' 
   });
   post.save() // enregistre le post dans la BDD
@@ -66,7 +66,8 @@ exports.createPost = (req, res, next) => {
 exports.editPost = (req, res, next) => {
   const postObject = req.file ? { // vérifie si req.file existe ou non
     ...req.body, // récupère les nouvelles infos du body
-    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` // construit l'URL de l'image envoyée
+        // construit l'URL de l'image envoyée (accepte les images vides)
+    imageUrl: req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : '' 
   } : { ...req.body };
   Post.findOne({ _id: req.params.id })
     .then((post) => {
