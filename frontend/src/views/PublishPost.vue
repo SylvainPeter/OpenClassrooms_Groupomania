@@ -53,21 +53,13 @@ function deleteImage() {
   imageUrl.value = '';
   selectedFile = null;
   // si on supprime l'image et qu'il n'y a pas de texte, on désactive le bouton Publier
-  if (text.value.length < 1) {
-    isDisabled.value = true;
-  }
+  if (text.value.length < 1) { isDisabled.value = true; }
 }
 
 // CONTROLE DU TEXTE
 function check() {
   // si le texte est supérieur ou égal à 1 caractère, on active le bouton Publier
-  if (text.value.length >= 1) {
-    isDisabled.value = false;
-  }
-  // si le texte est inférieur à 1 caractère, on désactive le bouton Publier
-  if (text.value.length < 1) {
-    isDisabled.value = true;
-  }
+  text.value.length >= 1 ? isDisabled.value = false : isDisabled.value = true;
 }
 
 // ENVOIE UN NOUVEAU POST

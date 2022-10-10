@@ -7,6 +7,7 @@
             <p>Votre ID : {{userId}}</p>
             <p>Votre pseudo : {{pseudo}}</p>
             <p>Votre adresse email : {{email}}</p>
+            <p>Votre mot de passe : ************</p>
             <p v-if="isAdmin == true" >Vous êtes administrateur !</p>
             <p v-else>Vous n'êtes pas administrateur</p>
         </div>
@@ -34,8 +35,8 @@ function getLocalStorageData() {
     const user = JSON.parse(ls.get('userData'));
     // pseudo = user.pseudo;
     userId = user.userId;
-    email = user.email;
     pseudo = user.pseudo;
+    email = user.email;
     isAdmin = user.isAdmin;
 }
 

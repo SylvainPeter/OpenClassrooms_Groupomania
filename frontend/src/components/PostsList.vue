@@ -203,7 +203,6 @@ getAllPosts();
   justify-content: center;
   align-items: center;
   background-image: url("../assets/geometric.jpg");
-  // background-size: cover;
 }
 
 article {
