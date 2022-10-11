@@ -5,7 +5,9 @@
                 <router-link to="/home">
                     <img src="../assets/icon-left-font.png" id="logo" title="Accueil" alt="logo groupomania">
                 </router-link>
-                <strong>Bonjour, <router-link to="/user" id="user">{{ pseudo }}</router-link> !</strong>
+                <strong>Bonjour,
+                    <router-link to="/user" id="user" title="Infos utilisateur">{{ pseudo }}</router-link> !
+                </strong>
                 <div id="logout" tabindex="0" @click="Logout()">Déconnexion</div>
             </div>
         </header>

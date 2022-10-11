@@ -11,7 +11,7 @@
       </div>
       <button id="form-validate-button" type="submit" :disabled="isDisabled" @click="createPost">Publier</button>
       <img v-if="imageUrl" id="image__preview" :src="imageUrl" alt="preview de l'image" />
-      <i v-if="imageUrl" class="lni lni-trash-can icon" title="Supprimer" @click="deleteImage"></i>
+      <i v-if="imageUrl" class="lni lni-trash-can icon" title="Supprimer l'image" @click="deleteImage"></i>
     </div>
   </div>
 </template>
@@ -73,7 +73,6 @@ function createPost() {
   newPostData.append('userId', user.userId);
   newPostData.append('text', text.value);
   newPostData.append('image', selectedFile);
-  console.log(selectedFile);
   // Envoie les données à l'API
   Axios
     .post('http://localhost:3000/api/posts/', newPostData, header)
@@ -167,7 +166,7 @@ textarea {
 }
 
 .icon {
-  padding: 10px;
+  margin: 30px 0 40px 0;
   width: 26px;
   font-size: 1.2em;
   font-weight: 1000;

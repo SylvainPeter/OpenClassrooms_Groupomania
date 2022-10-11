@@ -2,16 +2,16 @@
     <div>
         <home-header></home-header>
         <div class="container">
-        <div id="user">
-            <h1><i class="lni lni-user user_icon"></i>Infos Utilisateur</h1>
-            <p>Votre ID : {{userId}}</p>
-            <p>Votre pseudo : {{pseudo}}</p>
-            <p>Votre adresse email : {{email}}</p>
-            <p>Votre mot de passe : ************</p>
-            <p v-if="isAdmin == true" >Vous êtes administrateur !</p>
-            <p v-else>Vous n'êtes pas administrateur</p>
+            <div id="user">
+                <h1><i class="lni lni-user user_icon"></i>Infos Utilisateur</h1>
+                <p><strong>Votre ID :</strong> {{userId}}</p>
+                <p><strong>Votre pseudo :</strong> {{pseudo}}</p>
+                <p><strong>Votre adresse email :</strong> {{email}}</p>
+                <p><strong>Votre mot de passe :</strong> ************</p>
+                <p v-if="isAdmin == true"><strong>Vous êtes administrateur ! 🌞</strong></p>
+                <p v-else><strong>Vous n'êtes pas administrateur 😢</strong></p>
+            </div>
         </div>
-    </div>
     </div>
 </template>
     
@@ -44,23 +44,21 @@ getLocalStorageData()
 </script>
 
 <style lang="scss" scoped>
-
-
 .container {
 
-// Laptop
-@media screen and (min-width: 768px) {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+    // Laptop
+    @media screen and (min-width: 768px) {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
-// Mobile et tablette
-@media screen and (max-width: 768px) {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+    // Mobile et tablette
+    @media screen and (max-width: 768px) {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
 }
 
@@ -92,17 +90,17 @@ h1 {
 p {
     font-size: 1.3em;
 
-        // Mobile et tablette
-        @media screen and (max-width: 768px) {
+    // Mobile et tablette
+    @media screen and (max-width: 768px) {
         font-size: 1.1em;
     }
 
 }
-.user_icon {
-  padding: 10px;
-  width: 26px;
-  font-size: 1.2em;
-  font-weight: 1000;
-}
 
+.user_icon {
+    padding: 10px;
+    width: 26px;
+    font-size: 1.2em;
+    font-weight: 1000;
+}
 </style>

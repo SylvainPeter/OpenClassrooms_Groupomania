@@ -12,7 +12,7 @@
             </div>
             <button id="form-validate-button" @click="updatePost">Modifier</button>
             <img v-if="imageUrl" id="image__preview" :src="imageUrl" alt="preview de l'image" />
-            <i v-if="imageUrl" class="lni lni-trash-can icon" title="Supprimer" @click="deleteImage"></i>
+            <i v-if="imageUrl" class="lni lni-trash-can icon" title="Supprimer l'image" @click="deleteImage"></i>
         </div>
     </div>
 </template>
@@ -175,7 +175,7 @@ textarea {
 }
 
 .icon {
-    padding: 10px;
+    margin: 30px 0 40px 0;
     width: 26px;
     font-size: 1.2em;
     font-weight: 1000;

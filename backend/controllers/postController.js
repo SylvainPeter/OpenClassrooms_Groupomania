@@ -53,9 +53,10 @@ exports.createPost = (req, res, next) => {
     ...req.body, // récupère toutes les infos du body
     userId: req.auth.userId,
     // construit l'URL de l'image envoyée (accepte les images vides)
-    imageUrl: req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : '' 
+    imageUrl: req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : ''
   });
-  post.save() // enregistre le post dans la BDD
+  // enregistre le post dans la BDD
+  post.save()
     .then(() => { res.status(201).json({ message: 'Nouveau post publié !' }) })
     .catch(error => { res.status(400).json({ error }) })
 };
@@ -64,11 +65,14 @@ exports.createPost = (req, res, next) => {
 // MOFIDIE UN POST
 
 exports.editPost = (req, res, next) => {
-  const postObject = req.file ? { // vérifie si req.file existe ou non
+  // si req.file existe
+  const postObject = req.file ? {
     ...req.body, // récupère les nouvelles infos du body
-        // construit l'URL de l'image envoyée (accepte les images vides)
-    imageUrl: req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : '' 
-  } : { ...req.body };
+    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` // construit l'URL de l'image envoyée
+  }
+    // si req.file n'existe pas
+    : { ...req.body, imageUrl: req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : '' };
+  // on cherche le Post dans la base de données
   Post.findOne({ _id: req.params.id })
     .then((post) => {
       if (post.userId == req.auth.userId || req.isAdmin == true) { // si l'utilisateur est authentifié ou s'il est admin
