@@ -66,12 +66,14 @@ exports.createPost = (req, res, next) => {
 
 exports.editPost = (req, res, next) => {
   // si req.file existe
-  const postObject = req.file ? {
+  let postObject = req.file ? {
     ...req.body, // récupère les nouvelles infos du body
     imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` // construit l'URL de l'image envoyée
   }
     // si req.file n'existe pas
     : { ...req.body };
+    // postObject = postObject.image=='' ? postObject.imageUrl='' : postObject ;
+    console.log(postObject);
   // on cherche le Post dans la base de données
   Post.findOne({ _id: req.params.id })
     .then((post) => {

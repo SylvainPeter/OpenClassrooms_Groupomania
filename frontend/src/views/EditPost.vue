@@ -8,7 +8,6 @@
                 <textarea placeholder="Entrez le nouveau texte" rows="10" maxlength="1000" v-model="editedText" />
                 <!-- Bouton pour ajouter une image -->
                 <input type="file" id="add-file" name="image" @change="selectImage" />
-
             </div>
             <button id="form-validate-button" @click="updatePost">Modifier</button>
             <img v-if="imageUrl" id="image__preview" :src="imageUrl" alt="preview de l'image" />

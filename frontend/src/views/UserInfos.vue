@@ -4,7 +4,6 @@
         <div class="container">
             <div id="user">
                 <h1><i class="lni lni-user user_icon"></i>Infos Utilisateur</h1>
-                <p><strong>Votre ID :</strong> {{userId}}</p>
                 <p><strong>Votre pseudo :</strong> {{pseudo}}</p>
                 <p><strong>Votre adresse email :</strong> {{email}}</p>
                 <p><strong>Votre mot de passe :</strong> ************</p>
@@ -23,7 +22,6 @@ import ls from 'localstorage-slim';
 // enable global encryption
 ls.config.encrypt = true;
 
-let userId = ref('');
 let pseudo = ref('');
 let email = ref('');
 let isAdmin = ref('');
@@ -33,8 +31,6 @@ let isAdmin = ref('');
 
 function getLocalStorageData() {
     const user = JSON.parse(ls.get('userData'));
-    // pseudo = user.pseudo;
-    userId = user.userId;
     pseudo = user.pseudo;
     email = user.email;
     isAdmin = user.isAdmin;
