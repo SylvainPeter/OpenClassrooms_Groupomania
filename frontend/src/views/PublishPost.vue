@@ -11,7 +11,9 @@
       </div>
       <button id="form-validate-button" type="submit" :disabled="isDisabled" @click="createPost">Publier</button>
       <img v-if="imageUrl" id="image__preview" :src="imageUrl" alt="preview de l'image" />
-      <i v-if="imageUrl" class="lni lni-trash-can icon" title="Supprimer l'image" @click="deleteImage"></i>
+      <button v-if="imageUrl" id="trashcan" title="Supprimer l'image" tabindex="0" @click="deleteImage">
+        <i class="lni lni-trash-can"></i>
+      </button>
     </div>
   </div>
 </template>
@@ -165,15 +167,17 @@ textarea {
   max-width: 300px;
 }
 
-.icon {
+#trashcan {
   margin: 30px 0 40px 0;
-  width: 26px;
-  font-size: 1.2em;
+  width: 41px;
+  font-size: 1.3em;
   font-weight: 1000;
+  border: none;
+  background-color: $background-color;
 
   // Mobile et tablette
   @media screen and (max-width: 768px) {
-    font-size: 1.1em;
+    font-size: 1.3em;
   }
 
   &:hover {

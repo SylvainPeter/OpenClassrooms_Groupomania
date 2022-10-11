@@ -30,10 +30,13 @@
         <!-- S'affiche seulement si le user est authentifié ou s'il est admin -->
         <div id="footer--left-block" v-if="userId == post.userId || isAdmin">
           <!-- Editer le post (en envoie en paramètre l'Id du post)-->
-          <i class="lni lni-pencil-alt icon link-style" title="Editer" tabindex="0"
-            @click="$router.push({ name: 'EditPost', params: {id:post._id} })"></i>
+          <button title="Editer" tabindex="0" @click="$router.push({ name: 'EditPost', params: {id:post._id} })">
+            <i class="lni lni-pencil-alt"></i>
+          </button>
           <!-- Supprimer le post -->
-          <i class="lni lni-trash-can icon" title="Supprimer" tabindex="0" @click="deletePost(post)"></i>
+          <button title="Supprimer" tabindex="0" @click="deletePost(post)">
+            <i class="lni lni-trash-can"></i>
+          </button>
         </div>
       </footer>
     </article>
@@ -310,28 +313,6 @@ button {
   width: 26px;
   font-size: 1.2em;
   font-weight: 1000;
-}
-
-.icon {
-  padding: 10px;
-  width: 26px;
-  font-size: 1.2em;
-  font-weight: 1000;
-
-  // Mobile et tablette
-  @media screen and (max-width: 768px) {
-    font-size: 1.1em;
-  }
-
-  &:hover {
-    color: $color-primary;
-  }
-}
-
-.link-style {
-  position: relative;
-  left: 9px;
-  color: $color-tertiary;
 }
 </style>
   

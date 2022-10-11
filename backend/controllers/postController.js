@@ -71,7 +71,7 @@ exports.editPost = (req, res, next) => {
     imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` // construit l'URL de l'image envoyée
   }
     // si req.file n'existe pas
-    : { ...req.body, imageUrl: req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : '' };
+    : { ...req.body };
   // on cherche le Post dans la base de données
   Post.findOne({ _id: req.params.id })
     .then((post) => {
