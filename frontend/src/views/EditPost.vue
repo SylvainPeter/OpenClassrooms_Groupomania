@@ -67,8 +67,8 @@ function selectImage(event) {
 
 // SUPPRIME L'IMAGE
 function deleteImage() {
+    selectedFile = 'deleted';
     imageUrl.value = '';
-    selectedFile = '';
 }
 
 // MODIFIE LE POST

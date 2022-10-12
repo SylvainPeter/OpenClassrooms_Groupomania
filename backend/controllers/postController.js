@@ -65,15 +65,22 @@ exports.createPost = (req, res, next) => {
 // MOFIDIE UN POST
 
 exports.editPost = (req, res, next) => {
-  // si req.file existe
-  let postObject = req.file ? {
-    ...req.body, // récupère les nouvelles infos du body
-    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` // construit l'URL de l'image envoyée
+  let postObject = '';
+    // si req.file existe (une nouvelle image a été postée)
+  if (req.file) {
+    postObject = {
+    ...req.body, // on récupère les nouvelles infos du body
+    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` // on construit l'URL de l'image envoyée
   }
-    // si req.file n'existe pas
-    : { ...req.body };
-    // postObject = postObject.image=='' ? postObject.imageUrl='' : postObject ;
-    console.log(postObject);
+}
+ // si req.file n'existe pas et que l'utilisateur a effacé l'ancienne image
+else if (!req.file && req.body.image == 'deleted') {
+  postObject = { ...req.body, imageUrl: '' };
+}
+// si req.file n'existe pas et que l'utilisateur n'a pas effacé l'ancienne image
+else if (!req.file) {
+  postObject = { ...req.body };
+}
   // on cherche le Post dans la base de données
   Post.findOne({ _id: req.params.id })
     .then((post) => {
