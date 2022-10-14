@@ -1,17 +1,17 @@
 /**************************************************************************
   * IMPORTS
   ***************************************************************************/
- const bcrypt = require('bcrypt');
- const jwt = require('jsonwebtoken');
- const User = require('../models/userModel');
- 
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const User = require('../models/userModel');
 
- /**************************************************************************
-    * FUNCTIONS
-    ***************************************************************************/
- 
+
+/**************************************************************************
+   * FUNCTIONS
+   ***************************************************************************/
+
 // SIGNUP (OK)
- 
+
 exports.signup = (req, res, next) => {
   bcrypt.hash(req.body.password, 10) // hashe le mot de passe récupéré dans le body (avec 10 cycles de salage)
     .then(hash => { // on récupère le hash
@@ -44,12 +44,12 @@ exports.login = (req, res, next) => {
           res.status(200).json({
             userId: user._id,
             token: jwt.sign( // Chiffre un nouveau token
-              { userId: user._id },
+              { userId: user._id, isAdmin: user.isAdmin },
               process.env.RANDOM_SECRET_TOKEN, // chaîne secrète
               { expiresIn: '24h' } // définit la durée de validité du token à 24 heures
             ),
-            isAdmin: user.isAdmin, // ?
-            pseudo: user.pseudo, // ?
+            isAdmin: user.isAdmin,
+            pseudo: user.pseudo
           });
         })
         .catch(error => res.status(500).json({ error }));

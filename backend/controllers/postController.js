@@ -66,25 +66,25 @@ exports.createPost = (req, res, next) => {
 
 exports.editPost = (req, res, next) => {
   let postObject = '';
-    // si req.file existe (une nouvelle image a été postée)
+  // si req.file existe (une nouvelle image a été postée)
   if (req.file) {
     postObject = {
-    ...req.body, // on récupère les nouvelles infos du body
-    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` // on construit l'URL de l'image envoyée
+      ...req.body, // on récupère les nouvelles infos du body
+      imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` // on construit l'URL de l'image envoyée
+    }
   }
-}
- // si req.file n'existe pas et que l'utilisateur a effacé l'ancienne image
-else if (!req.file && req.body.image == 'deleted') {
-  postObject = { ...req.body, imageUrl: '' };
-}
-// si req.file n'existe pas et que l'utilisateur n'a pas effacé l'ancienne image
-else if (!req.file) {
-  postObject = { ...req.body };
-}
+  // si req.file n'existe pas et que l'utilisateur a effacé l'ancienne image
+  else if (!req.file && req.body.image == 'deleted') {
+    postObject = { ...req.body, imageUrl: '' };
+  }
+  // si req.file n'existe pas et que l'utilisateur n'a pas effacé l'ancienne image
+  else if (!req.file) {
+    postObject = { ...req.body };
+  }
   // on cherche le Post dans la base de données
   Post.findOne({ _id: req.params.id })
     .then((post) => {
-      if (post.userId == req.auth.userId || req.isAdmin == true) { // si l'utilisateur est authentifié ou s'il est admin
+      if (post.userId == req.auth.userId || req.auth.isAdmin == true) { // si l'utilisateur est authentifié ou s'il est admin
         Post.updateOne({ _id: req.params.id }, { ...postObject, _id: req.params.id }) // met à jour le Post ayant le même _id que le paramètre de la requête
           .then(() => res.status(200).json({ message: 'Post modifié !' }))
           .catch(error => res.status(401).json({ error }));
@@ -102,7 +102,7 @@ else if (!req.file) {
 exports.deletePost = (req, res, next) => {
   Post.findOne({ _id: req.params.id }) // cherche dans la BDD le post ayant le même id que le paramètre de la requête
     .then(post => {
-      if (post.userId == req.auth.userId || req.isAdmin == true) { // si l'utilisateur est authentifié ou s'il est admin
+      if (post.userId == req.auth.userId || req.auth.isAdmin == true) { // si l'utilisateur est authentifié ou s'il est admin
         const filename = post.imageUrl.split('/images/')[1];
         fs.unlink(`images/${filename}`, () => { // supprime l'image du dossier image
           Post.deleteOne({ _id: req.params.id }) // supprime le post de la BDD
