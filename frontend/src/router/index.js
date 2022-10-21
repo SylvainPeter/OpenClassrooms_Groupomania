@@ -57,16 +57,19 @@ const routes = [
   {
     path: '/publish',
     name: 'PublishPage',
+    beforeEnter: tokenAccess, // route interdite si pas de token
     component: () => import('../views/PublishPost.vue')
   },
   {
     path: '/edit/:id',
     name: 'EditPost',
+    beforeEnter: tokenAccess, // route interdite si pas de token
     component: () => import('../views/EditPost.vue')
   },
   {
     path: '/user',
     name: 'UserInfos',
+    beforeEnter: tokenAccess, // route interdite si pas de token
     component: () => import('../views/UserInfos.vue')
   },
   { 
