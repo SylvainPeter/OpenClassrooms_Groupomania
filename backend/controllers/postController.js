@@ -13,7 +13,8 @@ dotenv.config();
 // RECUPERE TOUS LES POSTS
 
 exports.getAllPosts = (req, res, next) => {
-  Post.find().sort({ _id: -1 }).then( // cherche tous les posts dans la BDD et les trie du plus récent au plus ancien
+  // cherche tous les posts dans la BDD et les trie du plus récent au plus ancien
+  Post.find().sort({ _id: -1 }).then(
     (posts) => {
       res.status(200).json(posts); // renvoie tous les posts au format JSON
     }
@@ -72,7 +73,8 @@ exports.editPost = (req, res, next) => {
   if (req.file) {
     postObject = {
       ...req.body, // on récupère les nouvelles infos du body
-      imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` // on construit l'URL de la nouvelle image envoyée
+      // on construit l'URL de la nouvelle image envoyée
+      imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     }
     // on cherche le Post dans la base de données
     Post.findOne({ _id: req.params.id })
@@ -82,7 +84,8 @@ exports.editPost = (req, res, next) => {
           // on efface l'ancienne image
           const filename = post.imageUrl.split('/images/')[1];
           fs.unlink(`images/${filename}`, () => {
-            Post.updateOne({ _id: req.params.id }, { ...postObject, _id: req.params.id }) // on met à jour le Post ayant le même _id que le paramètre de la requête
+            // on met à jour le Post ayant le même _id que le paramètre de la requête
+            Post.updateOne({ _id: req.params.id }, { ...postObject, _id: req.params.id })
               .then(() => res.status(200).json({ message: 'Post modifié, nouvelle image ajoutée !' }))
               .catch(error => res.status(401).json({ error }));
           });
@@ -106,7 +109,8 @@ exports.editPost = (req, res, next) => {
           // on efface l'ancienne image
           const filename = post.imageUrl.split('/images/')[1];
           fs.unlink(`images/${filename}`, () => {
-            Post.updateOne({ _id: req.params.id }, { ...postObject, _id: req.params.id }) // on met à jour le Post ayant le même _id que le paramètre de la requête
+            // on met à jour le Post ayant le même _id que le paramètre de la requête
+            Post.updateOne({ _id: req.params.id }, { ...postObject, _id: req.params.id })
               .then(() => res.status(200).json({ message: 'Post modifié, ancienne image supprimée !' }))
               .catch(error => res.status(401).json({ error }));
           });
@@ -125,8 +129,10 @@ exports.editPost = (req, res, next) => {
     // on cherche le Post dans la base de données
     Post.findOne({ _id: req.params.id })
       .then((post) => {
-        if (post.userId == req.auth.userId || req.auth.isAdmin == true) { // si l'utilisateur est authentifié ou s'il est admin
-          Post.updateOne({ _id: req.params.id }, { ...postObject, _id: req.params.id }) // met à jour le Post ayant le même _id que le paramètre de la requête
+        // si l'utilisateur est authentifié ou s'il est admin
+        if (post.userId == req.auth.userId || req.auth.isAdmin == true) {
+          // on met à jour le Post ayant le même _id que le paramètre de la requête
+          Post.updateOne({ _id: req.params.id }, { ...postObject, _id: req.params.id })
             .then(() => res.status(200).json({ message: 'Post modifié !' }))
             .catch(error => res.status(401).json({ error }));
         } else { // si l'utilisateur n'est pas autorisé
@@ -143,9 +149,11 @@ exports.editPost = (req, res, next) => {
 
 // SUPPRIME UN POST
 exports.deletePost = (req, res, next) => {
-  Post.findOne({ _id: req.params.id }) // cherche dans la BDD le post ayant le même id que le paramètre de la requête
+  // on cherche dans la BDD le post ayant le même id que le paramètre de la requête
+  Post.findOne({ _id: req.params.id })
     .then(post => {
-      if (post.userId == req.auth.userId || req.auth.isAdmin == true) { // si l'utilisateur est authentifié ou s'il est admin
+      // si l'utilisateur est authentifié ou s'il est admin
+      if (post.userId == req.auth.userId || req.auth.isAdmin == true) {
         const filename = post.imageUrl.split('/images/')[1];
         fs.unlink(`images/${filename}`, () => { // supprime l'image du dossier image
           Post.deleteOne({ _id: req.params.id }) // supprime le post de la BDD
@@ -164,7 +172,8 @@ exports.deletePost = (req, res, next) => {
 
 // LIKE OU DISLIKE UN POST
 exports.likePost = (req, res, next) => {
-  if (req.body.like === 1) { // si l'utilisateur like le post (1)
+  // si l'utilisateur like le post (1)
+  if (req.body.like === 1) {
     Post.updateOne( // mise à jour du post
       { _id: req.params.id },
       {
@@ -176,7 +185,8 @@ exports.likePost = (req, res, next) => {
       .catch((error) => res.status(400).json({ error }));
   }
 
-  else if (req.body.like === -1) { // si l'utilisateur dislike le post (-1)
+  // si l'utilisateur dislike le post (-1)
+  else if (req.body.like === -1) {
     Post.updateOne( // mise à jour du post
       { _id: req.params.id },
       {
@@ -188,10 +198,12 @@ exports.likePost = (req, res, next) => {
       .catch((error) => res.status(400).json({ error }));
   }
 
-  else if (req.body.like === 0) { // si l'utilisateur annule son like ou son dislike (0)
+  // si l'utilisateur annule son like ou son dislike (0)
+  else if (req.body.like === 0) {
     Post.findOne({ _id: req.params.id })
       .then((post) => {
-        if (post.usersLiked.includes(req.auth.userId)) { // si l'id de l'utilisateur est déjà présent dans usersLiked
+        // si l'id de l'utilisateur est déjà présent dans usersLiked
+        if (post.usersLiked.includes(req.auth.userId)) {
           Post.updateOne( // mise à jour du post
             { _id: req.params.id },
             {
@@ -204,7 +216,8 @@ exports.likePost = (req, res, next) => {
             })
             .catch((error) => res.status(400).json({ error }));
         }
-        else if (post.usersDisliked.includes(req.auth.userId)) { // si l'id de l'utilisateur est déjà présent dans usersDisliked
+        // si l'id de l'utilisateur est déjà présent dans usersDisliked
+        else if (post.usersDisliked.includes(req.auth.userId)) {
           Post.updateOne( // mise à jour du post
             { _id: req.params.id },
             {
