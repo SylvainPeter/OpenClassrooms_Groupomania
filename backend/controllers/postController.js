@@ -70,31 +70,72 @@ exports.editPost = (req, res, next) => {
   if (req.file) {
     postObject = {
       ...req.body, // on récupère les nouvelles infos du body
-      imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` // on construit l'URL de l'image envoyée
+      imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` // on construit l'URL de la nouvelle image envoyée
     }
+    // on cherche le Post dans la base de données
+    Post.findOne({ _id: req.params.id })
+      .then((post) => {
+        // si l'utilisateur est authentifié ou s'il est admin
+        if (post.userId == req.auth.userId || req.auth.isAdmin == true) {
+          // on efface l'ancienne image
+          const filename = post.imageUrl.split('/images/')[1];
+          fs.unlink(`images/${filename}`, () => {
+            Post.updateOne({ _id: req.params.id }, { ...postObject, _id: req.params.id }) // on met à jour le Post ayant le même _id que le paramètre de la requête
+              .then(() => res.status(200).json({ message: 'Post modifié !' }))
+              .catch(error => res.status(401).json({ error }));
+          });
+        } else { // si l'utilisateur n'est pas autorisé
+          res.status(401).json({ message: 'Pas autorisé à modifier !' });
+        }
+      }) // en cas d'erreur
+      .catch((error) => {
+        res.status(400).json({ error });
+      });
   }
-  // si req.file n'existe pas et que l'utilisateur a effacé l'ancienne image
+
+  // si req.file n'existe pas (pas de nouvelle image) et que l'utilisateur a effacé l'ancienne image
   else if (!req.file && req.body.image == 'deleted') {
     postObject = { ...req.body, imageUrl: '' };
+    // on cherche le Post dans la base de données
+    Post.findOne({ _id: req.params.id })
+      .then((post) => {
+        // si l'utilisateur est authentifié ou s'il est admin
+        if (post.userId == req.auth.userId || req.auth.isAdmin == true) {
+          // on efface l'ancienne image
+          const filename = post.imageUrl.split('/images/')[1];
+          fs.unlink(`images/${filename}`, () => {
+            Post.updateOne({ _id: req.params.id }, { ...postObject, _id: req.params.id }) // on met à jour le Post ayant le même _id que le paramètre de la requête
+              .then(() => res.status(200).json({ message: 'Post modifié !' }))
+              .catch(error => res.status(401).json({ error }));
+          });
+        } else { // si l'utilisateur n'est pas autorisé
+          res.status(401).json({ message: 'Pas autorisé à modifier !' });
+        }
+      }) // en cas d'erreur
+      .catch((error) => {
+        res.status(400).json({ error });
+      });
   }
-  // si req.file n'existe pas et que l'utilisateur n'a pas effacé l'ancienne image
+
+  // si req.file n'existe pas (pas de nouvelle image) et que l'utilisateur n'a pas effacé l'ancienne image
   else if (!req.file) {
     postObject = { ...req.body };
+    // on cherche le Post dans la base de données
+    Post.findOne({ _id: req.params.id })
+      .then((post) => {
+        if (post.userId == req.auth.userId || req.auth.isAdmin == true) { // si l'utilisateur est authentifié ou s'il est admin
+          Post.updateOne({ _id: req.params.id }, { ...postObject, _id: req.params.id }) // met à jour le Post ayant le même _id que le paramètre de la requête
+            .then(() => res.status(200).json({ message: 'Post modifié !' }))
+            .catch(error => res.status(401).json({ error }));
+        } else { // si l'utilisateur n'est pas autorisé
+          res.status(401).json({ message: 'Pas autorisé à modifier !' });
+        }
+      })
+      .catch((error) => {
+        res.status(400).json({ error });
+      });
   }
-  // on cherche le Post dans la base de données
-  Post.findOne({ _id: req.params.id })
-    .then((post) => {
-      if (post.userId == req.auth.userId || req.auth.isAdmin == true) { // si l'utilisateur est authentifié ou s'il est admin
-        Post.updateOne({ _id: req.params.id }, { ...postObject, _id: req.params.id }) // met à jour le Post ayant le même _id que le paramètre de la requête
-          .then(() => res.status(200).json({ message: 'Post modifié !' }))
-          .catch(error => res.status(401).json({ error }));
-      } else { // si l'utilisateur n'est pas autorisé
-        res.status(401).json({ message: 'Pas autorisé à modifier !' });
-      }
-    })
-    .catch((error) => {
-      res.status(400).json({ error });
-    });
+
 };
 
 
