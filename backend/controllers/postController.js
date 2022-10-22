@@ -65,8 +65,10 @@ exports.createPost = (req, res, next) => {
 // MOFIDIE UN POST
 
 exports.editPost = (req, res, next) => {
+
   let postObject = '';
-  // si req.file existe (une nouvelle image a été postée)
+
+  // si req.file existe (l'utilisateur a posté une nouvelle image)
   if (req.file) {
     postObject = {
       ...req.body, // on récupère les nouvelles infos du body
@@ -81,7 +83,7 @@ exports.editPost = (req, res, next) => {
           const filename = post.imageUrl.split('/images/')[1];
           fs.unlink(`images/${filename}`, () => {
             Post.updateOne({ _id: req.params.id }, { ...postObject, _id: req.params.id }) // on met à jour le Post ayant le même _id que le paramètre de la requête
-              .then(() => res.status(200).json({ message: 'Post modifié !' }))
+              .then(() => res.status(200).json({ message: 'Post modifié, nouvelle image ajoutée !' }))
               .catch(error => res.status(401).json({ error }));
           });
         } else { // si l'utilisateur n'est pas autorisé
@@ -105,7 +107,7 @@ exports.editPost = (req, res, next) => {
           const filename = post.imageUrl.split('/images/')[1];
           fs.unlink(`images/${filename}`, () => {
             Post.updateOne({ _id: req.params.id }, { ...postObject, _id: req.params.id }) // on met à jour le Post ayant le même _id que le paramètre de la requête
-              .then(() => res.status(200).json({ message: 'Post modifié !' }))
+              .then(() => res.status(200).json({ message: 'Post modifié, ancienne image supprimée !' }))
               .catch(error => res.status(401).json({ error }));
           });
         } else { // si l'utilisateur n'est pas autorisé
