@@ -1,5 +1,5 @@
 <template>
-  <div class="form-content">
+  <main class="form-content">
     <form class="form" method="post">
       <div>
         <label for="pseudo">Pseudo </label>
@@ -25,7 +25,7 @@
       <p>Déjà inscrit ?</p>
       <button class="form__button--login" @click="router.push('/')">Se connecter</button>
     </form>
-  </div>
+  </main>
 </template>
   
 <script setup>
@@ -158,11 +158,12 @@ function userSignUp() {
     flex-direction: column;
 
     label {
-      color: $color-primary;
-      font-weight: 700;
-      margin: 15px 0 5px 0;
       display: flex;
       flex-direction: column;
+      margin: 15px 0 5px 0;
+      font-size: 1.17em;
+      font-weight: 700;
+      color: $color-primary;
     }
 
     input {
@@ -213,6 +214,7 @@ function userSignUp() {
 }
 
 .alert {
+  font-size:1.1em;
   color: $background-color;
   background-color: $alert-color;
 }

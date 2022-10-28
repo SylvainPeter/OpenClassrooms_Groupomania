@@ -5,9 +5,10 @@
       <div id="publish__post">
         <h1>Créer une publication</h1>
         <!-- Zone texte -->
-        <textarea name="title" placeholder="Quoi de neuf ?" rows="10" maxlength="1000" v-model="text" @input="check" />
+        <textarea id="message" placeholder="Quoi de neuf ?" rows="10" maxlength="1000" aria-labelledby="message"
+          v-model="text" @input="check" />
         <!-- Bouton pour ajouter une image -->
-        <input type="file" id="add-file" name="image" @change="selectImage" />
+        <input type="file" id="add-file" name="image" aria-labelledby="add-file" @change="selectImage" />
       </div>
       <button id="form-validate-button" type="submit" :disabled="isDisabled" @click="createPost">Publier</button>
       <img v-if="imageUrl" id="image__preview" :src="imageUrl" alt="preview de l'image" />
@@ -127,7 +128,7 @@ getPseudo();
 h1 {
   padding: 10px;
   border-radius: 10px;
-  font-size: large;
+  font-size: 1.2em;
   background-color: $color-primary;
   color: $background-color;
 }

@@ -5,9 +5,10 @@
             <div id="edit__post">
                 <h1>Modifier la publication</h1>
                 <!-- Zone texte -->
-                <textarea placeholder="Entrez le nouveau texte" rows="10" maxlength="1000" v-model="editedText" />
+                <textarea id="message" placeholder="Entrez le nouveau texte" rows="10" maxlength="1000"
+                    aria-labelledby="message" v-model="editedText" />
                 <!-- Bouton pour ajouter une image -->
-                <input type="file" id="add-file" name="image" @change="selectImage" />
+                <input type="file" id="add-file" name="image" aria-labelledby="add-file" @change="selectImage" />
             </div>
             <button id="form-validate-button" @click="updatePost">Modifier</button>
             <img v-if="imageUrl" id="image__preview" :src="imageUrl" alt="preview de l'image" />
@@ -135,7 +136,7 @@ getPostData();
 h1 {
     padding: 10px;
     border-radius: 10px;
-    font-size: large;
+    font-size: 1.2em;
     background-color: $color-primary;
     color: $background-color;
 }

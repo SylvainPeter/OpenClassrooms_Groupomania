@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <main class="container">
     <!-- Posts -->
     <article v-for="post in posts" :key="post._id">
       <!-- Identité du user -->
@@ -7,13 +7,13 @@
         <i class="lni lni-user user_icon"></i>
         <span id="pseudo">{{ post.pseudo }}</span>
       </header>
-      <main>
+      <section>
         <!-- Texte du post -->
         <p id="content" v-show="post.text">{{ post.text }}</p>
         <!-- Image du post -->
         <img v-if="post.imageUrl" id="image" :src="post.imageUrl" alt='image du post'>
         <!-- Icones en bas du post -->
-      </main>
+      </section>
       <footer>
         <div id="footer--right-block">
           <!-- Likes -->
@@ -40,7 +40,7 @@
         </div>
       </footer>
     </article>
-  </div>
+  </main>
 </template>
   
 <script setup>
@@ -235,6 +235,7 @@ header {
 }
 
 #pseudo {
+  font-size: 1.1em;
   font-weight: 600;
 }
 

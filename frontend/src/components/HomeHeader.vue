@@ -2,9 +2,11 @@
     <div>
         <header>
             <div id="header-content">
-                <router-link to="/home">
-                    <img src="../assets/icon-left-font.png" id="logo" title="Accueil" alt="logo groupomania">
-                </router-link>
+                <h1>
+                    <router-link to="/home">
+                        <img src="../assets/icon-left-font.png" id="logo" title="Accueil" alt="logo groupomania">
+                    </router-link>
+                </h1>
                 <strong>Bonjour,
                     <router-link to="/user" id="user" title="Infos utilisateur">{{ pseudo }}</router-link> !
                 </strong>

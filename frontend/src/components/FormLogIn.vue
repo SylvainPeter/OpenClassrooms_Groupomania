@@ -1,8 +1,8 @@
 <template>
-  <div class="form-container">
+  <main class="form-container">
     <form class="form" method="post">
       <div>
-        <label for="mail">Adresse email</label>
+        <label for="email">Adresse email</label>
         <input type="email" id="email" name="user_mail" placeholder="Entrez votre adresse email" v-model="email"
           @input="checkEmailField()" required>
         <div v-show="checkEmail" class="alert">{{ checkEmailMsg }}</div>
@@ -18,7 +18,7 @@
       <p>Pas encore inscrit ?</p>
       <button class="form__button--signup" @click="router.push('/signup')">Créer un compte</button>
     </form>
-  </div>
+  </main>
 </template>
 
 <script setup>
@@ -150,6 +150,7 @@ function userLogIn() {
       display: flex;
       flex-direction: column;
       margin: 15px 0 5px 0;
+      font-size: 1.17em;
       font-weight: 700;
       color: $color-primary;
     }
@@ -197,6 +198,7 @@ function userLogIn() {
 }
 
 .alert {
+  font-size:1.1em;
   color: $background-color;
   background-color: $alert-color;
 }

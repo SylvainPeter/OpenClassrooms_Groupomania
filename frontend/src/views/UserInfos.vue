@@ -78,7 +78,7 @@ getLocalStorageData()
 h1 {
     padding: 10px;
     border-radius: 10px;
-    font-size: large;
+    font-size: 1.2em;
     background-color: $color-primary;
     color: $background-color;
 }
