@@ -5,7 +5,7 @@
       <!-- Identité du user -->
       <header>
         <i class="lni lni-user user_icon"></i>
-        <span id="pseudo">{{ post.pseudo }}</span>
+        <h2 id="pseudo">{{ post.pseudo }}</h2>
       </header>
       <section>
         <!-- Texte du post -->

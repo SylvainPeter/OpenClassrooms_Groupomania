@@ -3,7 +3,7 @@
     <home-header></home-header>
     <div class="container">
       <div id="publish__post">
-        <h1>Créer une publication</h1>
+        <h2>Créer une publication</h2>
         <!-- Zone texte -->
         <textarea id="message" placeholder="Quoi de neuf ?" rows="10" maxlength="1000" aria-labelledby="message"
           v-model="text" @input="check" />
@@ -125,7 +125,7 @@ getPseudo();
   }
 }
 
-h1 {
+h2 {
   padding: 10px;
   border-radius: 10px;
   font-size: 1.2em;

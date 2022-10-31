@@ -3,7 +3,7 @@
         <home-header></home-header>
         <div class="container">
             <div id="user">
-                <h1><i class="lni lni-user user_icon"></i>Infos Utilisateur</h1>
+                <h2><i class="lni lni-user user_icon"></i>Infos Utilisateur</h2>
                 <p><strong>Votre pseudo :</strong> {{pseudo}}</p>
                 <p><strong>Votre adresse email :</strong> {{email}}</p>
                 <p><strong>Votre mot de passe :</strong> ************</p>
@@ -75,7 +75,7 @@ getLocalStorageData()
     }
 }
 
-h1 {
+h2 {
     padding: 10px;
     border-radius: 10px;
     font-size: 1.2em;

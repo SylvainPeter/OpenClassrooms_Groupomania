@@ -3,7 +3,7 @@
         <home-header></home-header>
         <div class="container">
             <div id="edit__post">
-                <h1>Modifier la publication</h1>
+                <h2>Modifier la publication</h2>
                 <!-- Zone texte -->
                 <textarea id="message" placeholder="Entrez le nouveau texte" rows="10" maxlength="1000"
                     aria-labelledby="message" v-model="editedText" />
@@ -133,7 +133,7 @@ getPostData();
     }
 }
 
-h1 {
+h2 {
     padding: 10px;
     border-radius: 10px;
     font-size: 1.2em;
