@@ -5,7 +5,7 @@
       <!-- Identité du user -->
       <header>
         <i class="lni lni-user user_icon"></i>
-        <h2 id="pseudo">{{ post.pseudo }}</h2>
+        <span id="pseudo">{{ post.pseudo }}</span>
       </header>
       <section>
         <!-- Texte du post -->
@@ -205,7 +205,7 @@ getAllPosts();
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-image: url("../assets/geometric.jpg");
+  background-image: url("../assets/geometric1.png");
 }
 
 article {
@@ -235,7 +235,7 @@ header {
 }
 
 #pseudo {
-  font-size: 1.1em;
+  font-size: 1.5em;
   font-weight: 600;
 }
 
@@ -243,7 +243,7 @@ header {
   text-align: left;
   margin: 20px 0 15px 0;
   padding: 8px 10px;
-  font-size: 1.06em;
+  font-size: 1.1em;
   font-weight: 400;
 
   // Mobile et tablette
