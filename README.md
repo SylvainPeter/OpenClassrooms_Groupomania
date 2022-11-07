@@ -1,7 +1,7 @@
 # OpenClassrooms P7 - Groupomania
 
 
-__A partir du dossier "backend" :__  
+__A PARTIR DU DOSSIER "BACKEND" :__  
 
 * __Créez un fichier *.env* avec les variables d'environnement suivantes :__    
 PORT = 3000  
@@ -13,8 +13,8 @@ RANDOM_SECRET_TOKEN = votre clef de hashage (n'importe quelle chaine de caractè
 -> npm install  
 -> node server  
 
-
-__A partir du dossier "frontend" :__    
+  
+__A PARTIR DU DOSSIER "FRONTEND" :__    
 
 * Exécutez sur le terminal :  
 -> npm install  
