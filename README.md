@@ -19,6 +19,6 @@ __A PARTIR DU DOSSIER "FRONTEND" :__
 -> npm install  
 -> npm run serve  
 
-* __Dans votre navigateur :__  
+__DANS VOTRE NAVIGATEUR :__  
 -> http://localhost:8080/
 
