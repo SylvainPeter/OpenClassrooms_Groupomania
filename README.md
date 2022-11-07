@@ -3,10 +3,10 @@
 
 A partir du dossier "backend" :  
 
-* Créez les variables d'environnement *.env* :  
+* Créez un fichier *.env* avec les variables d'environnement suivantes :  
 PORT = 3000  
-MONGODB_ACCESS = vos identifiants MongoDB  
-RANDOM_SECRET_TOKEN = votre clef de hashage  
+MONGODB_ACCESS = 'mongodb+srv://VOTRE_ID_MONGDB:VOTRE_PASSWORD_MONGODB@cluster0.lvuol.mongodb.net/SocialNetwork?retryWrites=true&w=majority' 
+RANDOM_SECRET_TOKEN = votre clef de hashage (n'importe quelle chaine de caractères)
 
 
 * Exécutez sur le terminal :  
